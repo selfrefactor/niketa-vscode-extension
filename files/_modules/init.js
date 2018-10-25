@@ -1,15 +1,13 @@
 const vscode = require('vscode')
-const { execJestTest } = require('./execJestTest')
+const { execJestTest } = require('../_modules/execJestTest')
 const { isBenchmark } = require('../_helpers/isBenchmark')
 const { lintFn } = require('lint-fn')
-const { once, merge } = require('rambdax')
-const { performBenchmark } = require('./performBenchmark')
-const { setJest } = require('./setJest')
-const { setWorkSpace } = require('./setWorkSpace')
+const { merge } = require('rambdax')
+const { performBenchmark } = require('../_modules/performBenchmark')
+const { setJest } = require('../_modules/setJest')
+const { setWorkSpace } = require('../_modules/setWorkSpace')
 const { show, lintBar } = require('../bar')
 const { verifyExtension } = require('../_helpers/verifyExtension')
-
-const initFn = once(init)
 
 function init(){
   let holder = {
@@ -70,6 +68,7 @@ function init(){
       lintFn({
         filePath : lintFilePath,
         logFlag  : false,
+        fixFlag  : true,
       }).then(logData => {
         lintBar({
           text    : logData === '' ? '🇩🇪 ' : '🇧🇬',
@@ -82,4 +81,4 @@ function init(){
   })
 }
 
-exports.init = initFn
+exports.init = init

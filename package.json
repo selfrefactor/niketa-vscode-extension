@@ -48,6 +48,11 @@
           "type": "boolean",
           "default": false,
           "description": "If you want auto lint on file blur event"
+        },
+        "niketa.port": {
+          "type": "number",
+          "default": 3011,
+          "description": "On which port to start Niketa server"
         }
       }
     }
@@ -74,7 +79,7 @@
     "rambdax": "^0.14.1"
   },
   "commitMessage": {
-    "workInProgress": "",
+    "workInProgress": "mvp",
     "support": [
       "prepublish",
       "refactor"

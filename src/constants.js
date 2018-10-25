@@ -1,5 +1,5 @@
-exports.NAME = 'autoJest'
-exports.DEFAULT_COMMAND = 'autoJest.start'
+exports.NAME = 'niketa'
+exports.DEFAULT_COMMAND = 'niketa.start'
 exports.SUCCESS_ICON = '✔️'
 exports.SUCCESS_COLOR = '#26865A'
 exports.ERROR_ICON = '❌'
