@@ -1,2 +1,5 @@
 exports.INIT_FLAG = 'initFlag'
 exports.ACTIVE_FLAG = 'activeFlag'
+exports.PORT = 'port'
+exports.SHOW = 'show'
+exports.CONNECTION = 'connection'

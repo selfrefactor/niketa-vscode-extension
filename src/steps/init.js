@@ -1,29 +1,25 @@
 const fastify = require('fastify')()
 const {getConfig} = require('../_helpers/getConfig')
-const {ACTIVE_FLAG} = require('../keys')
+const _ = require('../keys')
+const {ok} = require('rambdax')
 const {show, tooltip} = require('../bar')
 const {getter, setter} = require('../_helpers/internalData')
 
-fastify.get('/show', async request => {
-  if(!getter(ACTIVE_FLAG)) return { ok: false }
+const io = require('socket.io')(fastify.server);
+
+function showRoute(request){
+  if(!getter(_.ACTIVE_FLAG)) return
   
-  console.log(request)
-  show('FOO')
-  return { ok: true }
+  ok(request)({message: 'string'})
+  show(request.message)
+}
+
+io.on(_.CONNECTION, socket => {
+  socket.on(_.SHOW,showRoute)
 })
 
-const start = async () => {
-  try {
-    await fastify.listen(
-      getConfig('port')
-    )
-  } catch (err) {
-    console.error(err)
-  }
+exports.init = () => {
+  fastify.listen(
+    getConfig(_.PORT)
+  )
 }
-
-function init(){
-  start()
-}
-
-exports.init = init
