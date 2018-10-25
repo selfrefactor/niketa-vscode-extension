@@ -1,0 +1,83 @@
+{
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "testRegex": ".+spec.js$"
+  },
+  "name": "niketa",
+  "displayName": "niketa",
+  "description": "auto run jest tests with coverage",
+  "version": "0.1.0",
+  "license": "MIT",
+  "publisher": "selfrefactor",
+  "engines": {
+    "vscode": "^1.28.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:niketa.start"
+  ],
+  "main": "./src/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "niketa.start",
+        "title": "Auto Jest"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "niketa.start",
+        "key": "ctrl+1",
+        "when": "editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Auto Jest",
+      "properties": {
+        "niketa.nodePath": {
+          "type": "string",
+          "default": "node",
+          "description": "Node path location fallback in case of issues with NODE_PATH"
+        },
+        "niketa.lintFlag": {
+          "type": "boolean",
+          "default": false,
+          "description": "If you want auto lint on file blur event"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "de": "commit",
+    "test": "jest src --watch"
+  },
+  "devDependencies": {
+    "commit-message": "https://github.com/selfrefactor/commit-message#3.0.1",
+    "jest": "^23.6.0",
+    "typescript": "^3.0.0",
+    "vscode": "^1.1.21"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/selfrefactor/niketa.git"
+  },
+  "dependencies": {
+    "fastify": "^1.12.1",
+    "helpers": "https://github.com/selfrefactor/helpers#0.3.2",
+    "lint-fn": "^0.7.0",
+    "rambdax": "^0.14.1"
+  },
+  "commitMessage": {
+    "workInProgress": "",
+    "support": [
+      "prepublish",
+      "refactor"
+    ]
+  }
+}
