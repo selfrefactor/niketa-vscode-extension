@@ -14,8 +14,13 @@ function showRoute(request){
   show(request.message)
 }
 
+function replyRoute(request){
+  console.log({request,a:1})
+}
+
 io.on(_.CONNECTION, socket => {
   socket.on(_.SHOW,showRoute)
+  socket.on(_.REPLY,replyRoute)
 })
 
 exports.init = () => {
