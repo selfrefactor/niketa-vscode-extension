@@ -31,8 +31,7 @@ function activate(context) {
   const changeMode = vscode.commands.registerCommand(
     'niketa.changeMode',
     () => {
-      console.log('9')
-      emit({channel: 'foo', message:'bra'})
+      emit({channel: 'changeMode', message:'changeMode'})
     }
   )
 

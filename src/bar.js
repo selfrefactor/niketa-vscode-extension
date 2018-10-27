@@ -3,7 +3,6 @@ const { DEFAULT_COMMAND, NAME } = require('./constants')
 const { loadingBar } = require('helpers')
 const { delay, ok, mapFastAsync } = require('rambdax')
 const {config} = require('../config')
-const { getConfig } = require('./_helpers/getConfig')
 
 const dummy = {
   text: '', 
