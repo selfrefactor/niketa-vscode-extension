@@ -25,7 +25,7 @@ holder.secondBar = config.secondBar.enabled ?
   (
     vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Left,
-      PRIORITY +1
+      PRIORITY -1
     )
   ) :
   dummy
@@ -34,7 +34,7 @@ holder.thirdBar = config.thirdBar.enabled ?
   (
     vscode.window.createStatusBarItem(
       vscode.StatusBarAlignment.Left,
-      PRIORITY +2
+      PRIORITY -2
     )
   ) :
   dummy
@@ -53,18 +53,18 @@ const stopSpinner = () => {
   clearInterval(intervalHolder)
 }
 
-const init = async () => {
-  await mapFastAsync(
-    async x => {
-      holder[x].show()
-      holder[x].text = config[x].text
-      holder[x].tooltip = config[x].tooltip
-      
-      await delay(config[x].closeAfter)
-      
-      holder[x].text = ''
-    }
-  )(['bar','secondBar', 'thirdBar'])
+const fn = x => {
+  holder[x].show()
+  holder[x].text = config[x].text
+  holder[x].tooltip = config[x].tooltip
+  
+  delay(config[x].closeAfter).then(() => {
+    holder[x].text = ''
+  })
+}
+
+const init = () => {
+  ['bar','secondBar', 'thirdBar'].forEach(fn)
 }
 
 const getBar = () => holder.bar

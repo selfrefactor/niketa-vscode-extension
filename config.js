@@ -5,7 +5,7 @@ const base = {
 }
 
 exports.config = {
-  firstBar: {
+  bar: {
     ...base,
     text:'NIKETA_READY',
   },

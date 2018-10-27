@@ -14,6 +14,8 @@ function activate(context) {
   const start = vscode.commands.registerCommand(
     DEFAULT_COMMAND,
     () => {
+      console.log({a:getter(INIT_FLAG)})
+      
       if(!getter(INIT_FLAG)){
         setter(INIT_FLAG, true)
         init()
