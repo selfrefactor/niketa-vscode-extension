@@ -8,13 +8,16 @@ exports.config = {
   bar: {
     ...base,
     text:'NIKETA_READY',
+    afterText:'===',
   },
   secondBar: {
     ...base,
+    afterText:'---',
     text:'MODE@INIT2',
   },
   thirdBar: {
     ...base,
+    afterText:'||',
     text:'MODE@INIT3',
   },
 }

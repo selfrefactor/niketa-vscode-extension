@@ -3,10 +3,13 @@ const { DEFAULT_COMMAND } = require('./constants')
 const bar = require('./bar')
 const { init } = require('./steps/init')
 const {setter, getter} = require('./_helpers/internalData')
+const {initEmitter, emit} = require('./_modules/emitter')
 const {INIT_FLAG, ACTIVE_FLAG} = require('./keys')
 
 setter(INIT_FLAG, false)
 setter(ACTIVE_FLAG, false)
+initEmitter()
+console.log(1)
 
 function activate(context) {
   bar.init()
@@ -25,7 +28,16 @@ function activate(context) {
     }
   )
 
+  const changeMode = vscode.commands.registerCommand(
+    'niketa.changeMode',
+    () => {
+      console.log('9')
+      emit({channel: 'foo', message:'bra'})
+    }
+  )
+
   context.subscriptions.push(start)
+  context.subscriptions.push(changeMode)
 }
 
 exports.activate = activate

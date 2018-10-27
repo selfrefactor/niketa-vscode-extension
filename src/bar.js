@@ -40,6 +40,7 @@ holder.thirdBar = config.thirdBar.enabled ?
   dummy
 
 holder.bar.command = DEFAULT_COMMAND
+holder.secondBar.command = 'niketa.changeMode'
 let intervalHolder
 
 const startSpinner = () => {
@@ -59,7 +60,7 @@ const fn = x => {
   holder[x].tooltip = config[x].tooltip
   
   delay(config[x].closeAfter).then(() => {
-    holder[x].text = ''
+    holder[x].text = config[x].afterText
   })
 }
 

@@ -46,7 +46,7 @@
         },
         "niketa.lintFlag": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "description": "If you want auto lint on file blur event"
         },
         "niketa.port": {
@@ -77,7 +77,8 @@
     "helpers": "https://github.com/selfrefactor/helpers#0.3.2",
     "lint-fn": "^0.7.0",
     "rambdax": "^0.14.1",
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1"
   },
   "commitMessage": {
     "workInProgress": "mvp",
