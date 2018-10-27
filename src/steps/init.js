@@ -3,7 +3,7 @@ const fastify = require('fastify')()
 const {getConfig} = require('../_helpers/getConfig')
 const _ = require('../keys')
 const {ok} = require('rambdax')
-const {show, tooltip} = require('../bar')
+const {show, startSpinner, stopSpinner} = require('../bar')
 const {getter, setter} = require('../_helpers/internalData')
 const {emit} = require('../_modules/emitter')
 
@@ -16,13 +16,18 @@ function showRoute(request){
   show(request.message)
 }
 
-function replyRoute(request){
-  console.log({request,a:1})
+function startSpinnerRoute(){
+  startSpinner()
+}
+
+function stopSpinnerRoute(){
+  stopSpinner()
 }
 
 io.on(_.CONNECTION, socket => {
-  socket.on(_.SHOW,showRoute)
-  socket.on(_.REPLY,replyRoute)
+  socket.on('startSpinner', startSpinnerRoute)
+  socket.on('stopSpinner', stopSpinnerRoute)
+  socket.on('show',showRoute)
 })
 
 function initWatcher(){

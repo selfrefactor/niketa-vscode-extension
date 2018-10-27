@@ -1,5 +1,4 @@
 const { exec } = require('child_process')
-const { NUM_FAILED } = require('../constants')
 
 function execJest(
   command,
@@ -12,7 +11,7 @@ function execJest(
         options,
         (error, stdout, stderr) => {
           if (error) {
-            if (stdout.toString().includes(NUM_FAILED)){
+            if (stdout.toString().includes('numFailedTests')){
               return resolve({
                 stdout,
                 stderr,
