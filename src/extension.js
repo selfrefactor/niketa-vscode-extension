@@ -1,4 +1,5 @@
 const vscode = require('vscode')
+const {delay} = require('rambdax')
 const { DEFAULT_COMMAND } = require('./constants')
 const bar = require('./bar')
 const { init } = require('./steps/init')
@@ -7,24 +8,24 @@ const {initEmitter, emit} = require('./_modules/emitter')
 const {INIT_FLAG, ACTIVE_FLAG} = require('./keys')
 
 setter(INIT_FLAG, false)
-setter(ACTIVE_FLAG, false)
-initEmitter()
-console.log(1)
+setter(ACTIVE_FLAG, true)
 
 function activate(context) {
   bar.init()
+  initEmitter()
+  delay(2000).then(()=>{
+    init()
+  })
 
   const start = vscode.commands.registerCommand(
     DEFAULT_COMMAND,
     () => {
-      console.log({a:getter(INIT_FLAG)})
-      
       if(!getter(INIT_FLAG)){
         setter(INIT_FLAG, true)
-        init()
+        // init()
       }
 
-      setter(ACTIVE_FLAG,!getter(ACTIVE_FLAG))
+      setter(ACTIVE_FLAG, !getter(ACTIVE_FLAG))
     }
   )
 

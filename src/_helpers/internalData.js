@@ -8,4 +8,3 @@ const setter = (key, value) => {
 
 exports.getter = getter
 exports.setter = setter
-

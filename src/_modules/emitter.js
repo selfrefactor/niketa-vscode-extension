@@ -1,19 +1,22 @@
-const {ok} = require('rambdax')
+const {ok, omit} = require('rambdax')
 const socket = require('socket.io-client')('http://localhost:3012')
 
 const initEmitter = () => {
   socket.on('connect', () => {
-    console.log('connected');
+    console.log('connected 3012')
   })
 }
 
 const emit = input => {
-  ok(input)({channel: 'string', message: 'string'})
-  
-  socket.emit(input.channel, { message: input.message });
+  ok(input)({channel: 'string'})
+
+  socket.emit(
+    input.channel, 
+    { 
+      message: omit('channel',input)
+    }
+  )    
 }
 
 exports.initEmitter = initEmitter
 exports.emit = emit
-// socket.on('event', console.log);
-// socket.on('disconnect', function(){});
