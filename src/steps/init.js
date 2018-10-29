@@ -2,6 +2,7 @@ const fastify = require('fastify')()
 const io = require('socket.io')(fastify.server)
 const vscode = require('vscode')
 const { emit } = require('../_modules/emitter')
+const { hasReact } = require('../_modules/hasReact')
 const { ok, head, path, getter } = require('rambdax')
 const { show, startSpinner, stopSpinner } = require('../bar')
 
@@ -30,12 +31,12 @@ function rabbitHole(e){
   const dir = path(
     'uri.path', head(vscode.workspace.workspaceFolders)
   )
-
+    
   emit({
     channel  : 'fileSaved',
     dir,
     filePath : e.fileName,
-    hasReact : false,
+    hasReact: hasReact(dir),
     mode     : getter('MODE'),
   })
 }

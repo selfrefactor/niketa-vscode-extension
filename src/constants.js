@@ -1,7 +1,7 @@
 exports.START = 'niketa.start'
 exports.CHANGE_MODE = 'niketa.changeMode'
 exports.MODES = [
-  'NO_SNAPSHOTS',
-  'WITH_SNAPSHOTS',
+  'NO_COVERAGE',
+  'WITH_COVERAGE',
   // 'WITH_LINT',
 ]
