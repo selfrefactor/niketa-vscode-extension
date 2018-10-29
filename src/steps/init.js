@@ -43,7 +43,7 @@ function rabbitHole(e){
 
 function initWatcher(){
   vscode.workspace.onDidSaveTextDocument(e => {
-    rabbitHole(e)
+    if(getter('MODE') !== 'OFF') rabbitHole(e)
   })
 }
 
