@@ -1,5 +1,5 @@
 const { emitToBar } = require('../bar')
-const { getter, setter } = require('./internalData')
+const { getter, setter } = require('rambdax')
 const { MODES } = require('../constants')
 
 function changeMode(){

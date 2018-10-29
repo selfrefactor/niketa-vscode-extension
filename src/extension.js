@@ -1,11 +1,10 @@
 const bar = require('./bar')
 const vscode = require('vscode')
 const { changeMode } = require('./_helpers/changeMode')
-const { delay, head } = require('rambdax')
+const { setter, getter, delay, head } = require('rambdax')
 const { init } = require('./steps/init')
 const { initEmitter } = require('./_modules/emitter')
 const { MODES, START, CHANGE_MODE } = require('./constants')
-const { setter, getter } = require('./_helpers/internalData')
 
 setter('ACTIVE_FLAG', false)
 setter('ACTIVATED', false)

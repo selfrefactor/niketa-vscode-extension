@@ -1,10 +1,8 @@
-const _ = require('../keys')
 const fastify = require('fastify')()
 const io = require('socket.io')(fastify.server)
 const vscode = require('vscode')
 const { emit } = require('../_modules/emitter')
-const { getter } = require('../_helpers/internalData')
-const { ok, head, path } = require('rambdax')
+const { ok, head, path, getter } = require('rambdax')
 const { show, startSpinner, stopSpinner } = require('../bar')
 
 function showRoute(request){
@@ -20,7 +18,7 @@ function stopSpinnerRoute(){
   stopSpinner()
 }
 
-io.on(_.CONNECTION, socket => {
+io.on('connection', socket => {
   console.log('connected', 3011)
 
   socket.on('startSpinner', startSpinnerRoute)

@@ -74,14 +74,12 @@
   },
   "dependencies": {
     "fastify": "^1.12.1",
-    "helpers": "https://github.com/selfrefactor/helpers#0.3.2",
-    "lint-fn": "^0.7.0",
-    "rambdax": "^0.14.1",
+    "rambdax": "^0.16.0",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1"
   },
   "commitMessage": {
-    "workInProgress": "mvp",
+    "workInProgress": "",
     "support": [
       "prepublish",
       "refactor"
