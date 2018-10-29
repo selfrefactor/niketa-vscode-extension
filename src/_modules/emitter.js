@@ -1,5 +1,5 @@
-const {ok, omit} = require('rambdax')
 const socket = require('socket.io-client')('http://localhost:3012')
+const { ok, omit } = require('rambdax')
 
 const initEmitter = () => {
   socket.on('connect', () => {
@@ -8,14 +8,12 @@ const initEmitter = () => {
 }
 
 const emit = input => {
-  ok(input)({channel: 'string'})
+  ok(input)({ channel : 'string' })
 
   socket.emit(
-    input.channel, 
-    { 
-      message: omit('channel',input)
-    }
-  )    
+    input.channel,
+    { message : omit('channel', input) }
+  )
 }
 
 exports.initEmitter = initEmitter

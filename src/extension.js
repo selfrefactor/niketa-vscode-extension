@@ -1,43 +1,42 @@
-const vscode = require('vscode')
-const {delay} = require('rambdax')
-const { DEFAULT_COMMAND } = require('./constants')
 const bar = require('./bar')
+const vscode = require('vscode')
+const { changeMode } = require('./_helpers/changeMode')
+const { delay, head } = require('rambdax')
 const { init } = require('./steps/init')
-const {setter, getter} = require('./_helpers/internalData')
-const {initEmitter, emit} = require('./_modules/emitter')
-const {INIT_FLAG, ACTIVE_FLAG} = require('./keys')
+const { initEmitter } = require('./_modules/emitter')
+const { MODES, START, CHANGE_MODE } = require('./constants')
+const { setter, getter } = require('./_helpers/internalData')
 
-setter(INIT_FLAG, false)
-setter(ACTIVE_FLAG, true)
+setter('ACTIVE_FLAG', false)
+setter('ACTIVATED', false)
+setter('MODE', head(MODES))
 
 function activate(context) {
-  bar.init()
-  initEmitter()
-  delay(2000).then(()=>{
-    init()
-  })
 
-  const start = vscode.commands.registerCommand(
-    DEFAULT_COMMAND,
+  const startCommand = vscode.commands.registerCommand(
+    START,
     () => {
-      if(!getter(INIT_FLAG)){
-        setter(INIT_FLAG, true)
-        // init()
+      if (!getter('ACTIVATED')){
+        setter('ACTIVATED', true)
+
+        bar.init()
+        initEmitter()
+        delay(2000).then(() => {
+          init()
+        })
       }
 
-      setter(ACTIVE_FLAG, !getter(ACTIVE_FLAG))
+      setter('ACTIVE_FLAG', !getter('ACTIVE_FLAG'))
     }
   )
 
-  const changeMode = vscode.commands.registerCommand(
-    'niketa.changeMode',
-    () => {
-      emit({channel: 'changeMode', message:'changeMode'})
-    }
+  const changeModeCommand = vscode.commands.registerCommand(
+    CHANGE_MODE,
+    changeMode
   )
 
-  context.subscriptions.push(start)
-  context.subscriptions.push(changeMode)
+  context.subscriptions.push(startCommand)
+  context.subscriptions.push(changeModeCommand)
 }
 
 exports.activate = activate

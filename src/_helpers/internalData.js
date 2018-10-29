@@ -1,9 +1,9 @@
-let dataHolder = {}
+const dataHolder = {}
 
-const getter = key => dataHolder[key]
+const getter = key => dataHolder[ key ]
 
 const setter = (key, value) => {
-  dataHolder[key] = value
+  dataHolder[ key ] = value
 }
 
 exports.getter = getter

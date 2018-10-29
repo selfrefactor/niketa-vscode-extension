@@ -7,17 +7,17 @@ const base = {
 exports.config = {
   bar: {
     ...base,
-    text:'NIKETA_READY',
-    afterText:'===',
+    text:'NIKETA',
+    afterText:'=',
   },
   secondBar: {
     ...base,
-    afterText:'---',
-    text:'MODE@INIT2',
+    text:'DEFAULT MODE',
+    afterText:'',
   },
   thirdBar: {
     ...base,
-    afterText:'||',
-    text:'MODE@INIT3',
+    text:'LINT STATUS',
+    afterText:'',
   },
 }
