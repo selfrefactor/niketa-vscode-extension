@@ -1,6 +1,7 @@
 const vscode = require('vscode')
-const { config } = require('./config')
-const { delay, ok } = require('rambdax')
+const { START, CHANGE_MODE } = require('./constants')
+const { delay } = require('rambdax')
+const {config} = require('./config')
 
 function loadingBar(totalLength){
   let counter = -1
@@ -16,9 +17,9 @@ function loadingBar(totalLength){
 }
 
 const dummy = {
-  text    : '',
-  show    : () => {},
-  tooltip : () => {},
+  text: '', 
+  show: () => {},
+  tooltip: () =>{}
 }
 
 const BAR_LENGTH = 3
@@ -31,24 +32,25 @@ holder.bar = vscode.window.createStatusBarItem(
   PRIORITY
 )
 
-holder.secondBar = config.secondBar.enabled ?
-
-  vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Left,
-    PRIORITY - 1
+holder.secondBar = config.secondBar.enabled ? 
+  (
+    vscode.window.createStatusBarItem(
+      vscode.StatusBarAlignment.Left,
+      PRIORITY -1
+    )
   ) :
   dummy
 
-holder.thirdBar = config.thirdBar.enabled ?
-
-  vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Left,
-    PRIORITY - 2
+holder.thirdBar = config.thirdBar.enabled ? 
+  (
+    vscode.window.createStatusBarItem(
+      vscode.StatusBarAlignment.Left,
+      PRIORITY -2
+    )
   ) :
   dummy
 
-holder.bar.command = 'niketa.changeMode'
-
+holder.bar.command = CHANGE_MODE
 let intervalHolder
 
 const startSpinner = () => {
@@ -62,50 +64,40 @@ const stopSpinner = () => {
   clearInterval(intervalHolder)
 }
 
-const initFn = x => {
-  holder[ x ].show()
-  holder[ x ].text = config[ x ].text
-  holder[ x ].tooltip = config[ x ].tooltip
-
-  delay(config[ x ].closeAfter).then(() => {
-    holder[ x ].text = config[ x ].afterText
+const init = () => {
+  const bars = ['bar','secondBar', 'thirdBar']
+  
+  bars.forEach( x => {
+    holder[x].show()
+    holder[x].text = config[x].text
+    holder[x].tooltip = config[x].tooltip
+    
+    delay(config[x].closeAfter)
+      .then(() => holder[x].text = config[x].afterText)
   })
 }
 
-const init = () => {
-  [ 'bar', 'secondBar', 'thirdBar' ].forEach(initFn)
-}
-
+const getBar = () => holder.bar
 const show = x => holder.bar.text = x
 const tooltip = x => holder.bar.tooltip = x
 
 /**
- * Pass input.name = 'thirdBar'
- * Pass input.text = 'TEXT'
- * Optianally pass input.tooltip = 'TEXT'
- * Optianally pass input.afterText = 'TEXT'
+ * Pass tooltip and text
  */
-function emitToBar(input){
-  ok(input)({
-    name : [ 'bar', 'secondBar', 'thirdBar' ],
-    text : 'string',
-  })
-
+const emitToBar = input => {
   if (input.tooltip){
-    holder[ input.name ].tooltip = input.tooltip
+    holder[input.name].tooltip = input.tooltip
   }
-  holder[ input.name ].text = input.text
-
-  if (input.afterText !== undefined){
-    delay(2000).then(() => {
-      holder[ input.name ].text = input.afterText
-    })
-  }
+  holder[input.name].text = input.text
 }
 
+
+exports.getBar = getBar
 exports.init = init
+
 exports.emitToBar = emitToBar
 exports.show = show
 exports.tooltip = tooltip
+
 exports.startSpinner = startSpinner
 exports.stopSpinner = stopSpinner

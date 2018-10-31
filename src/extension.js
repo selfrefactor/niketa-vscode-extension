@@ -20,9 +20,9 @@ function activate(context) {
 
         bar.init()
         initEmitter()
-        delay(2000).then(() => {
-          init()
-        })
+
+        delay(2000)
+          .then(() => init() )
       }
 
       setter('ACTIVE_FLAG', !getter('ACTIVE_FLAG'))

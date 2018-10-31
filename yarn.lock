@@ -3571,10 +3571,6 @@ path-type@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-1.1.0.tgz#59c44f7ee491da704da415da5a4070ba4f8fe441"
   integrity sha1-WcRPfuSR2nBNpBXaWkBwuk+P5EE=
-  dependencies:
-    graceful-fs "^4.1.2"
-    pify "^2.0.0"
-    pinkie-promise "^2.0.0"
 
 pause-stream@^0.0.11:
   version "0.0.11"
@@ -3778,10 +3774,10 @@ rambda@^1.0.9:
   version "1.0.9"
   resolved "https://github.com/selfrefactor/rambda#ee04b4005da84b29d166364100d50e2a9be56a60"
 
-rambdax@^0.16.0:
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/rambdax/-/rambdax-0.16.0.tgz#f78ec53b0698457712887307f41322aefa82a9de"
-  integrity sha512-r1YFhVfNuRYUZJxtc1OSNk/6yGYplffzsT8Xa1lHlUTQQ6suh6d8MdVEJhfxEZEoXzrI4ppc7vaHyNojkGBC8g==
+rambdax@^0.18.0:
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/rambdax/-/rambdax-0.18.0.tgz#d2f046ffa43aca516430f3449e4264c5075651df"
+  integrity sha512-u2iWAAcAbxE4hz0S0ZRZ+HIhJV3fUmm725/KMscLjNpA5HmsakHJfg1DLT4v/oImiPp3AvEny112GZuYMTSSig==
 
 rambdax@^0.8.10:
   version "0.8.10"

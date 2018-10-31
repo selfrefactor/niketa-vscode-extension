@@ -4,7 +4,7 @@ const vscode = require('vscode')
 const { emit } = require('../_modules/emitter')
 const { hasReact } = require('../_modules/hasReact')
 const { ok, head, path, getter } = require('rambdax')
-const { show, startSpinner, stopSpinner } = require('../bar')
+const { show, tooltip, emitToBar, startSpinner, stopSpinner } = require('../bar')
 
 function showRoute(request){
   ok(request)({ message : 'string' })
@@ -19,12 +19,33 @@ function stopSpinnerRoute(){
   stopSpinner()
 }
 
-io.on('connection', socket => {
-  console.log('connected', 3011)
+function tooltipRoute(request){
+  ok(request)({message: 'string'})
+  tooltip(request.message)
+}
 
+function emitToBarRoute(request){
+  console.log({emitToBarRoute: request})
+  // ok(request)({name:'string', text:'string'})
+  // emitToBar(request)
+}
+
+function startSpinnerRoute(){
+  startSpinner()
+}
+
+function stopSpinnerRoute(){
+  stopSpinner()
+}
+
+io.on('connection', socket => {
+  console.log('connected', 3011);
+  
+  socket.on('emitToBar', emitToBarRoute)
+  socket.on('show',showRoute)
   socket.on('startSpinner', startSpinnerRoute)
   socket.on('stopSpinner', stopSpinnerRoute)
-  socket.on('show', showRoute)
+  socket.on('tooltip', tooltipRoute)
 })
 
 function rabbitHole(e){
