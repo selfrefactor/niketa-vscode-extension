@@ -1,3 +1,10 @@
+process.on('uncaughtException', err => {
+  console.log(err)
+})
+process.on('unhandledRejection', (reason, promise) => {
+  console.log({reason, promise})
+})
+
 const bar = require('./bar')
 const vscode = require('vscode')
 const { changeMode } = require('./_helpers/changeMode')

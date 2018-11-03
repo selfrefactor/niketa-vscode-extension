@@ -89,6 +89,11 @@ const emitToBar = input => {
     holder[input.name].tooltip = input.tooltip
   }
   holder[input.name].text = input.text
+
+  if(input.afterText !== undefined){
+    delay(2000)
+      .then(() => holder[input.name].text = input.afterText)
+  }
 }
 
 
