@@ -3,8 +3,8 @@ const io = require('socket.io')(fastify.server)
 const vscode = require('vscode')
 const { emit } = require('../_modules/emitter')
 const { hasReact } = require('../_modules/hasReact')
-const { ok, head, path, getter } = require('rambdax')
-const { show, tooltip, emitToBar, startSpinner, stopSpinner } = require('../bar')
+const { delay, ok, head, path, getter } = require('rambdax')
+const { show, tooltip, startSpinner, stopSpinner } = require('../bar')
 
 function showRoute(request){
   ok(request)({ message : 'string' })
@@ -24,12 +24,6 @@ function tooltipRoute(request){
   tooltip(request.message)
 }
 
-function emitToBarRoute(request){
-  console.log({emitToBarRoute: request})
-  // ok(request)({name:'string', text:'string'})
-  // emitToBar(request)
-}
-
 function startSpinnerRoute(){
   startSpinner()
 }
@@ -41,17 +35,18 @@ function stopSpinnerRoute(){
 io.on('connection', socket => {
   console.log('connected', 3011);
   
-  socket.on('emitToBar', emitToBarRoute)
   socket.on('show',showRoute)
   socket.on('startSpinner', startSpinnerRoute)
   socket.on('stopSpinner', stopSpinnerRoute)
   socket.on('tooltip', tooltipRoute)
 })
 
-function rabbitHole(e){
+async function rabbitHole(e){
+  console.log({a:await delay(1200)})
   const dir = path(
     'uri.path', head(vscode.workspace.workspaceFolders)
-  )
+    )
+  console.log({aa:await delay(1200)})
     
   emit({
     channel  : 'fileSaved',

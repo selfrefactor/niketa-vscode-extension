@@ -28,7 +28,7 @@ function activate(context) {
         bar.init()
         initEmitter()
 
-        delay(2000)
+        delay(500)
           .then(() => init() )
       }
 
