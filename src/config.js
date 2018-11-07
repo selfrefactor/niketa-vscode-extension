@@ -1,5 +1,3 @@
-const {MODES} = require('./constants')
-
 const base = {
     tooltip:'',
     closeAfter: 5000,
@@ -14,12 +12,13 @@ exports.config = {
   },
   secondBar: {
     ...base,
-    text:MODES[0],
+    text:'',
     afterText:'',
   },
   thirdBar: {
     ...base,
-    text:'INFO BAR',
+    enabled: false,
+    text:'',
     afterText:'',
   },
 }

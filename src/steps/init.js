@@ -3,6 +3,7 @@ const io = require('socket.io')(fastify.server)
 const vscode = require('vscode')
 const { emit } = require('../_modules/emitter')
 const { hasReact } = require('../_modules/hasReact')
+const { getCWD } = require('../_modules/getCWD')
 const { delay, ok, head, path, getter } = require('rambdax')
 const { show, tooltip, startSpinner, stopSpinner } = require('../bar')
 
@@ -41,13 +42,10 @@ io.on('connection', socket => {
   socket.on('tooltip', tooltipRoute)
 })
 
-async function rabbitHole(e){
-  console.log({a:await delay(1200)})
-  const dir = path(
-    'uri.path', head(vscode.workspace.workspaceFolders)
-    )
-  console.log({aa:await delay(1200)})
-    
+function rabbitHole(e){
+  const dir = getCWD(e.fileName)
+  if(dir === false) return
+  
   emit({
     channel  : 'fileSaved',
     dir,

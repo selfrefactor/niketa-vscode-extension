@@ -13,7 +13,7 @@ function changeMode(){
   setter('MODE', newMode)
 
   emitToBar({
-    name      : 'thirdBar',
+    name      : 'secondBar',
     text      : newMode,
     afterText : '',
   })

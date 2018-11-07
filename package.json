@@ -25,7 +25,7 @@
     "commands": [
       {
         "command": "niketa.start",
-        "title": "Auto Jest"
+        "title": "Niketa"
       }
     ],
     "keybindings": [
@@ -34,28 +34,7 @@
         "key": "ctrl+1",
         "when": "editorTextFocus"
       }
-    ],
-    "configuration": {
-      "type": "object",
-      "title": "Auto Jest",
-      "properties": {
-        "niketa.nodePath": {
-          "type": "string",
-          "default": "node",
-          "description": "Node path location fallback in case of issues with NODE_PATH"
-        },
-        "niketa.lintFlag": {
-          "type": "boolean",
-          "default": true,
-          "description": "If you want auto lint on file blur event"
-        },
-        "niketa.port": {
-          "type": "number",
-          "default": 3011,
-          "description": "On which port to start Niketa server"
-        }
-      }
-    }
+    ]
   },
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
@@ -73,8 +52,8 @@
     "url": "https://github.com/selfrefactor/niketa.git"
   },
   "dependencies": {
-    "fastify": "^1.12.1",
-    "rambdax": "^0.18.0",
+    "fastify": "^1.13.0",
+    "rambdax": "^0.20.1",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1"
   },

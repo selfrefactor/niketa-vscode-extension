@@ -7,7 +7,7 @@ process.on('unhandledRejection', (reason, promise) => {
 
 const bar = require('./bar')
 const vscode = require('vscode')
-const { changeMode } = require('./_helpers/changeMode')
+const { changeMode } = require('./_modules/changeMode')
 const { setter, getter, delay, head } = require('rambdax')
 const { init } = require('./steps/init')
 const { initEmitter } = require('./_modules/emitter')

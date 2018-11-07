@@ -1,20 +1,8 @@
 const vscode = require('vscode')
-const { START, CHANGE_MODE } = require('./constants')
+const { CHANGE_MODE } = require('./constants')
+const { loadingBar } = require('./_modules/loadingBar')
 const { delay } = require('rambdax')
 const {config} = require('./config')
-
-function loadingBar(totalLength){
-  let counter = -1
-  
-  return () => {
-
-    counter = counter === totalLength?
-      0 :
-      counter + 1
-  
-    return '🀰'.repeat(counter) + '🀱'.repeat(totalLength - counter)
-  }
-}
 
 const dummy = {
   text: '', 
@@ -91,7 +79,7 @@ const emitToBar = input => {
   holder[input.name].text = input.text
 
   if(input.afterText !== undefined){
-    delay(2000)
+    delay(4000)
       .then(() => holder[input.name].text = input.afterText)
   }
 }

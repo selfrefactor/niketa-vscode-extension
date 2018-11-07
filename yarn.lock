@@ -1406,10 +1406,10 @@ fast-safe-stringify@^1.0.8, fast-safe-stringify@^1.2.3:
   resolved "https://registry.yarnpkg.com/fast-safe-stringify/-/fast-safe-stringify-1.2.3.tgz#9fe22c37fb2f7f86f06b8f004377dbf8f1ee7bc1"
   integrity sha512-QJYT/i0QYoiZBQ71ivxdyTqkwKkQ0oxACXHYxH2zYHJEgzi2LsbjgvtzTbLi1SZcF190Db2YP7I7eTsU2egOlw==
 
-fastify@^1.12.1:
-  version "1.12.1"
-  resolved "https://registry.yarnpkg.com/fastify/-/fastify-1.12.1.tgz#9c314bde2d7e9e26ad70f844414f33a97a7ddc01"
-  integrity sha512-hpOJQyUSF0WtEK7ED1PZNf99t64Gs9I7KhhwqnX9QrQZliPuY5FXYOKjfRo6H8qW/DMPEnrWyCgbajfl1zHULg==
+fastify@^1.13.0:
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/fastify/-/fastify-1.13.0.tgz#1e68bd7bc69257afa989f6ae94c885255087a403"
+  integrity sha512-0aqsHEk2WtgGxPVDTOqDLv5XLHQE2EuH7eCq4XRLLnktLehNvr3/Afi/nEn6pPoLiVGMrbWHv4l1+wDhiSIFoA==
   dependencies:
     "@types/pino" "^4.16.0"
     abstract-logging "^1.0.0"
@@ -3571,6 +3571,10 @@ path-type@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-1.1.0.tgz#59c44f7ee491da704da415da5a4070ba4f8fe441"
   integrity sha1-WcRPfuSR2nBNpBXaWkBwuk+P5EE=
+  dependencies:
+    graceful-fs "^4.1.2"
+    pify "^2.0.0"
+    pinkie-promise "^2.0.0"
 
 pause-stream@^0.0.11:
   version "0.0.11"
@@ -3774,10 +3778,10 @@ rambda@^1.0.9:
   version "1.0.9"
   resolved "https://github.com/selfrefactor/rambda#ee04b4005da84b29d166364100d50e2a9be56a60"
 
-rambdax@^0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/rambdax/-/rambdax-0.18.0.tgz#d2f046ffa43aca516430f3449e4264c5075651df"
-  integrity sha512-u2iWAAcAbxE4hz0S0ZRZ+HIhJV3fUmm725/KMscLjNpA5HmsakHJfg1DLT4v/oImiPp3AvEny112GZuYMTSSig==
+rambdax@^0.20.1:
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/rambdax/-/rambdax-0.20.1.tgz#b77b9a9f968ca97967f17ed6ad67393de8932feb"
+  integrity sha512-NMFz9kDRltx6WcqwpTjqmRUJxpv/XHzoprk+WALfAkdl4LwGnr0l4J4xfJZZfY9KOV7JZjn7mjuJRGVU9HCLLw==
 
 rambdax@^0.8.10:
   version "0.8.10"
