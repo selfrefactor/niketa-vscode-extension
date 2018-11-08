@@ -122,6 +122,10 @@ This means that you have 12% increase in statement coverage, 5% increase in bran
 
 Also the error log will be visible as a tooltip upon hover.
 
+## Note
+
+Be aware that if your `Jest` config sets `coverageReporters`, then you need to disable them, otherwise you will see `LINE === undefined` in the status bar instead of the results.
+
 ---
 
 `Niketa` also has a shortkey assosiated, which is `Ctrl+1`. It overlaps with `workbench.action.focusFirstEditorGroup`, so you will need to remove the default keybinding if you want to use it.
