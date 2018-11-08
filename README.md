@@ -108,7 +108,7 @@ The rabbit icon is reference to the Bulgarian word for `freshman`, i.e. first-ti
 
 ### The next time you run the test upon `foo.spec.js`
 
-If there is no change in coverage percentages compared to the previous run, you will see basketball icon `⛹`. The reference is related to my opiniated observation that basketball tends to be boring to play if there is no enough quality and spirit on the field.
+If there is no change in coverage percentages compared to the previous run, you will see the boring(basketball) icon `⛹`. The reference is related to my opinionated observation that basketball could be boring to play sometimes as it is rather physical than technical game.
 
 If there is difference in coverage percentages, then you should see something like:
 
