@@ -3,8 +3,6 @@ const holder = {}
 
 function hasReact(dir){
   if(holder[dir] !== undefined){
-    console.log('FROM CACHE', dir);
-    
     return holder[dir]
   }
 

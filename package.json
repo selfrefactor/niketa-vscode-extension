@@ -34,7 +34,18 @@
         "key": "ctrl+1",
         "when": "editorTextFocus"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Niketa",
+      "properties": {
+        "niketa.defaultMode": {
+          "type": "string",
+          "default": "NO_COVERAGE",
+          "description": "Set default mode of Niketa"
+        }
+      }
+    }
   },
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
@@ -42,7 +53,6 @@
     "test": "jest src --watch"
   },
   "devDependencies": {
-    "commit-message": "https://github.com/selfrefactor/commit-message#3.0.1",
     "jest": "^23.6.0",
     "typescript": "^3.0.0",
     "vscode": "^1.1.21"
@@ -53,15 +63,8 @@
   },
   "dependencies": {
     "fastify": "^1.13.0",
-    "rambdax": "^0.20.1",
+    "rambdax": "^0.23.0",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1"
-  },
-  "commitMessage": {
-    "workInProgress": "",
-    "support": [
-      "prepublish",
-      "refactor"
-    ]
   }
 }
