@@ -1,7 +1,7 @@
 const vscode = require('vscode')
 const { CHANGE_MODE } = require('./constants')
 const { loadingBar } = require('./_modules/loadingBar')
-const { delay } = require('rambdax')
+const { delay, defaultTo } = require('rambdax')
 const {config} = require('./config')
 
 const dummy = {
@@ -11,7 +11,7 @@ const dummy = {
 }
 
 const BAR_LENGTH = 3
-const PRIORITY = 100
+const PRIORITY = 200
 
 const holder = {}
 
@@ -41,14 +41,21 @@ holder.thirdBar = config.thirdBar.enabled ?
 holder.bar.command = CHANGE_MODE
 let intervalHolder
 
+let counter = 100
 const startSpinner = () => {
   const loadingBarFn = loadingBar(BAR_LENGTH)
   intervalHolder = setInterval(() => {
     holder.bar.text = loadingBarFn()
+    
+    counter--
+    if(counter === 0){
+      stopSpinner()
+    }
   }, 333)
 }
 
 const stopSpinner = () => {
+  counter = 100
   clearInterval(intervalHolder)
 }
 
@@ -83,7 +90,6 @@ const emitToBar = input => {
       .then(() => holder[input.name].text = input.afterText)
   }
 }
-
 
 exports.getBar = getBar
 exports.init = init

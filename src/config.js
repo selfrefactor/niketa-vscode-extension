@@ -17,7 +17,6 @@ exports.config = {
   },
   thirdBar: {
     ...base,
-    enabled: false,
     text:'',
     afterText:'',
   },

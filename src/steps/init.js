@@ -5,7 +5,13 @@ const { emit } = require('../_modules/emitter')
 const { hasReact } = require('../_modules/hasReact')
 const { getCWD } = require('../_modules/getCWD')
 const { ok, getter } = require('rambdax')
-const { show, tooltip, startSpinner, stopSpinner } = require('../bar')
+const {
+  emitToBar,
+  show,
+  startSpinner,
+  stopSpinner,
+  tooltip,
+} = require('../bar')
 
 function showRoute(request){
   ok(request)({ message : 'string' })
@@ -25,6 +31,15 @@ function tooltipRoute(request){
   tooltip(request.message)
 }
 
+function additionalRoute(request){
+  ok(request)({message: 'string'})
+  emitToBar({
+    name      : 'thirdBar',
+    text      : request.message,
+    afterText : request.message,
+  })
+}
+
 function startSpinnerRoute(){
   startSpinner()
 }
@@ -40,6 +55,7 @@ io.on('connection', socket => {
   socket.on('startSpinner', startSpinnerRoute)
   socket.on('stopSpinner', stopSpinnerRoute)
   socket.on('tooltip', tooltipRoute)
+  socket.on('additional', additionalRoute)
 })
 
 function rabbitHole(e){
@@ -55,50 +71,8 @@ function rabbitHole(e){
   })
 }
 
-const smallNumberDecorationType = vscode.window.createTextEditorDecorationType({
-  borderWidth: '1px',
-  borderStyle: 'solid',
-  overviewRulerColor: 'blue',
-  overviewRulerLane: vscode.OverviewRulerLane.Right,
-  light: {
-    borderColor: 'lightpink'
-  },
-  dark: {
-    borderColor: 'darkpink'
-  }
-})
-
-function mai(target){
-
-	let activeEditor = vscode.window.activeTextEditor;
-	if (activeEditor) {
-		triggerUpdateDecorations();
-	}
-
-	function triggerUpdateDecorations() {
-		updateDecorations()
-	}
-
-	function updateDecorations() {
-		if (!activeEditor) {
-			return;
-		}
-		const regEx = /import|const/;
-		const text = activeEditor.document.getText();
-		const smallNumbers = [];
-		const match = regEx.exec(text)
-		const startPos = activeEditor.document.positionAt(match.index);
-    const endPos = activeEditor.document.positionAt(match.index + match[0].length)
-
-		const decoration = { range: new vscode.Range(startPos, endPos), hoverMessage: 'Number ****' };
-		smallNumbers.push(decoration);
-		activeEditor.setDecorations(smallNumberDecorationType, smallNumbers);
-	}
-}
-
 function initWatcher(){
   vscode.workspace.onDidSaveTextDocument(e => {
-    mai('test')
     if(getter('MODE') !== 'OFF') rabbitHole(e)
   })
 }
