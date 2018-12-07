@@ -4,7 +4,7 @@ const vscode = require('vscode')
 const { emit } = require('../_modules/emitter')
 const { hasReact } = require('../_modules/hasReact')
 const { getCWD } = require('../_modules/getCWD')
-const { delay, ok, head, path, getter } = require('rambdax')
+const { ok, getter } = require('rambdax')
 const { show, tooltip, startSpinner, stopSpinner } = require('../bar')
 
 function showRoute(request){
