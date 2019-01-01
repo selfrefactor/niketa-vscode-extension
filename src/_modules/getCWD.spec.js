@@ -1,4 +1,4 @@
-const {getCWD} = require('./getCWD')
+const { getCWD } = require('./getCWD')
 
 test('', () => {
   const input = '/home/s/repos/niketa/src/_helpers/getCWD.spec.js'

@@ -11,11 +11,11 @@ const MODES_LIST = [
   'OFF',
 ]
 
-const withoutDefault = MODES_LIST.filter(x => x!== DEFAULT_MODE)
+const withoutDefault = MODES_LIST.filter(x => x !== DEFAULT_MODE)
 
 exports.MODES = [
   DEFAULT_MODE,
-  ...withoutDefault
+  ...withoutDefault,
 ]
 
 exports.START = 'niketa.start'

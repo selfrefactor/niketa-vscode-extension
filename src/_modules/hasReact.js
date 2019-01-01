@@ -1,16 +1,17 @@
-const {existsSync, readFileSync} = require('fs')
+const { existsSync, readFileSync } = require('fs')
 const holder = {}
 
 function hasReact(dir){
-  if(holder[dir] !== undefined){
-    return holder[dir]
+  if (holder[ dir ] !== undefined){
+    return holder[ dir ]
   }
 
-  const location = `${dir}/package.json`
-  
-  if(!existsSync(location)){
-      holder[dir] = false
-      return holder[dir]
+  const location = `${ dir }/package.json`
+
+  if (!existsSync(location)){
+    holder[ dir ] = false
+
+    return holder[ dir ]
   }
 
   const packageJsonString = readFileSync(location).toString()
@@ -27,9 +28,9 @@ function hasReact(dir){
     false :
     'react' in dependencies
 
-  holder[dir] = isDependecy || isDevDependecy
-  
-  return holder[dir]
+  holder[ dir ] = isDependecy || isDevDependecy
+
+  return holder[ dir ]
 }
 
 exports.hasReact = hasReact

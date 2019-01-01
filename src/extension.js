@@ -2,22 +2,25 @@ process.on('uncaughtException', err => {
   console.log(err)
 })
 process.on('unhandledRejection', (reason, promise) => {
-  console.log({reason, promise})
+  console.log({
+    reason,
+    promise,
+  })
 })
 
 const bar = require('./bar')
 const vscode = require('vscode')
 const { changeMode } = require('./_modules/changeMode')
-const { setter, getter, delay, head } = require('rambdax')
 const { init } = require('./steps/init')
 const { initEmitter } = require('./_modules/emitter')
 const { MODES, START, CHANGE_MODE } = require('./constants')
+const { setter, getter, delay, head } = require('rambdax')
 
 setter('ACTIVE_FLAG', false)
 setter('ACTIVATED', false)
 setter('MODE', head(MODES))
 
-function activate(context) {
+function activate(context){
 
   const startCommand = vscode.commands.registerCommand(
     START,
@@ -29,7 +32,7 @@ function activate(context) {
         initEmitter()
 
         delay(500)
-          .then(() => init() )
+          .then(() => init())
       }
 
       setter('ACTIVE_FLAG', !getter('ACTIVE_FLAG'))

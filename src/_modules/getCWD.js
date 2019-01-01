@@ -1,17 +1,17 @@
-const {existsSync} = require('fs')
 const {
-  append, 
+  append,
   dropLast,
-  head, 
-  ifElse, 
-  join, 
-  piped, 
-  range, 
+  head,
+  ifElse,
+  join,
+  piped,
+  range,
   remove,
-  split, 
+  split,
 } = require('rambdax')
+const { existsSync } = require('fs')
 
-const getPath = (filePath,i) => piped(
+const getPath = (filePath, i) => piped(
   filePath,
   split('/'),
   dropLast(i),
@@ -27,18 +27,18 @@ const getPath = (filePath,i) => piped(
 let holder
 
 function getCWD(filePath){
-  if(holder !== undefined) return holder
+  if (holder !== undefined) return holder
 
-  const paths = range(0, filePath.split('/').length -1)
+  const paths = range(0, filePath.split('/').length - 1)
     .map(i => getPath(filePath, i))
-  
+
   const ok = paths.filter(Boolean).length > 0
-  
+
   holder = ok ?
     head(paths.filter(Boolean)) :
     false
 
-  return holder  
+  return holder
 }
 
 exports.getCWD = getCWD

@@ -1,13 +1,13 @@
 const vscode = require('vscode')
 const { CHANGE_MODE } = require('./constants')
+const { config } = require('./config')
+const { delay } = require('rambdax')
 const { loadingBar } = require('./_modules/loadingBar')
-const { delay, defaultTo } = require('rambdax')
-const {config} = require('./config')
 
 const dummy = {
-  text: '', 
-  show: () => {},
-  tooltip: () =>{}
+  text    : '',
+  show    : () => {},
+  tooltip : () => {},
 }
 
 const BAR_LENGTH = 3
@@ -20,55 +20,54 @@ holder.bar = vscode.window.createStatusBarItem(
   PRIORITY
 )
 
-holder.secondBar = config.secondBar.enabled ? 
-  (
-    vscode.window.createStatusBarItem(
-      vscode.StatusBarAlignment.Left,
-      PRIORITY -1
-    )
+holder.secondBar = config.secondBar.enabled ?
+
+  vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Left,
+    PRIORITY - 1
   ) :
   dummy
 
-holder.thirdBar = config.thirdBar.enabled ? 
-  (
-    vscode.window.createStatusBarItem(
-      vscode.StatusBarAlignment.Left,
-      PRIORITY -2
-    )
+holder.thirdBar = config.thirdBar.enabled ?
+
+  vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Left,
+    PRIORITY - 2
   ) :
   dummy
 
 holder.bar.command = CHANGE_MODE
-let intervalHolder
 
+let intervalHolder
 let counter = 100
-const startSpinner = () => {
-  const loadingBarFn = loadingBar(BAR_LENGTH)
-  intervalHolder = setInterval(() => {
-    holder.bar.text = loadingBarFn()
-    
-    counter--
-    if(counter === 0){
-      stopSpinner()
-    }
-  }, 333)
-}
 
 const stopSpinner = () => {
   counter = 100
   clearInterval(intervalHolder)
 }
 
+const startSpinner = () => {
+  const loadingBarFn = loadingBar(BAR_LENGTH)
+  intervalHolder = setInterval(() => {
+    holder.bar.text = loadingBarFn()
+
+    counter--
+    if (counter === 0){
+      stopSpinner()
+    }
+  }, 333)
+}
+
 const init = () => {
-  const bars = ['bar','secondBar', 'thirdBar']
-  
-  bars.forEach( x => {
-    holder[x].show()
-    holder[x].text = config[x].text
-    holder[x].tooltip = config[x].tooltip
-    
-    delay(config[x].closeAfter)
-      .then(() => holder[x].text = config[x].afterText)
+  const bars = [ 'bar', 'secondBar', 'thirdBar' ]
+
+  bars.forEach(x => {
+    holder[ x ].show()
+    holder[ x ].text = config[ x ].text
+    holder[ x ].tooltip = config[ x ].tooltip
+
+    delay(config[ x ].closeAfter)
+      .then(() => holder[ x ].text = config[ x ].afterText)
   })
 }
 
@@ -81,13 +80,13 @@ const tooltip = x => holder.bar.tooltip = x
  */
 const emitToBar = input => {
   if (input.tooltip){
-    holder[input.name].tooltip = input.tooltip
+    holder[ input.name ].tooltip = input.tooltip
   }
-  holder[input.name].text = input.text
+  holder[ input.name ].text = input.text
 
-  if(input.afterText !== undefined){
+  if (input.afterText !== undefined){
     delay(4000)
-      .then(() => holder[input.name].text = input.afterText)
+      .then(() => holder[ input.name ].text = input.afterText)
   }
 }
 
