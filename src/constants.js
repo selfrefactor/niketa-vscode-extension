@@ -1,9 +1,6 @@
-const vscode = require('vscode')
+const { niketaConfig } = require('./_modules/niketaConfig')
 
-const DEFAULT_MODE = vscode
-  .workspace
-  .getConfiguration('niketa')
-  .get('defaultMode')
+const DEFAULT_MODE = niketaConfig('DEFAULT_MODE')
 
 const MODES_LIST = [
   'NO_COVERAGE',

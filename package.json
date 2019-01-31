@@ -39,10 +39,30 @@
       "type": "object",
       "title": "Niketa",
       "properties": {
-        "niketa.defaultMode": {
+        "niketa.DEFAULT_MODE": {
           "type": "string",
           "default": "NO_COVERAGE",
           "description": "Set default mode of Niketa"
+        },
+        "niketa.PORT_0": {
+          "type": "number",
+          "default": 3011,
+          "description": "VSCode in port"
+        },
+        "niketa.PORT_1": {
+          "type": "number",
+          "default": 3012,
+          "description": "VSCode out port"
+        },
+        "niketa.PORT_2": {
+          "type": "number",
+          "default": 3013,
+          "description": "Niketa notify port"
+        },
+        "niketa.PORT_3": {
+          "type": "number",
+          "default": 3014,
+          "description": "Niketa notify close port"
         }
       }
     }

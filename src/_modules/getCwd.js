@@ -26,7 +26,7 @@ const getPath = (filePath, i) => piped(
 
 let holder
 
-function getCWD(filePath){
+function getCwd(filePath){
   if (holder !== undefined) return holder
 
   const paths = range(0, filePath.split('/').length - 1)
@@ -41,4 +41,4 @@ function getCWD(filePath){
   return holder
 }
 
-exports.getCWD = getCWD
+exports.getCwd = getCwd

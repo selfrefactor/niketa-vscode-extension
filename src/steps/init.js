@@ -1,6 +1,3 @@
-const fastify = require('fastify')()
-const io = require('socket.io')(fastify.server)
-const vscode = require('vscode')
 const {
   emitToBar,
   show,
@@ -8,8 +5,13 @@ const {
   stopSpinner,
   tooltip,
 } = require('../bar')
+const vscode = require('vscode')
+const { niketaConfig } = require('../_modules/niketaConfig')
+const fastify = require('fastify')()
+const io = require('socket.io')(fastify.server)
+
 const { emit } = require('../_modules/emitter')
-const { getCWD } = require('../_modules/getCWD')
+const { getCwd } = require('../_modules/getCwd')
 const { hasReact } = require('../_modules/hasReact')
 const { ok, getter } = require('rambdax')
 
@@ -41,7 +43,7 @@ function additionalRoute(request){
 }
 
 io.on('connection', socket => {
-  console.log('connected', 3011)
+  console.log('connected', niketaConfig('PORT_0'))
 
   socket.on('show', showRoute)
   socket.on('startSpinner', startSpinnerRoute)
@@ -51,7 +53,7 @@ io.on('connection', socket => {
 })
 
 function rabbitHole(e){
-  const dir = getCWD(e.fileName)
+  const dir = getCwd(e.fileName)
   if (dir === false) return
 
   emit({
@@ -70,7 +72,7 @@ function initWatcher(){
 }
 
 fastify.listen(
-  3011
+  niketaConfig('PORT_0')
 )
 
 exports.init = () => {

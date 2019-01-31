@@ -129,3 +129,33 @@ Be aware that if your `Jest` config sets `coverageReporters`, then you need to d
 ---
 
 `Niketa` also has a shortkey assosiated, which is `Ctrl+1`. It overlaps with `workbench.action.focusFirstEditorGroup`, so you will need to remove the default keybinding if you want to use it.
+
+## Default props
+
+```
+"niketa.DEFAULT_MODE": {
+  "type": "string",
+  "default": "NO_COVERAGE",
+  "description": "Set default mode of Niketa"
+},
+"niketa.PORT_0": {
+  "type": "number",
+  "default": 3011,
+  "description": "VSCode in port"
+},
+"niketa.PORT_1": {
+  "type": "number",
+  "default": 3012,
+  "description": "VSCode out port"
+},
+"niketa.PORT_2": {
+  "type": "number",
+  "default": 3013,
+  "description": "Niketa notify port"
+},
+"niketa.PORT_3": {
+  "type": "number",
+  "default": 3014,
+  "description": "Niketa notify close port"
+}
+```

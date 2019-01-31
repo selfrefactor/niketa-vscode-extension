@@ -1,9 +1,12 @@
-const socket = require('socket.io-client')('http://localhost:3012')
 const { ok, omit } = require('rambdax')
+const { niketaConfig } = require('./niketaConfig')
+const socket = require(
+  'socket.io-client'
+)(`http://localhost:${niketaConfig('PORT_1')}`)
 
 const initEmitter = () => {
   socket.on('connect', () => {
-    console.log('connected 3012')
+    console.log('connected', niketaConfig('PORT_1'))
   })
 }
 
