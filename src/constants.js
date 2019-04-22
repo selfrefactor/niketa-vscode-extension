@@ -3,6 +3,7 @@ const { niketaConfig } = require('./_modules/niketaConfig')
 const DEFAULT_MODE = niketaConfig('DEFAULT_MODE')
 
 const MODES_LIST = [
+  'LINT_ONLY',
   'NO_COVERAGE',
   'WITH_COVERAGE',
   'OFF',

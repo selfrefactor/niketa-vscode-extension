@@ -81,8 +81,8 @@
     "url": "https://github.com/selfrefactor/niketa.git"
   },
   "dependencies": {
-    "fastify": "^1.13.1",
-    "rambdax": "^1.0.1",
+    "fastify": "^2.3.0",
+    "rambdax": "2.3.0",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0"
   }

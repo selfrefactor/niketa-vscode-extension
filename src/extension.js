@@ -1,13 +1,3 @@
-process.on('uncaughtException', err => {
-  console.log(err)
-})
-process.on('unhandledRejection', (reason, promise) => {
-  console.log({
-    reason,
-    promise,
-  })
-})
-
 const bar = require('./bar')
 const vscode = require('vscode')
 const { changeMode } = require('./_modules/changeMode')
@@ -31,8 +21,7 @@ function activate(context){
         bar.init()
         initEmitter()
 
-        delay(500)
-          .then(() => init())
+        delay(1000).then(() => init())
       }
 
       setter('ACTIVE_FLAG', !getter('ACTIVE_FLAG'))
