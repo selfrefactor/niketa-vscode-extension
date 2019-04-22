@@ -8,7 +8,7 @@
   "name": "niketa",
   "displayName": "niketa",
   "description": "auto run jest tests with coverage",
-  "version": "1.0.4",
+  "version": "1.0.3",
   "license": "MIT",
   "publisher": "selfrefactor",
   "engines": {
@@ -75,6 +75,8 @@
     "test": "jest src --watch"
   },
   "devDependencies": {
+    "jest": "^23.6.0",
+    "typescript": "^3.2.2",
     "vscode": "^1.1.26"
   },
   "repository": {
