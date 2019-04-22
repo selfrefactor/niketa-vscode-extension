@@ -75,8 +75,6 @@
     "test": "jest src --watch"
   },
   "devDependencies": {
-    "jest": "^23.6.0",
-    "typescript": "^3.2.2",
     "vscode": "^1.1.26"
   },
   "repository": {
