@@ -8,7 +8,7 @@
   "name": "niketa",
   "displayName": "niketa",
   "description": "auto run jest tests with coverage",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "publisher": "selfrefactor",
   "engines": {
@@ -21,7 +21,9 @@
     "onCommand:niketa.start"
   ],
   "main": "./src/extension",
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "contributes": {
     "commands": [
       {
