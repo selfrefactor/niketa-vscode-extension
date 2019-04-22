@@ -4,5 +4,6 @@ test/**
 files/**
 .gitignore
 jsconfig.json
+node_modules/
 vsc-extension-quickstart.md
 .eslintrc.json
