@@ -21,6 +21,7 @@
     "onCommand:niketa.start"
   ],
   "main": "./src/extension",
+  "files": ["src"],
   "contributes": {
     "commands": [
       {
