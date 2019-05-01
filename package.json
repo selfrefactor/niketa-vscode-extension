@@ -85,11 +85,11 @@
   },
   "dependencies": {
     "fastify": "^2.3.0",
-    "rambdax": "2.3.0",
+    "rambdax": "2.6.0",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0"
   },
   "commitMessage": {
-    "workInProgress": "lock file"
+    "workInProgress": ""
   }
 }

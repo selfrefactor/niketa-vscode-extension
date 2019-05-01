@@ -78,7 +78,6 @@ function initWatcher(){
     }
 
     rabbitHole({ fileName : getter('LOCK_FILE') })
-
   })
 }
 
