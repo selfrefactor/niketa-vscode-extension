@@ -1,7 +1,3 @@
-niketa client should run jest with env RAMBDAX_LOG=true also RAMBDAX_LOG is disabled by default. this way log is visible only during niketa process
-
-niketa lock mode which traps the current file and sends only it until next click of icon which will not go the the next mode(LINT_ONLY) but to default(LOCK_FILE mode is second) | actually once you are in lock mode, you remain till the end of the session. next click will just lock to another file
-
 DSL for generating js code
 Name: Svetlana
 Take x as list and y as number

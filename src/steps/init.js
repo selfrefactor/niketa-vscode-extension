@@ -1,3 +1,5 @@
+const fastify = require('fastify')()
+const io = require('socket.io')(fastify.server)
 const vscode = require('vscode')
 const {
   emitToBar,
@@ -7,8 +9,6 @@ const {
   tooltip,
 } = require('../bar')
 const { niketaConfig } = require('../_modules/niketaConfig')
-const fastify = require('fastify')()
-const io = require('socket.io')(fastify.server)
 
 const { emit } = require('../_modules/emitter')
 const { getCwd } = require('../_modules/getCwd')
@@ -69,15 +69,15 @@ function initWatcher(){
   vscode.workspace.onDidSaveTextDocument(e => {
     const currentMode = getter('MODE')
 
-    if (currentMode === 'OFF') return 
-    
-    if(currentMode !== 'LOCK_FILE') return rabbitHole(e)
+    if (currentMode === 'OFF') return
 
-    if(!getter('LOCK_FILE')){
+    if (currentMode !== 'LOCK_FILE') return rabbitHole(e)
+
+    if (!getter('LOCK_FILE')){
       setter('LOCK_FILE', e.fileName)
     }
 
-    rabbitHole({fileName:getter('LOCK_FILE')})
+    rabbitHole({ fileName : getter('LOCK_FILE') })
 
   })
 }
