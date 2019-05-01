@@ -1,3 +1,4 @@
+const vscode = require('vscode')
 const {
   emitToBar,
   show,
@@ -5,7 +6,6 @@ const {
   stopSpinner,
   tooltip,
 } = require('../bar')
-const vscode = require('vscode')
 const { niketaConfig } = require('../_modules/niketaConfig')
 const fastify = require('fastify')()
 const io = require('socket.io')(fastify.server)
@@ -13,7 +13,7 @@ const io = require('socket.io')(fastify.server)
 const { emit } = require('../_modules/emitter')
 const { getCwd } = require('../_modules/getCwd')
 const { hasReact } = require('../_modules/hasReact')
-const { ok, getter } = require('rambdax')
+const { ok, getter, setter } = require('rambdax')
 
 function showRoute(request){
   ok(request)({ message : 'string' })
@@ -67,7 +67,18 @@ function rabbitHole(e){
 
 function initWatcher(){
   vscode.workspace.onDidSaveTextDocument(e => {
-    if (getter('MODE') !== 'OFF') rabbitHole(e)
+    const currentMode = getter('MODE')
+
+    if (currentMode === 'OFF') return 
+    
+    if(currentMode !== 'LOCK_FILE') return rabbitHole(e)
+
+    if(!getter('LOCK_FILE')){
+      setter('LOCK_FILE', e.fileName)
+    }
+
+    rabbitHole({fileName:getter('LOCK_FILE')})
+
   })
 }
 
