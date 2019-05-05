@@ -21,12 +21,12 @@ function whenNiketa({text, emitAnt, filePath}){
   })
 }
 
-async function saved({filePath,emitAnt, rabbitHole, text, shouldNiketa}){
+async function saved({filePath,emitAnt, rabbitHole, text, isNiketa}){
   const currentMode = getter('MODE')
 
   if (currentMode === 'OFF') return
 
-  if(shouldNiketa(text)){
+  if(isNiketa){
 
     return whenNiketa({
       text, 
@@ -36,9 +36,7 @@ async function saved({filePath,emitAnt, rabbitHole, text, shouldNiketa}){
   } 
   if (currentMode !== 'LOCK_FILE') return rabbitHole(filePath)
 
-  if (!getter('LOCK_FILE')){
-    setter('LOCK_FILE', filePath)
-  }
+  if (!getter('LOCK_FILE')) setter('LOCK_FILE', filePath)
 
   rabbitHole({ fileName : getter('LOCK_FILE') })
 }

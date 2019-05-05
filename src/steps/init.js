@@ -74,7 +74,8 @@ function rabbitHole(filePath){
 }
 
 function shouldNiketa(text){
-  return text.includes('sk_')
+
+  return text.includes('sk_') && text.trim().length > 5
 }
 
 function whenNiketa({character, line,text}){
@@ -108,15 +109,16 @@ function initWatcher(){
     const {character, line} = vscode.window.activeTextEditor.selection.active
 
     const {text} = e.lineAt(line)
-    
-    if(shouldNiketa) whenNiketa({character, text, line})
+    const isNiketa = shouldNiketa(text)
+
+    if(isNiketa) whenNiketa({character, text, line})
 
     saved({
       text,
       filePath: e.fileName,
       emitAnt,
       rabbitHole,
-      shouldNiketa
+      isNiketa
     })
   })
 }
