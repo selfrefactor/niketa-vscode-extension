@@ -1,6 +1,7 @@
 const fastify = require('fastify')()
 const io = require('socket.io')(fastify.server)
 const vscode = require('vscode')
+const {saved} = require('./saved')
 const {
   emitToBar,
   show,
@@ -13,7 +14,7 @@ const { niketaConfig } = require('../_modules/niketaConfig')
 const { emit } = require('../_modules/emitter')
 const { getCwd } = require('../_modules/getCwd')
 const { hasReact } = require('../_modules/hasReact')
-const { ok, getter, setter } = require('rambdax')
+const { ok, getter, replace } = require('rambdax')
 
 function showRoute(request){
   ok(request)({ message : 'string' })
@@ -52,32 +53,71 @@ io.on('connection', socket => {
   socket.on('additional', additionalRoute)
 })
 
-function rabbitHole(e){
-  const dir = getCwd(e.fileName)
+function emitAnt({filePath, mode }){
+  const dir = getCwd(filePath)
   if (dir === false) return
 
   emit({
     channel  : 'fileSaved',
     dir,
-    filePath : e.fileName,
+    filePath,
     hasReact : hasReact(dir),
+    mode,
+  })
+}
+
+function rabbitHole(filePath){
+  emitAnt({
+    filePath,
     mode     : getter('MODE'),
   })
 }
 
+function shouldNiketa(text){
+  return text.includes('sk_')
+}
+
+function whenNiketa({character, line,text}){
+  const startPosition = new vscode.Position(
+    line,
+    character
+  )
+  const endPosition = new vscode.Position(
+    line,
+    text.length - character
+  )
+  const range = new vscode.Range(
+    startPosition,
+    endPosition
+  )
+
+  vscode.window.activeTextEditor.edit(editBuilder => {
+    const replaced = replace(
+      /sk_.+/, 
+      '',
+      text,
+    )
+
+    editBuilder.replace(range, replaced) 
+  })
+}
+
+
 function initWatcher(){
   vscode.workspace.onDidSaveTextDocument(e => {
-    const currentMode = getter('MODE')
+    const {character, line} = vscode.window.activeTextEditor.selection.active
 
-    if (currentMode === 'OFF') return
+    const {text} = e.lineAt(line)
+    
+    if(shouldNiketa) whenNiketa({character, text, line})
 
-    if (currentMode !== 'LOCK_FILE') return rabbitHole(e)
-
-    if (!getter('LOCK_FILE')){
-      setter('LOCK_FILE', e.fileName)
-    }
-
-    rabbitHole({ fileName : getter('LOCK_FILE') })
+    saved({
+      text,
+      filePath: e.fileName,
+      emitAnt,
+      rabbitHole,
+      shouldNiketa
+    })
   })
 }
 
@@ -87,4 +127,5 @@ fastify.listen(
 
 exports.init = () => {
   initWatcher()
+
 }
