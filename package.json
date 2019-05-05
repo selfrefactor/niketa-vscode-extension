@@ -75,9 +75,9 @@
     "test": "jest src --watch"
   },
   "devDependencies": {
-    "jest": "^23.6.0",
+    "jest": "^24.8.0",
     "typescript": "^3.2.2",
-    "vscode": "^1.1.26"
+    "vscode": "^1.1.33"
   },
   "repository": {
     "type": "git",
@@ -85,7 +85,7 @@
   },
   "dependencies": {
     "fastify": "^2.3.0",
-    "rambdax": "2.6.0",
+    "rambdax": "2.6.1",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0"
   },
