@@ -44,7 +44,7 @@
       "properties": {
         "niketa.DEFAULT_MODE": {
           "type": "string",
-          "default": "NO_COVERAGE",
+          "default": "WITH_COVERAGE",
           "description": "Set default mode of Niketa"
         },
         "niketa.PORT_0": {
