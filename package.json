@@ -5,7 +5,7 @@
     ],
     "testRegex": ".+spec.js$"
   },
-  "icon": "files/logo.png",
+  "icon": "logo.png",
   "name": "niketa",
   "displayName": "niketa",
   "description": "auto run jest tests with coverage",
