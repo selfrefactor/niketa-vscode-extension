@@ -11,7 +11,7 @@ function changeMode(){
 
   const newMode = MODES[ newIndex ]
   setter('MODE', newMode)
-  console.log({oldMode, newMode})
+
   emitToBar({
     name      : 'secondBar',
     text      : newMode,
