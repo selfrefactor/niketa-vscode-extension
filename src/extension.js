@@ -13,7 +13,7 @@ setter('MODE', head(MODES))
 function activate(context){
 
   const startCommand = vscode.commands.registerCommand(
-    START,
+    'niketa.start',
     () => {
       if (!getter('ACTIVATED')){
         setter('ACTIVATED', true)
