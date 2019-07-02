@@ -1,8 +1,10 @@
-const { ok, omit } = require('rambdax')
 const { niketaConfig } = require('./niketaConfig')
+
 const socket = require(
   'socket.io-client'
-)(`http://localhost:${niketaConfig('PORT_1')}`)
+)(`http://localhost:${ niketaConfig('PORT_1') }`)
+
+const { ok, omit } = require('rambdax')
 
 const initEmitter = () => {
   socket.on('connect', () => {
