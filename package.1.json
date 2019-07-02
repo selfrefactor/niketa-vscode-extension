@@ -1,4 +1,11 @@
 {
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "testRegex": ".+spec.js$"
+  },
+  "icon": "logo.png",
   "name": "niketa",
   "displayName": "niketa",
   "description": "auto run jest tests with coverage",
@@ -8,32 +15,20 @@
   "engines": {
     "vscode": "^1.28.0"
   },
+  "galleryBanner": {
+    "color": "#C80000",
+    "theme": "dark"
+  },
   "categories": [
     "Other"
   ],
   "activationEvents": [
     "onCommand:niketa.start"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/selfrefactor/niketa.git"
-  },
-  "bugs": {
-    "url": "https://github.com/selfrefactor/niketa/issues"
-  },
   "main": "./src/extension",
-  "icon": "logo.png",
-  "keywords": [
-    "wallaby",
-    "jest",
-    "test"
+  "files": [
+    "src"
   ],
-  "devDependencies": {
-    "fastify": "^2.3.0",
-    "rambdax": "2.10.1",
-    "socket.io": "^2.2.0",
-    "socket.io-client": "^2.2.0"
-  },
   "contributes": {
     "commands": [
       {
@@ -79,5 +74,27 @@
         }
       }
     }
+  },
+  "scripts": {
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "jest src --watch"
+  },
+  "devDependencies": {
+    "jest": "^24.8.0",
+    "typescript": "^3.2.2",
+    "vscode": "^1.1.33"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/selfrefactor/niketa.git"
+  },
+  "dependencies": {
+    "fastify": "^2.3.0",
+    "rambdax": "2.6.1",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0"
+  },
+  "commitMessage": {
+    "workInProgress": ""
   }
 }
