@@ -15,6 +15,10 @@
   "engines": {
     "vscode": "^1.28.0"
   },
+  "galleryBanner": {
+    "color": "#C80000",
+    "theme": "dark"
+  },
   "categories": [
     "Other"
   ],
