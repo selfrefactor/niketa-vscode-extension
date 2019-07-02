@@ -55,6 +55,8 @@ io.on('connection', socket => {
 
 function emitAnt({ filePath, mode }){
   const dir = getCwd(filePath)
+  console.log(dir);
+  
   if (dir === false) return
 
   emit({
@@ -67,6 +69,8 @@ function emitAnt({ filePath, mode }){
 }
 
 function rabbitHole(filePath){
+  console.log(filePath);
+  
   emitAnt({
     filePath,
     mode : getter('MODE'),
