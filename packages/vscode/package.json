@@ -8,7 +8,7 @@
   "icon": "logo.png",
   "name": "niketa",
   "displayName": "niketa",
-  "description": "auto run jest tests with coverage",
+  "description": "Auto run jest tests with coverage",
   "version": "2.3.0",
   "license": "MIT",
   "publisher": "selfrefactor",
