@@ -24,7 +24,7 @@ holder.secondBar = config.secondBar.enabled ?
 
   vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
-    PRIORITY - 1
+    PRIORITY + 1
   ) :
   dummy
 
@@ -32,7 +32,7 @@ holder.thirdBar = config.thirdBar.enabled ?
 
   vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Right,
-    PRIORITY - 2
+    PRIORITY + 2
   ) :
   dummy
 
