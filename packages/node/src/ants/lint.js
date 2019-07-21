@@ -1,4 +1,3 @@
-// import { lintFn } from '../../../lint-fn/index'
 import { lintFn } from 'lint-fn'
 import { remove } from 'rambdax'
 
@@ -9,6 +8,8 @@ export async function lintAnt(filePath){
     prettierFlag : true,
     fixFlag : true,
   })
+
+  if(logResult) return `CATCHED LINT ERROR - ${filePath}`
 
   return remove(/\/home\/s\//g, logResult)
 }
