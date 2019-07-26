@@ -4,12 +4,12 @@ import { remove } from 'rambdax'
 export async function lintAnt(filePath){
   const logResult = await lintFn({
     filePath,
-    logFlag : true,
+    logFlag      : true,
     prettierFlag : true,
-    fixFlag : true,
+    fixFlag      : true,
   })
 
-  if(logResult) return `CATCHED LINT ERROR - ${filePath}`
+  if (logResult) return `CATCHED LINT ERROR - ${ filePath }`
 
   return remove(/\/home\/s\//g, logResult)
 }

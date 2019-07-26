@@ -11,7 +11,7 @@
 		"babel-cli": "^7.0.0-beta.3",
 		"babel-preset-env": "^7.0.0-beta.3",
 		"jest": "^24.8.0",
-		"typescript": "^3.6.0-dev.20190702"
+		"typescript": "^3.6.0-dev.20190720"
 	},
 	"files": [
 		"src",
@@ -24,13 +24,13 @@
 	"dependencies": {
 		"esm": "^3.2.25",
 		"fastify": "^2.6.0",
-		"lint-fn": "^1.4.1",
-		"helpers": "https://github.com/selfrefactor/helpers#1.2.1",
-		"rambdax": "^2.10.1",
-		"string-fn": "^2.8.1",
+		"lint-fn": "^1.4.2",
+		"helpers": "https://github.com/selfrefactor/helpers#1.3.1",
+		"rambdax": "^2.11.0",
+		"string-fn": "^2.9.0",
 		"socket.io": "^2.2.0",
 		"socket.io-client": "^2.2.0",
-		"ws": "^7.0.1"
+		"ws": "^7.1.1"
 	},
 	"commitMessage": {
 		"workInProgress": ""
