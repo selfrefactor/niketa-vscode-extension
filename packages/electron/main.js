@@ -1,7 +1,7 @@
-const config = require('./config.json')
 const fastify = require('fastify')()
 const path = require('path')
 const url = require('url')
+const {getSize} = require('./getSize')
 const { anyTrue } = require('rambdax')
 const { app, ipcMain, BrowserWindow } = require('electron')
 
@@ -14,9 +14,11 @@ const baseConfig = {
   type            : 'notification',
 }
 
+const windowSize = getSize()
+
 const settings = {
   ...baseConfig,
-  ...config,
+  ...windowSize,
 }
 
 let mainWindow

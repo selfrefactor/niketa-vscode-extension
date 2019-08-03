@@ -8,6 +8,6 @@
     "fix": [
       "node"
     ],
-    "workInProgress": "prepare electron"
+    "workInProgress": ""
   }
 }
