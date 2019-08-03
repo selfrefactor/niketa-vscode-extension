@@ -2,4 +2,5 @@ out
 coverage
 node_modules
 .vscode-test/
+config.json
 *.vsix

@@ -1,0 +1,17 @@
+body{
+  background:#2a3343fe;
+  overflow: hidden;
+}
+
+div.container {
+  color: #fafafa;
+  font-family: Operator Mono !important;
+  font-size: 17px;
+  min-height: 98vh;
+  cursor: pointer;
+}
+
+p:nth-child(odd){
+  margin:2px;                                                                color: #40c4ff;
+}
+
