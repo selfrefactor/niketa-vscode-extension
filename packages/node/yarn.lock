@@ -3640,10 +3640,10 @@ light-my-request@^3.4.1:
     ajv "^6.8.1"
     readable-stream "^3.1.1"
 
-lint-fn@^1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/lint-fn/-/lint-fn-1.7.2.tgz#f40a874c4de068674b28af8ba6e0ff9215ae1e66"
-  integrity sha512-fIIg5Gs6pqhAK45ms6j0Y1yoMqp4QMKWgxXdd+hnNqKG+tI2E4nKt70nRSYMgk0C3mzBLQhPw1duXipPnT655Q==
+lint-fn@^1.7.3:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/lint-fn/-/lint-fn-1.7.3.tgz#0ffa1545d988b0f28b1e0ef43c8c7186f2c8c554"
+  integrity sha512-v52Zzxgky8KdiUAUHqHY/UPN6QhXiKYga8Rpodz1uEnpTVWGVkql4b4a2lerDVc9vPxgJWbtSldTrdFPRRTDZw==
   dependencies:
     babel-eslint "10.0.1"
     eslint "^6.0.1"
