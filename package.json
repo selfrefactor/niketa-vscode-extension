@@ -8,6 +8,9 @@
     "fix": [
       "node"
     ],
-    "workInProgress": ""
+    "workInProgress": "",
+    "support": [
+      "vscode"
+    ]
   }
 }
