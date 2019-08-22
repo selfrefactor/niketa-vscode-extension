@@ -1,3 +1,0 @@
-const {niketaClient} = require('./')
-
-niketaClient()

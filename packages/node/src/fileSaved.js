@@ -75,8 +75,6 @@ let fileHolder
 let lintFileHolder
 let specFileHolder
 
-// remove without coverage logic
-
 // Dispatch between all possible modes
 // ============================================
 export async function fileSaved({

@@ -1,7 +1,7 @@
 import { remove } from 'rambdax'
 
 export function additional(emit, message){
-  if (typeof message !== 'string'){
+  if (typeof message !== 'string' || !message){
     return emit({
       channel : 'additional',
       message : '',
