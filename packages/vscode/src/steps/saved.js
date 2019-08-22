@@ -9,7 +9,7 @@ function saved({ filePath, rabbitHole }){
 
   if (!getter('LOCK_FILE')) setter('LOCK_FILE', filePath)
 
-  rabbitHole({ fileName : getter('LOCK_FILE') })
+  rabbitHole(getter('LOCK_FILE'))
 }
 
 exports.saved = saved
