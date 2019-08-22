@@ -6,24 +6,16 @@ This library does the heavy work, while `Niketa` VSCode extension provides the c
 
 ## Install
 
-`yarn add https://github.com/selfrefactor/niketa-client#LATEST_RELEASE`
+1. Install `Niketa` [vscode extension](https://marketplace.visualstudio.com/items?itemName=selfrefactor.niketa)
 
-You need to change `LATEST_RELEASE` with latest release visible in [https://github.com/selfrefactor/releases](https://github.com/selfrefactor/releases)
+2. `git clone https://github.com/selfrefactor/niketa.git`
 
-## Usage
+3. `cd packages/node`
 
-```
-const {niketaClient} = require('niketa-client')
+4. `yarn`
 
-niketaClient()
-```
+5. Run `node ant`
 
-## Modes
+6. Open with VSCode project which already has `Jest` in `package.json` and also has its dependecies installed.
 
-### NO_SNAPSHOTS
-
-### WITH_SNAPSHOTS
-
-## Niketa-notify
-
-`Niketa-client` must be run before `Niketa-notify`
+That is everything. Now every time you change one of `foo.js` or `foo.spec.js` files, `Jest` will be executed and its coverage result will be displayed in `VSCode`
