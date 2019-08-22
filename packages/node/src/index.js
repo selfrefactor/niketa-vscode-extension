@@ -5,21 +5,14 @@ import socketClient from 'socket.io-client'
 import socketServer from 'socket.io'
 import { fileSaved } from './fileSaved'
 import { clean } from './_helpers/clean'
-import { pass, identity, setter } from 'rambdax'
+import { checkExtensionMessage } from './ants/checkExtensionMessage'
+import { identity, setter } from 'rambdax'
 import WebSocket from 'ws'
 
 let busyFlag = false
 let notify = identity
 let notifyClose
 let emit
-
-const modes = [ 'LOCK_FILE', 'WITH_COVERAGE', 'LINT_ONLY' ]
-const schema = {
-  dir      : 'string',
-  filePath : 'string',
-  hasReact : 'boolean',
-  mode     : modes,
-}
 
 function parseBeforeNotify(input){
   const toReturn = input.split('\n').map(clean)
@@ -76,7 +69,7 @@ export function niketaClient(){
     socketInstance.on('fileSaved', input => {
       if (busyFlag) return console.log('BUSY')
 
-      const passed = pass(input.message)(schema)
+      const passed = checkExtensionMessage(input.message)
 
       if (!passed) return console.log('unknown mode', input.message)
 
