@@ -9,6 +9,7 @@ import { parseCoverage } from './_modules/parseCoverage'
 import { shouldNotify } from './_modules/shouldNotify'
 import { whenFileLoseFocus } from './_modules/whenFileLoseFocus'
 import { lintAnt } from './ants/lint'
+import { takeNotifyWhenError } from './ants/takeNotifyWhenError'
 
 import { additional } from './emitters/additional'
 import { show } from './emitters/show'
@@ -33,7 +34,11 @@ function whenCoverage({
 }){
   if(execResult.stderr.startsWith('FAIL')){
     show(emit, ERROR_ICON)
-    
+    const notifyWhenError = takeNotifyWhenError(execResult)
+    if(allTrue(notifyWhenError,notify, notifyClose)){
+      notify(notifyWhenError)
+      notifyClose()
+    }
     return tooltip(emit, take(800,execResult.stderr))
   }
 
