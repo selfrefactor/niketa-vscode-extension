@@ -1,4 +1,4 @@
-import { allTrue, getter, glue, ok } from 'rambdax'
+import { allTrue, getter, glue, ok , take } from 'rambdax'
 import { startLoadingBar, stopLoadingBar } from 'helpers'
 
 import { clean } from './_modules/clean'
@@ -20,7 +20,7 @@ const JEST_BIN = './node_modules/jest/bin/jest.js'
 const ERROR_ICON = '❌'
 const ERROR_CONDITION = 'LINE === undefined'
 
-// Run coverage and send to `niketa-notify`
+// Run coverage and send to `niketa-notify` and VSCode
 // ============================================
 function whenCoverage({
   emit,
@@ -31,6 +31,12 @@ function whenCoverage({
   notify,
   notifyClose,
 }){
+  if(execResult.stderr.startsWith('FAIL')){
+    show(emit, ERROR_ICON)
+    
+    return tooltip(emit, take(800,execResult.stderr))
+  }
+
   const { pass, message, uncovered } = parseCoverage(
     execResult,
     fileName,
