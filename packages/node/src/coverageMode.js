@@ -10,6 +10,7 @@ import { show } from './emitters/show'
 import { tooltip } from './emitters/tooltip'
 
 const ERROR_ICON = '❌'
+const SUCCESS_ICON = '🐸'
 const ERROR_CONDITION = 'LINE === undefined'
 
 // Run coverage and send to `niketa-notify` and VSCode
@@ -23,14 +24,14 @@ export function coverageMode({
   notify,
   notifyClose,
 }){
-  if(execResult.stderr.startsWith('FAIL')){
-    show(emit, ERROR_ICON)
+  if(execResult.stderr.startsWith('FAIL') || execResult.stderr.includes('ERROR:')){
     const notifyWhenError = takeNotifyWhenError(execResult)
     if(allTrue(notifyWhenError,notify, notifyClose)){
       notify(notifyWhenError)
       notifyClose()
     }
-    return tooltip(emit, take(800,execResult.stderr))
+    tooltip(emit, take(800,execResult.stderr))
+    return show(emit, ERROR_ICON)
   }
 
   const { pass, message, uncovered } = parseCoverage(
@@ -39,11 +40,11 @@ export function coverageMode({
     filePath
   )
   ok(message)('string')
-  if (message === ERROR_CONDITION) return console.log('skip')
+  if (message === ERROR_CONDITION) return show(emit, SUCCESS_ICON)
 
   show(emit, pass ? message : ERROR_ICON)
   const cleaner = clean(execResult, pass, uncovered)
-
+  
   if (cleaner.stdout.trim() === '') return
 
   const okNotify = allTrue(
@@ -56,6 +57,7 @@ export function coverageMode({
     notify(cleaner.stdout)
     notifyClose()
   }
+  
   tooltip(emit, `${ cleaner.stderr }${ cleaner.stdout }${ cleaner.uncovered }`)
   additional(emit, uncovered)
 }

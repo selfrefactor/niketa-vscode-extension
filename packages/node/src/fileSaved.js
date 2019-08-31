@@ -43,18 +43,24 @@ export async function fileSaved({
     filePath !== lintFileHolder &&
     lintFileHolder !== undefined
   ){
-    log(`LINT ${lintFileHolder}`, 'box')
+    log(`LINT ${ lintFileHolder }`, 'box')
     whenFileLoseFocus(lintFileHolder)
     lintFileHolder = filePath
-  }else{
-    log(`SKIP_LINT ${lintFileHolder}`, 'box')
+  } else {
+    log(`SKIP_LINT ${ lintFileHolder }`, 'box')
   }
 
-  if(isProveMode(filePath)){
+  if (isProveMode(filePath)){
     lintFileHolder = filePath
 
-    return proveMode({filePath, dir, emit, notify, notifyClose})
-  } 
+    return proveMode({
+      filePath,
+      dir,
+      emit,
+      notify,
+      notifyClose,
+    })
+  }
 
   const maybeSpecFile = getSpecFile(filePath)
   const canStillLint =
