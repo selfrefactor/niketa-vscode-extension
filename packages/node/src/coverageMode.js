@@ -10,7 +10,7 @@ import { show } from './emitters/show'
 import { tooltip } from './emitters/tooltip'
 
 const ERROR_ICON = '❌'
-const SUCCESS_ICON = '🐸'
+const SUCCESS_ICON = '🐬'
 const ERROR_CONDITION = 'LINE === undefined'
 
 // Run coverage and send to `niketa-notify` and VSCode
