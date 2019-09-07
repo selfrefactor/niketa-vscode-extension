@@ -49,7 +49,6 @@ export async function fileSaved({
   } else {
     log(`SKIP_LINT ${ lintFileHolder }`, 'box')
   }
-
   if (isProveMode(filePath)){
     lintFileHolder = filePath
 
@@ -57,8 +56,6 @@ export async function fileSaved({
       filePath,
       dir,
       emit,
-      notify,
-      notifyClose,
     })
   }
 
