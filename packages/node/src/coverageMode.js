@@ -1,4 +1,4 @@
-import { allTrue, getter, ok , take } from 'rambdax'
+import { allTrue, getter, ok, take } from 'rambdax'
 
 import { clean } from './_modules/clean'
 import { parseCoverage } from './_modules/parseCoverage'
@@ -24,13 +24,18 @@ export function coverageMode({
   notify,
   notifyClose,
 }){
-  if(execResult.stderr.startsWith('FAIL') || execResult.stderr.includes('ERROR:')){
+  if (
+      execResult.stderr.startsWith('FAIL') || 
+      execResult.stderr.includes('ERROR:')
+    ){
     const notifyWhenError = takeNotifyWhenError(execResult)
-    if(allTrue(notifyWhenError,notify, notifyClose)){
+    if (allTrue(notifyWhenError, notify, notifyClose)){
       notify(notifyWhenError)
       notifyClose()
     }
-    tooltip(emit, take(800,execResult.stderr))
+    tooltip(emit, take(800, execResult.stderr))
+    additional(emit)
+
     return show(emit, ERROR_ICON)
   }
 
@@ -40,11 +45,15 @@ export function coverageMode({
     filePath
   )
   ok(message)('string')
-  if (message === ERROR_CONDITION) return show(emit, SUCCESS_ICON)
+  if (message === ERROR_CONDITION){
+    additional(emit)
+    
+    return show(emit, SUCCESS_ICON)
+  } 
 
   show(emit, pass ? message : ERROR_ICON)
   const cleaner = clean(execResult, pass, uncovered)
-  
+
   if (cleaner.stdout.trim() === '') return
 
   const okNotify = allTrue(
@@ -57,7 +66,7 @@ export function coverageMode({
     notify(cleaner.stdout)
     notifyClose()
   }
-  
+
   tooltip(emit, `${ cleaner.stderr }${ cleaner.stdout }${ cleaner.uncovered }`)
   additional(emit, uncovered)
 }

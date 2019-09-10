@@ -1,5 +1,6 @@
 import { exec } from 'helpers'
 import { show } from './emitters/show'
+import { additional } from './emitters/additional.js'
 import { remove, take } from 'rambdax'
 
 const LIMIT = 150
@@ -16,7 +17,10 @@ export async function proveMode({
 
   const toShow = remove(/\n/g, execResult.join(SEPARATOR))
   if (toShow.length === 0) return
+  additional(emit)
+
   if (toShow.length < LIMIT) return show(emit, toShow)
 
   return show(emit, `${ take(LIMIT, toShow) } ...`)
+
 }
