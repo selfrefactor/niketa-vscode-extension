@@ -9,10 +9,10 @@ const FALLBACK = `${__dirname}/files/configFallback.json`
 
 function calculateSizes(width, height){
   return {
-    width  : Math.floor(width * 0.45),
-    height : Math.floor(height * 0.39),
-    x      : Math.floor(width * 0.54),
-    y      : Math.floor(height * 0.58),
+    width  : Math.floor(width * 0.27),
+    height : Math.floor(height * 0.83),
+    x      : Math.floor(width * 0.71),
+    y      : Math.floor(height * 0.1),
   }
 }
 

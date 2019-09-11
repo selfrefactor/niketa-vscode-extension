@@ -89,7 +89,7 @@ function createWindow(){
     ///////////////////////////
     if (false){
       mainWindow.showInactive()
-      mainWindow.webContents.openDevTools()
+      // mainWindow.webContents.openDevTools()
     }
   })
 
