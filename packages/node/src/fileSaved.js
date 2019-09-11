@@ -53,6 +53,8 @@ export async function fileSaved({
     lintFileHolder = filePath
 
     return proveMode({
+      notify,
+      notifyClose,
       filePath,
       dir,
       emit,

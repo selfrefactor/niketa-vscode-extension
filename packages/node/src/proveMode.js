@@ -5,8 +5,11 @@ import { remove, take } from 'rambdax'
 
 const LIMIT = 150
 const SEPARATOR = '🚦'
+
 export async function proveMode({
   dir,
+  notify,
+  notifyClose,
   emit,
   filePath,
 }){
@@ -21,6 +24,10 @@ export async function proveMode({
 
   if (toShow.length < LIMIT) return show(emit, toShow)
 
-  return show(emit, `${ take(LIMIT, toShow) } ...`)
+  if (!notifyClose){
+    return show(emit, `${ take(LIMIT, toShow) } ...`)
+  }
 
+  notify(execResult.join('\n'))
+  notifyClose()
 }
