@@ -3,15 +3,6 @@ import React, { Component } from 'react'
 import Sockette from 'sockette'
 import { ipcRenderer } from 'electron'
 
-const DEMO_LINES = [
-  'aa ff'.repeat(5),
-  'are faa'.repeat(15),
-  'aa ff'.repeat(25),
-  'are faa'.repeat(35),
-  'ww ffwww'.repeat(25),
-  'uuu uufaa uu'.repeat(35),
-]
-
 export default class Root extends Component{
   constructor(props){
     super(props)
@@ -35,7 +26,14 @@ export default class Root extends Component{
       onclose     : () => console.log('Closed 1'),
       onerror     : e => console.log('Error 1', e),
       onmessage   : ({ data }) => {
-        const parsed = data.split('\n')
+        const parsedRaw = data.split('\n')
+        const parsed = []
+        let foundMarker = false
+        const marker = '--------'
+        parsedRaw.forEach(x => {
+          if(x.includes(marker)) foundMarker = true
+          if(!foundMarker) parsed.push(x)
+        })
 
         this.setState({
           hold  : false,
@@ -51,7 +49,14 @@ export default class Root extends Component{
       onclose     : () => console.log('Closed 2'),
       onerror     : e => console.log('Error 2', e),
       onmessage   : ({ data }) => {
-        const parsed = data.split('\n')
+        const parsedRaw = data.split('\n')
+        const parsed = []
+        let foundMarker = false
+        const marker = '--------'
+        parsedRaw.forEach(x => {
+          if(x.includes(marker)) foundMarker = true
+          if(!foundMarker) parsed.push(x)
+        })
 
         this.setState({
           hold  : false,

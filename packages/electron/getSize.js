@@ -1,11 +1,11 @@
-const {match} = require('rambdax')
-const {exec} = require('helpers')
-const {writeJsonSync, readJsonSync} = require('fs-extra')
-const {existsSync} = require('fs')
+const { exec } = require('helpers')
+const { existsSync } = require('fs')
+const { match } = require('rambdax')
+const { writeJsonSync, readJsonSync } = require('fs-extra')
 
-const command = "xdpyinfo  | grep 'dimensions:'"
-const FILE_PATH = `${__dirname}/config.json`
-const FALLBACK = `${__dirname}/files/configFallback.json`
+const command = 'xdpyinfo  | grep \'dimensions:\''
+const FILE_PATH = `${ __dirname }/config.json`
+const FALLBACK = `${ __dirname }/files/configFallback.json`
 
 function calculateSizes(width, height){
   return {
@@ -17,22 +17,22 @@ function calculateSizes(width, height){
 }
 
 async function setSizes(){
-  const [sizesRaw] = await exec({
-    cwd: __dirname,
-    command
+  const [ sizesRaw ] = await exec({
+    cwd : __dirname,
+    command,
   })
-  const [sizes] = match(/[0-9x]+/,sizesRaw)
-  const [screenWidth,screenHeight] = sizes.split('x')
+  const [ sizes ] = match(/[0-9x]+/, sizesRaw)
+  const [ screenWidth, screenHeight ] = sizes.split('x')
   const electronSizes = calculateSizes(screenWidth, screenHeight)
 
   writeJsonSync(FILE_PATH, electronSizes)
 }
 
 function getSize(){
-  if(
+  if (
     existsSync(FILE_PATH)
   ) return readJsonSync(FILE_PATH)
-  setSizes()  
+  setSizes()
 
   return readJsonSync(FALLBACK)
 }
