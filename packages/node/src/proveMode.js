@@ -1,7 +1,7 @@
-import { exec } from 'helpers'
+import { execNodeFile } from './ants/execNodeFile'
 import { show } from './emitters/show'
 import { additional } from './emitters/additional.js'
-import { remove, take } from 'rambdax'
+import { remove, take,wait } from 'rambdax'
 
 const LIMIT = 150
 const SEPARATOR = '🚦'
@@ -13,12 +13,15 @@ export async function proveMode({
   emit,
   filePath,
 }){
-  const execResult = await exec({
+  const [execResult, err] = await wait(execNodeFile({
     cwd     : dir,
-    command : `node ${ filePath }`,
-  })
-
-  const toShow = remove(/\n/g, execResult.join(SEPARATOR))
+    file : filePath,
+  }))
+  
+  const toShow = err ? 
+  remove([filePath, /\n/g], err) : 
+  remove(/\n/g, execResult.join(SEPARATOR))
+  
   if (toShow.length === 0) return
   additional(emit)
 
