@@ -9,7 +9,7 @@ import { additional } from './emitters/additional'
 import { show } from './emitters/show'
 import { tooltip } from './emitters/tooltip'
 
-const ERROR_ICON = '❌'
+export const ERROR_ICON = '❌'
 const SUCCESS_ICON = '🐬'
 const ERROR_CONDITION = 'LINE === undefined'
 
@@ -25,9 +25,9 @@ export function coverageMode({
   notifyClose,
 }){
   if (
-      execResult.stderr.startsWith('FAIL') || 
+    execResult.stderr.startsWith('FAIL') ||
       execResult.stderr.includes('ERROR:')
-    ){
+  ){
     const notifyWhenError = takeNotifyWhenError(execResult)
     if (allTrue(notifyWhenError, notify, notifyClose)){
       notify(notifyWhenError)
@@ -47,9 +47,9 @@ export function coverageMode({
   ok(message)('string')
   if (message === ERROR_CONDITION){
     additional(emit)
-    
+
     return show(emit, SUCCESS_ICON)
-  } 
+  }
 
   show(emit, pass ? message : ERROR_ICON)
   const cleaner = clean(execResult, pass, uncovered)
