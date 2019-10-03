@@ -3,8 +3,8 @@ const { niketaConfig } = require('./niketaConfig')
 const socket = require(
   'socket.io-client'
 )(`http://localhost:${ niketaConfig('PORT_1') }`)
-
-const { ok, omit } = require('rambdax')
+const DISABLE_LINT = niketaConfig('DISABLE_LINT')
+const { ok } = require('rambdax')
 
 const initEmitter = () => {
   socket.on('connect', () => {
@@ -17,7 +17,7 @@ const emit = input => {
 
   socket.emit(
     input.channel,
-    { message : omit('channel', input) }
+    { message : {...input, disableLint: DISABLE_LINT} }
   )
 }
 
