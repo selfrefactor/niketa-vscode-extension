@@ -23,6 +23,7 @@ let specFileHolder
 // ============================================
 export async function fileSaved({
   lintOnly,
+  disableLint,
   dir,
   emit,
   filePath,
@@ -44,7 +45,7 @@ export async function fileSaved({
     lintFileHolder !== undefined
   ){
     log(`LINT ${ lintFileHolder }`, 'box')
-    whenFileLoseFocus(lintFileHolder)
+    whenFileLoseFocus(lintFileHolder, disableLint)
     lintFileHolder = filePath
   } else {
     log(`SKIP_LINT ${ lintFileHolder }`, 'box')

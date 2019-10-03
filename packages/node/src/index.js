@@ -76,6 +76,7 @@ export function niketaClient(){
       busyFlag = true
 
       const options = {
+        disableLint : Boolean(input.message.disableLint),
         lintOnly : input.message.mode === 'LINT_ONLY',
         dir      : input.message.dir,
         emit,
