@@ -13,6 +13,15 @@ export const ERROR_ICON = '❌'
 const SUCCESS_ICON = '🐬'
 const ERROR_CONDITION = 'LINE === undefined'
 
+function cleanStdout(execResult){
+  if (!execResult.stdout.includes('console.log')) return ''
+
+  const [ first ] = execResult.stdout.split('----------')
+
+  return first.split('\n').filter(x => x && !x.includes('console.log'))
+    .join('\n')
+}
+
 // Run coverage and send to `niketa-notify` and VSCode
 // ============================================
 export function coverageMode({
@@ -24,6 +33,8 @@ export function coverageMode({
   notify,
   notifyClose,
 }){
+  const electronConnected = Boolean(getter('electron.connected'))
+
   if (
     execResult.stderr.startsWith('FAIL') ||
       execResult.stderr.includes('ERROR:')
@@ -45,7 +56,13 @@ export function coverageMode({
     filePath
   )
   ok(message)('string')
+
   if (message === ERROR_CONDITION){
+    const toNotify = cleanStdout(execResult)
+    if (toNotify && electronConnected){
+      notify(toNotify)
+      notifyClose()
+    }
     additional(emit)
 
     return show(emit, SUCCESS_ICON)
@@ -59,7 +76,7 @@ export function coverageMode({
   const okNotify = allTrue(
     shouldNotify(maybeSpecFile),
     cleaner.stdout.includes('console.log'),
-    getter('electron.connected')
+    electronConnected
   )
 
   if (okNotify){
