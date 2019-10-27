@@ -14,6 +14,7 @@ export async function proveMode({
   emit,
   filePath,
 }){
+  console.log('PROVE_MODE', filePath)
   const [ execResult, err ] = await wait(execNodeFile({
     cwd  : dir,
     file : filePath,
