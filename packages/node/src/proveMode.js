@@ -2,7 +2,7 @@ import { execNodeFile } from './ants/execNodeFile'
 import { show } from './emitters/show'
 import { additional } from './emitters/additional.js'
 import { ERROR_ICON } from './coverageMode.js'
-import { remove, take, delay, wait } from 'rambdax'
+import { remove, take, wait } from 'rambdax'
 
 const LIMIT = 150
 const SEPARATOR = '🚦'
@@ -24,7 +24,6 @@ export async function proveMode({
     file : filePath,
   }))
   console.log('PROVE_MODE_END', filePath)
-  // await delay(140)
   stopLoaders()
 
   if (execResult === undefined){

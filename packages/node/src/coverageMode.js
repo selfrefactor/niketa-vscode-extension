@@ -40,11 +40,10 @@ export function coverageMode({
       execResult.stderr.includes('ERROR:')
   ){
     const notifyWhenError = takeNotifyWhenError(execResult)
-    console.log({notifyWhenError})
     if (notifyWhenError && Boolean(notify) && Boolean(notifyClose)){
       notify(notifyWhenError)
       notifyClose()
-    }else console.log({notifyWhenError, notify, notifyClose},5)
+    }
 
     tooltip(emit, take(800, execResult.stderr))
     additional(emit)
@@ -60,7 +59,6 @@ export function coverageMode({
   ok(message)('string')
 
   if (message === ERROR_CONDITION){
-    console.log('message === ERROR_CONDITION')
     const toNotify = cleanStdout(execResult)
     if (toNotify && electronConnected){
       notify(toNotify)
@@ -73,7 +71,7 @@ export function coverageMode({
 
   show(emit, pass ? message : ERROR_ICON)
   const cleaner = clean(execResult, pass, uncovered)
-  console.log({ cleaner })
+
   if (cleaner.stdout.trim() === '') return
 
   const okNotify = allTrue(
