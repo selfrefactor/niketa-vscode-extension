@@ -40,16 +40,12 @@ export function coverageMode({
       execResult.stderr.includes('ERROR:')
   ){
     const notifyWhenError = takeNotifyWhenError(execResult)
-    console.log({
-      execResult,
-      notifyWhenError,
-    }, Boolean(notify) , Boolean(notifyClose))
-
+    console.log({notifyWhenError})
     if (notifyWhenError && Boolean(notify) && Boolean(notifyClose)){
-      console.log(1, typeof notifyWhenError)
       notify(notifyWhenError)
       notifyClose()
-    }
+    }else console.log({notifyWhenError, notify, notifyClose},5)
+
     tooltip(emit, take(800, execResult.stderr))
     additional(emit)
 
