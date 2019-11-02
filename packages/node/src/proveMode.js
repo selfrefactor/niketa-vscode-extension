@@ -3,6 +3,9 @@ import { show } from './emitters/show'
 import { additional } from './emitters/additional.js'
 import { ERROR_ICON } from './coverageMode.js'
 import { remove, take, wait } from 'rambdax'
+import { startSpinner } from './emitters/startSpinner'
+import { stopSpinner } from './emitters/stopSpinner'
+import { startLoadingBar, stopLoadingBar } from 'helpers'
 
 const LIMIT = 150
 const SEPARATOR = '🚦'
@@ -14,11 +17,20 @@ export async function proveMode({
   emit,
   filePath,
 }){
+  startSpinner(emit)
+  startLoadingBar({
+    symbol : '💗',
+    step   : 500,
+  })
+
   console.log('PROVE_MODE', filePath)
   const [ execResult, err ] = await wait(execNodeFile({
     cwd  : dir,
     file : filePath,
   }))
+  stopSpinner(emit)
+  stopLoadingBar()
+
 
   if (execResult === undefined){
     console.log(err)
@@ -35,9 +47,10 @@ export async function proveMode({
 
   console.log(err ? err : execResult)
 
-  if (toShow.length < LIMIT) return show(emit, toShow)
+  if (toShow.length < LIMIT)return show(emit, toShow)
 
   if (!notifyClose){
+
     return show(emit, `${ take(LIMIT, toShow) } ...`)
   }
 
