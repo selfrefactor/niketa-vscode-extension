@@ -2,26 +2,21 @@ import { execNodeFile } from './ants/execNodeFile'
 import { show } from './emitters/show'
 import { additional } from './emitters/additional.js'
 import { ERROR_ICON } from './coverageMode.js'
-import { remove, take,delay, wait } from 'rambdax'
-import { startSpinner } from './emitters/startSpinner'
-import { stopSpinner } from './emitters/stopSpinner'
-import { startLoadingBar, stopLoadingBar } from 'helpers'
+import { remove, take, delay, wait } from 'rambdax'
 
 const LIMIT = 150
 const SEPARATOR = '🚦'
 
 export async function proveMode({
   dir,
+  stopLoaders,
+  startLoaders,
   notify,
   notifyClose,
   emit,
   filePath,
 }){
-  startSpinner(emit)
-  startLoadingBar({
-    symbol : '💗',
-    step   : 500,
-  })
+  startLoaders()
 
   console.log('PROVE_MODE', filePath)
   const [ execResult, err ] = await wait(execNodeFile({
@@ -29,13 +24,11 @@ export async function proveMode({
     file : filePath,
   }))
   console.log('PROVE_MODE_END', filePath)
-  await delay(140)
-  stopSpinner(emit)
-  stopLoadingBar()
-
+  // await delay(140)
+  stopLoaders()
 
   if (execResult === undefined){
-    console.log('execResult === undefined',err)
+    console.log('execResult === undefined', err)
 
     return show(emit, ERROR_ICON)
   }
@@ -49,7 +42,7 @@ export async function proveMode({
 
   console.log(err ? err : execResult)
 
-  if (toShow.length < LIMIT)return show(emit, toShow)
+  if (toShow.length < LIMIT) return show(emit, toShow)
 
   if (!notifyClose){
 

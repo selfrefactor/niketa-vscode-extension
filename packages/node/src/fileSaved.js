@@ -50,10 +50,25 @@ export async function fileSaved({
   } else {
     log(`SKIP_LINT ${ lintFileHolder }`, 'box')
   }
+
+  const startLoaders = () => {
+    startSpinner(emit)
+    startLoadingBar({
+      symbol : '💗',
+      step   : 500,
+    })
+  }
+  const stopLoaders = () => {
+    stopSpinner(emit)
+    stopLoadingBar()
+  }
+
   if (isProveMode(filePath)){
     lintFileHolder = filePath
 
     return proveMode({
+      stopLoaders,
+      startLoaders,
       notify,
       notifyClose,
       filePath,
@@ -105,18 +120,13 @@ export async function fileSaved({
     ${ testPattern }
   `)
 
-  startSpinner(emit)
-  startLoadingBar({
-    symbol : '💗',
-    step   : 500,
-  })
+  startLoaders()
 
   const execResult = await execJest(command, { cwd : dir })
 
   log(execResult, 'obj')
 
-  stopSpinner(emit)
-  stopLoadingBar()
+  stopLoaders()
 
   process.stderr.write(execResult.stderr)
   process.stderr.write(execResult.stdout)
