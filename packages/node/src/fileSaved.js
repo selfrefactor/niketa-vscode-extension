@@ -113,6 +113,8 @@ export async function fileSaved({
 
   const execResult = await execJest(command, { cwd : dir })
 
+  log(execResult, 'obj')
+
   stopSpinner(emit)
   stopLoadingBar()
 

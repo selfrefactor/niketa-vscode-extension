@@ -2,7 +2,7 @@ import { execNodeFile } from './ants/execNodeFile'
 import { show } from './emitters/show'
 import { additional } from './emitters/additional.js'
 import { ERROR_ICON } from './coverageMode.js'
-import { remove, take, wait } from 'rambdax'
+import { remove, take,delay, wait } from 'rambdax'
 import { startSpinner } from './emitters/startSpinner'
 import { stopSpinner } from './emitters/stopSpinner'
 import { startLoadingBar, stopLoadingBar } from 'helpers'
@@ -28,12 +28,14 @@ export async function proveMode({
     cwd  : dir,
     file : filePath,
   }))
+  console.log('PROVE_MODE_END', filePath)
+  await delay(140)
   stopSpinner(emit)
   stopLoadingBar()
 
 
   if (execResult === undefined){
-    console.log(err)
+    console.log('execResult === undefined',err)
 
     return show(emit, ERROR_ICON)
   }
