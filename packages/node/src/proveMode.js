@@ -25,6 +25,7 @@ export async function proveMode({
   }))
   console.log('PROVE_MODE_END', filePath)
   stopLoaders()
+  additional(emit)
 
   if (execResult === undefined){
     console.log('execResult === undefined', err)
@@ -37,11 +38,10 @@ export async function proveMode({
     remove(/\n/g, execResult.join(SEPARATOR))
 
   if (toShow.length === 0) return
-  additional(emit)
 
   console.log(err ? err : execResult)
 
-  if (toShow.length < LIMIT) return show(emit, toShow)
+  if (toShow.length < LIMIT)return show(emit, toShow)
 
   if (!notifyClose){
 

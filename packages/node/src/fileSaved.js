@@ -40,10 +40,7 @@ export async function fileSaved({
     })
   }
 
-  if (
-    filePath !== lintFileHolder &&
-    lintFileHolder !== undefined
-  ){
+  if (filePath !== lintFileHolder && lintFileHolder !== undefined){
     log(`LINT ${ lintFileHolder }`, 'box')
     whenFileLoseFocus(lintFileHolder, disableLint)
     lintFileHolder = filePath
