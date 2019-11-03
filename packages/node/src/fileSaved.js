@@ -124,8 +124,6 @@ export async function fileSaved({
 
   const execResult = await execJest(command, { cwd : dir })
 
-  log(execResult, 'obj')
-
   stopLoaders()
 
   process.stderr.write(execResult.stderr)
