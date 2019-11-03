@@ -1,7 +1,7 @@
 import { execNodeFile } from './ants/execNodeFile'
 import { show } from './emitters/show'
 import { additional } from './emitters/additional.js'
-import { ERROR_ICON } from './coverageMode.js'
+import { ERROR_ICON, SUCCESS_ICON } from './coverageMode.js'
 import { remove, take, wait } from 'rambdax'
 
 const LIMIT = 150
@@ -37,9 +37,13 @@ export async function proveMode({
     remove([ filePath, /\n/g ], err) :
     remove(/\n/g, execResult.join(SEPARATOR))
 
-  if (toShow.length === 0) return
+  if (toShow.length === 0) return show(emit, SUCCESS_ICON)
 
-  console.log(err ? err : execResult)
+  if(err){
+    console.log(err)
+  }else{
+    execResult.forEach(x => console.log(x))
+  }
 
   if (toShow.length < LIMIT)return show(emit, toShow)
 
@@ -50,4 +54,5 @@ export async function proveMode({
 
   notify(execResult.join('\n'))
   notifyClose()
+  show(emit, SUCCESS_ICON)
 }

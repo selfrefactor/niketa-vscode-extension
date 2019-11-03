@@ -10,7 +10,7 @@ import { show } from './emitters/show'
 import { tooltip } from './emitters/tooltip'
 
 export const ERROR_ICON = '❌'
-const SUCCESS_ICON = '🐬'
+export const SUCCESS_ICON = '🐬'
 const ERROR_CONDITION = 'LINE === undefined'
 
 function cleanStdout(execResult){
