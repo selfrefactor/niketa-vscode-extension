@@ -18,7 +18,9 @@ function cleanStdout(execResult){
 
   const [ first ] = execResult.stdout.split('----------')
 
-  return first.split('\n').filter(x => x && !x.includes('console.log'))
+  return first
+    .split('\n')
+    .filter(x => x && !x.includes('console.log'))
     .join('\n')
 }
 
@@ -37,7 +39,7 @@ export function coverageMode({
 
   if (
     execResult.stderr.startsWith('FAIL') ||
-      execResult.stderr.includes('ERROR:')
+    execResult.stderr.includes('ERROR:')
   ){
     const notifyWhenError = takeNotifyWhenError(execResult)
     if (notifyWhenError && Boolean(notify) && Boolean(notifyClose)){

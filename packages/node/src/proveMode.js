@@ -3,6 +3,7 @@ import { show } from './emitters/show'
 import { additional } from './emitters/additional.js'
 import { ERROR_ICON, SUCCESS_ICON } from './coverageMode.js'
 import { remove, take, wait } from 'rambdax'
+import { log } from 'helpers'
 
 const LIMIT = 150
 const SEPARATOR = '🚦'
@@ -42,7 +43,9 @@ export async function proveMode({
   if(err){
     console.log(err)
   }else{
+    log('sep')
     execResult.forEach(x => console.log(x))
+    log('sepx')
   }
 
   if (toShow.length < LIMIT)return show(emit, toShow)
