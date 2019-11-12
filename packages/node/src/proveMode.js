@@ -40,15 +40,15 @@ export async function proveMode({
 
   if (toShow.length === 0) return show(emit, SUCCESS_ICON)
 
-  if(err){
+  if (err){
     console.log(err)
-  }else{
+  } else {
     log('sep')
     execResult.forEach(x => console.log(x))
     log('sepx')
   }
 
-  if (toShow.length < LIMIT)return show(emit, toShow)
+  if (toShow.length < LIMIT) return show(emit, toShow)
 
   if (!notifyClose){
 

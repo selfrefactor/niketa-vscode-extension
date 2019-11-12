@@ -77,13 +77,13 @@ export function niketaClient(){
 
       const options = {
         disableLint : Boolean(input.message.disableLint),
-        lintOnly : input.message.mode === 'LINT_ONLY',
-        dir      : input.message.dir,
+        lintOnly    : input.message.mode === 'LINT_ONLY',
+        dir         : input.message.dir,
         emit,
         notify,
         notifyClose,
-        filePath : input.message.filePath,
-        hasReact : input.message.hasReact,
+        filePath    : input.message.filePath,
+        hasReact    : input.message.hasReact,
       }
 
       fileSaved(options)

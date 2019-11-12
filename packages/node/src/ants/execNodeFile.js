@@ -1,19 +1,29 @@
 import { spawn } from 'child_process'
+import { ms } from 'string-fn'
+import { delay } from 'rambdax'
+import { log } from 'helpers'
 
-export const execNodeFile = ({file, cwd}) =>
+export const execNodeFile = ({ file, cwd }) =>
   new Promise((resolve, reject) => {
-    const child = spawn('node', [file], {cwd});
-      const logs = []
+    let resolved = false
+    const child = spawn('node', [ file ], { cwd })
+    const logs = []
 
-      child.stdout.on('data', chunk => {
-        const sk = chunk.toString()
-        logs.push(sk)
-      });
+    delay(ms('2min')).then(() => {
+      if (resolved) return
+      log(`will kill prove process ${ file }`, 'error')
+      child.kill()
+    })
+    child.stdout.on('data', chunk => {
+      const sk = chunk.toString()
+      logs.push(sk)
+    })
 
-      child.stderr.on('data', (err) => {
-        reject(err.toString())
-      });
-      child.stderr.on('end', () => {
-        resolve(logs)
-      });
+    child.stderr.on('data', err => {
+      reject(err.toString())
+    })
+    child.stderr.on('end', () => {
+      resolved = true
+      resolve(logs)
+    })
   })
