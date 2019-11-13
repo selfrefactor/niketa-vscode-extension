@@ -33,7 +33,7 @@
   },
   "main": "main.js",
   "dependencies": {
-    "electron": "6.0.0",
+    "electron": "7.0.0",
     "fastify": "^2.0.0-rc.3",
     "fs-extra": "^8.1.0",
     "rambdax": "^3.1.0",

@@ -11,6 +11,7 @@ const baseConfig = {
   frame           : true,
   show            : false,
   skipTaskbar     : true,
+  fullScreenable : false,
   type            : 'notification',
 }
 
@@ -83,7 +84,7 @@ function createWindow(){
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.setAlwaysOnTop(true)
-    mainWindow.setFullScreenable(false)
+    // mainWindow.setFullScreenable(false)
 
     // Usage with DEV
     ///////////////////////////
