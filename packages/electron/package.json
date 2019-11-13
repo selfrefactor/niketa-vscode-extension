@@ -1,68 +1,70 @@
 {
-	"scripts": {
-		"on": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development",
-		"build": "webpack --config webpack.build.config.js --mode production",
-		"postpackage": "electron-packager ./ --out=./builds"
-	},
-	"name": "niketa-notify",
-	"version": "1.2.6",
-	"description": "Part of Niketa suite",
-	"license": "MIT",
-	"private": false,
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/selfrefactor/niketa-notify.git"
-	},
-	"homepage": "https://github.com/selfrefactor/niketa-notify",
-	"bugs": {
-		"url": "https://github.com/selfrefactor/niketa-notify.git/issues"
-	},
-	"author": {
-		"name": "Dejan Toteff",
-		"email": "deyan8284@gmail.com",
-		"url": "https://github.com/selfrefactor"
-	},
-	"keywords": [
-		"niketa"
-	],
-	"engines": {
-		"node": ">=9.0.0",
-		"npm": ">=5.0.0",
-		"yarn": ">=1.0.0"
-	},
-	"main": "main.js",
-	"dependencies": {
-		"electron": "^8.0.0-beta.2",
-		"fastify": "^2.10.0",
-		"fs-extra": "^8.1.0",
-		"rambdax": "^3.1.0",
-		"react": "^16.11.0",
-		"react-dom": "^16.11.0",
-		"socket.io": "^2.3.0",
-		"sockette": "^2.0.6",
-		"string-fn": "^2.10.2"
-	},
-	"devDependencies": {
-		"@babel/core": "^7.7.2",
-		"@babel/preset-react": "^7.7.0",
-		"babel-loader": "^8.0.6",
-		"babili-webpack-plugin": "^0.1.2",
-		"css-loader": "^3.2.0",
-		"electron-packager": "^14.1.0",
-		"file-loader": "^4.2.0",
-		"helpers": "https://github.com/selfrefactor/helpers#2.0.1",
-		"html-webpack-plugin": "^4.0.0-beta.11",
-		"mini-css-extract-plugin": "^0.8.0",
-		"nightmare": "^3.0.2",
-		"style-loader": "^1.0.0",
-		"webpack": "^5.0.0-beta.5",
-		"webpack-cli": "^3.3.10",
-		"webpack-dev-server": "^3.9.0"
-	},
-	"commitMessage": {
-		"workInProgress": "",
-		"feature": [
-			"config"
-		]
-	}
+  "scripts": {
+    "prod": "webpack --mode production --config webpack.build.config.js && electron --noDevServer .",
+    "start": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development",
+    "build": "webpack --config webpack.build.config.js --mode production",
+    "postpackage": "electron-packager ./ --out=./builds"
+  },
+  "name": "niketa-notify",
+  "version": "1.2.6",
+  "description": "Part of Niketa suite",
+  "license": "MIT",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/selfrefactor/niketa-notify.git"
+  },
+  "homepage": "https://github.com/selfrefactor/niketa-notify",
+  "bugs": {
+    "url": "https://github.com/selfrefactor/niketa-notify.git/issues"
+  },
+  "author": {
+    "name": "Dejan Toteff",
+    "email": "deyan8284@gmail.com",
+    "url": "https://github.com/selfrefactor"
+  },
+  "keywords": [
+    "niketa"
+  ],
+  "engines": {
+    "node": ">=9.0.0",
+    "npm": ">=5.0.0",
+    "yarn": ">=1.0.0"
+  },
+  "main": "main.js",
+  "dependencies": {
+    "electron": "5.0.0",
+    "fastify": "^2.0.0-rc.3",
+    "fs-extra": "^8.1.0",
+    "rambdax": "^3.1.0",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "socket.io": "^2.2.0",
+    "sockette": "^2.0.5",
+    "string-fn": "2.7.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.4",
+    "babili-webpack-plugin": "^0.1.2",
+    "css-loader": "^1.0.0",
+    "electron-packager": "^13.0.1",
+    "file-loader": "^2.0.0",
+    "helpers": "https://github.com/selfrefactor/helpers#2.0.1",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.4",
+    "nightmare": "3.0.2",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.23.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  },
+  "commitMessage": {
+    "workInProgress": "",
+    "feature": [
+      "config",
+      "dep"
+    ]
+  }
 }
