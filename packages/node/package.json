@@ -1,38 +1,41 @@
 {
-	"scripts": {
-		"test": "jest src",
-		"start": "node prove"
-	},
-	"name": "niketa-client",
-	"version": "0.1.1",
-	"main": "./index.js",
-	"typings": "./index.d.ts",
-	"devDependencies": {
-		"babel-cli": "^7.0.0-beta.3",
-		"babel-preset-env": "^7.0.0-beta.3",
-		"jest": "^24.8.0",
-		"typescript": "^3.6.0-dev.20190804"
-	},
-	"files": [
-		"src",
-		"index.js",
-		"index.d.ts"
-	],
-	"repository": "git@github.com:selfrefactor/niketa-client.git",
-	"author": "Dejan Toteff <deyan8284@gmail.com>",
-	"license": "MIT",
-	"dependencies": {
-		"esm": "^3.2.25",
-		"fastify": "^2.7.1",
-		"lint-fn": "^1.7.3",
-		"helpers": "https://github.com/selfrefactor/helpers#1.5.1",
-		"rambdax": "3.0.2",
-		"string-fn": "^2.9.0",
-		"socket.io": "^2.2.0",
-		"socket.io-client": "^2.2.0",
-		"ws": "^7.1.1"
-	},
-	"commitMessage": {
-		"workInProgress": ""
-	}
+  "scripts": {
+    "test": "jest src",
+    "start": "node prove"
+  },
+  "name": "niketa-client",
+  "version": "0.1.1",
+  "main": "./index.js",
+  "typings": "./index.d.ts",
+  "devDependencies": {
+    "babel-cli": "^7.0.0-beta.3",
+    "babel-preset-env": "^7.0.0-beta.3",
+    "jest": "^25.0.0",
+    "typescript": "^3.8.0-dev.20191113"
+  },
+  "files": [
+    "src",
+    "index.js",
+    "index.d.ts"
+  ],
+  "repository": "git@github.com:selfrefactor/niketa-client.git",
+  "author": "Dejan Toteff <deyan8284@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "esm": "^3.2.25",
+    "fastify": "^2.10.0",
+    "lint-fn": "^1.9.0",
+    "helpers": "https://github.com/selfrefactor/helpers#2.0.1",
+    "rambdax": "^3.1.0",
+    "string-fn": "^2.10.2",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
+    "ws": "^7.2.0"
+  },
+  "commitMessage": {
+    "workInProgress": "",
+    "feature": [
+      "dep"
+    ]
+  }
 }
