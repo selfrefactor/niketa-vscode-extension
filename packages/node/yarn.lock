@@ -4829,6 +4829,11 @@ rambdax@^3.1.0:
   resolved "https://registry.yarnpkg.com/rambdax/-/rambdax-3.1.0.tgz#608267beab02c10d87baad00af3fac55a32468b5"
   integrity sha512-cxJ4eY1VpK9zKIM1TwYqjCpRFp166yKTWSZVJtdzHOaXfpIfIbTZIk9p7jXtFfoA+R3km+bqYj+qGVaR54s4Ng==
 
+rambdax@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/rambdax/-/rambdax-3.3.0.tgz#336b113876b64b433cfc5d7fbd04f8298b06df80"
+  integrity sha512-kr4C2mTkSyFjZ5f8b3M9ctoc6azuozHjqhiYWje8OgIjuE038qhDvP6ER23+lb4TSW0GKdZhFyxhbBMHr/oMVA==
+
 randomatic@^3.0.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/randomatic/-/randomatic-3.1.1.tgz#b776efc59375984e36c537b2f51a1f0aff0da1ed"

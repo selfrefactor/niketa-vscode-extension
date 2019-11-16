@@ -1,12 +1,11 @@
 import { remove } from 'rambdax'
 
-const rules = [
-  /console.error.{1,40}\n.{2,400}\n.{1,120}/g,
-  /--------------------(.|\n)+/,
-]
+export function cleanStdout(input){
+  if (!input.includes('------------|')){
+    return input
+  }
 
-export function cleanStdout(text){
-  const result = remove(rules, text.toString())
+  const toReturn = remove(/--------------\|(.|\n)+--------------\|/, input)
 
-  return result
+  return toReturn
 }
