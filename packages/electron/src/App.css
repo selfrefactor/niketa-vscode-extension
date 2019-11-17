@@ -10,7 +10,16 @@ div.container {
   min-height: 98vh;
   cursor: pointer;
 }
+div.close {
+  position: fixed;
+  right: 3vmin;
+  top: 3vmin;
+  color: #a11;
+  background-color: #6ac;
+  font-size: 5vh;
+  cursor: pointer;
+}
 
 p:nth-child(odd){
-  margin:2px;                                                                color: #40c4ff;
+  margin:2px;                                                 color: #40c4ff;
 }

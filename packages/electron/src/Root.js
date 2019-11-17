@@ -11,11 +11,15 @@ export default class Root extends Component{
       hold  : false,
     }
     this.holdOn = this.holdOn.bind(this)
+    this.clickClose = this.clickClose.bind(this)
   }
 
   holdOn(){
     this.setState({ hold : true })
     ipcRenderer.send('holdon', '')
+  }
+  clickClose(){
+    ipcRenderer.send('forceclose', '')
   }
 
   componentDidMount(){
@@ -72,17 +76,23 @@ export default class Root extends Component{
       {}
 
     return (
-      <div
-        className="container" style={ style }
-        onClick={ this.holdOn }
-      >
-        {this.state.lines.map((x, i) =>
+      <div>
+        <div
+          className="container" style={ style }
+          onClick={ this.holdOn }
+        >
+          {this.state.lines.map((x, i) =>
 
-          <p key={ i }>
-            {x}
-          </p>
+            <p key={ i }>
+              {x}
+            </p>
 
-        )}
+          )}
+        </div>
+
+        <div className="close">
+          <button onClick={ this.clickClose}>X</button>
+        </div>    
       </div>
     )
   }
