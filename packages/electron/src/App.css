@@ -8,18 +8,19 @@ div.container {
   font-family: Operator Mono !important;
   font-size: 17px;
   min-height: 98vh;
-  cursor: pointer;
 }
 div.close {
   position: fixed;
-  right: 3vmin;
-  top: 3vmin;
-  color: #a11;
-  background-color: #6ac;
-  font-size: 5vh;
-  cursor: pointer;
+  right: 1vmin;
+  top: 1vmin;
 }
-
+div.close > button{
+  cursor: pointer;
+  font-size: 4vh;
+  color: #a11;
+  background-color: #aac;  
+}
 p:nth-child(odd){
-  margin:2px;                                                 color: #40c4ff;
+  margin:2px;                                                 
+  color: #40c4ff;
 }

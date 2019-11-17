@@ -1,9 +1,9 @@
 const fastify = require('fastify')()
 const path = require('path')
 const url = require('url')
-const {getSize} = require('./getSize')
 const { anyTrue } = require('rambdax')
 const { app, ipcMain, BrowserWindow } = require('electron')
+const { getSize } = require('./getSize')
 
 const baseConfig = {
   autoHideMenuBar : true,
@@ -11,7 +11,7 @@ const baseConfig = {
   frame           : true,
   show            : false,
   skipTaskbar     : true,
-  fullScreenable : false,
+  fullScreenable  : false,
   type            : 'notification',
 }
 
@@ -33,6 +33,12 @@ let timeoutHolder
 
 ipcMain.on('holdon', () => {
   if (timeoutHolder) clearTimeout(timeoutHolder)
+})
+
+ipcMain.on('forceclose', () => {
+  if (mainWindow && mainWindow.isVisible()){
+    mainWindow.hide()
+  }
 })
 
 io.on('connection', socket => {
@@ -84,13 +90,12 @@ function createWindow(){
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.setAlwaysOnTop(true)
-    // mainWindow.setFullScreenable(false)
 
     // Usage with DEV
     ///////////////////////////
     if (false){
       mainWindow.showInactive()
-      // mainWindow.webContents.openDevTools()
+      mainWindow.webContents.openDevTools()
     }
   })
 

@@ -3394,9 +3394,9 @@ he@1.2.x:
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
-"helpers@https://github.com/selfrefactor/helpers#2.0.1":
+"helpers@https://github.com/selfrefactor/helpers#2.2.0":
   version "1.7.1"
-  resolved "https://github.com/selfrefactor/helpers#7d587c78f1627d33fcc17e50d202d702df0d2664"
+  resolved "https://github.com/selfrefactor/helpers#25ef475ba20956fe2359118e09f3f5dca7192480"
   dependencies:
     benny "^3.6.12"
     boxen "^4.1.0"
@@ -3408,7 +3408,7 @@ he@1.2.x:
     log-symbols "^3.0.0"
     ora "^4.0.2"
     q-i "^2.0.1"
-    rambdax "^2.14.1"
+    rambdax "3.2.0"
     string-fn "^2.10.2"
 
 hmac-drbg@^1.0.0:
@@ -5563,10 +5563,10 @@ rambda@^1.2.6:
   resolved "https://registry.yarnpkg.com/rambda/-/rambda-1.2.6.tgz#5feed8039369b65c389ee1e02db9527695d30e83"
   integrity sha512-3tjeDuSMKAf8t099BejrmLgXdexAh63AsU2c2ZTcN5y/gt5njw03Wsfb+Ti9b08ZWLLDN5r0EvKynfYM91PB6g==
 
-rambdax@^2.14.1:
-  version "2.17.0"
-  resolved "https://registry.yarnpkg.com/rambdax/-/rambdax-2.17.0.tgz#986cc6ffd34c0d85b9151311e08485388316be18"
-  integrity sha512-OoSU9tKeP0MJjGKdFSh+X2+6V4+IT3oMOkSUdcadn5VAbkRYmW1nyEmFSYh9wIB1TPGwVdIGr7axDKVFBqo+PA==
+rambdax@3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/rambdax/-/rambdax-3.2.0.tgz#39f80449e34d21d2800d6b5555fd720a56ca2862"
+  integrity sha512-A1uIEi6td6fzVS3nwWdx7KyUduVatX8nN8avE/1amyRAZMaT2zdGBFRiBR5Ie3gr8wGwlH2utJX075khx/Ht3w==
 
 rambdax@^3.3.0:
   version "3.3.0"
