@@ -1497,6 +1497,11 @@ buffer-from@^1.0.0:
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
   integrity sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
 
+builtins@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/builtins/-/builtins-1.0.3.tgz#cb94faeb61c8696451db36534e1422f94f0aee88"
+  integrity sha1-y5T662HIaWRR2zZTThQi+U8K7og=
+
 cache-base@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cache-base/-/cache-base-1.0.1.tgz#0a7f46416831c8b662ee36fe4e7c59d76f666ab2"
@@ -2088,6 +2093,11 @@ eslint-plugin-babel@^5.3.0:
   dependencies:
     eslint-rule-composer "^0.3.0"
 
+eslint-plugin-jest-formatting@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest-formatting/-/eslint-plugin-jest-formatting-1.2.0.tgz#a9eef225520d53e63665d0f2fcf4d3eda894a18e"
+  integrity sha512-EqsbDByAtdQa5vEhJFUFMqTW7fghN0Qhb8oulM7R3j9+9xRuMsQKCPjWvCIxpWhl3SJJmlxBC25o1pUXiBHaAw==
+
 eslint-plugin-jest@^23.0.4:
   version "23.0.4"
   resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-23.0.4.tgz#1ab81ffe3b16c5168efa72cbd4db14d335092aa0"
@@ -2121,6 +2131,13 @@ eslint-plugin-react@^7.16.0:
     object.values "^1.1.0"
     prop-types "^15.7.2"
     resolve "^1.12.0"
+
+eslint-plugin-simple-import-sort@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-simple-import-sort/-/eslint-plugin-simple-import-sort-4.0.0.tgz#048736c170b9b43f0a8c3ef85ba53881c389f3ff"
+  integrity sha512-QsxOMrXhhqvSiTmZafPc/lvSET9lhblaO2kaaSbFo1FVU/AW9mFQDXadiHJ5OqG6i0N6+Qd+RZ95iQbkg4p+0w==
+  dependencies:
+    validate-npm-package-name "^3.0.0"
 
 eslint-plugin-sort-class-members@^1.6.0:
   version "1.6.0"
@@ -3884,19 +3901,21 @@ light-my-request@^3.4.1:
     ajv "^6.10.2"
     readable-stream "^3.4.0"
 
-lint-fn@^1.10.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/lint-fn/-/lint-fn-1.10.0.tgz#bd7d3c8d99deefbf0cd230fcd433ea9731c0d8a1"
-  integrity sha512-mWvMk7Jicio+qpiAvynlygMcen+Y07BX7B7bZMS3jHwUNweko8Hg5IPH0Tez2bAVofJX0PePIsFXexsVuWjGgw==
+lint-fn@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/lint-fn/-/lint-fn-1.11.0.tgz#43fa2ae3215920eb40483b14651c6bc56043cf53"
+  integrity sha512-Pc+vzVOgKMV5Ql5mu50A0d267qq4Av3kDN1XUxa4yRIMGw6FbcPhShrCxUhORGWEf8+GZH+gL/PXtRiDV4FW6Q==
   dependencies:
     babel-eslint "10.0.1"
     eslint "^6.6.0"
     eslint-plugin-async-await "^0.0.0"
     eslint-plugin-babel "^5.3.0"
     eslint-plugin-jest "^23.0.4"
+    eslint-plugin-jest-formatting "^1.2.0"
     eslint-plugin-no-unsafe-regex "^1.0.0"
     eslint-plugin-react "^7.16.0"
     eslint-plugin-react-hooks "^2.3.0"
+    eslint-plugin-simple-import-sort "^4.0.0"
     eslint-plugin-sort-class-members "^1.6.0"
     eslint-plugin-sort-requires "^2.1.0"
     rambdax "^3.3.1"
@@ -5914,10 +5933,10 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@^3.8.0-dev.20191116:
-  version "3.8.0-dev.20191116"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.0-dev.20191116.tgz#562654a42a2d66e1ff772219f14a9ffe757aa65c"
-  integrity sha512-MtStPs7JjUXbWQmALLSjIgRaSJYzg0FO3QSi8Vhn/z11t5xll1+yAFT3yDt/PXPduFIgB1KMyUsIyjDyETAT3A==
+typescript@^3.8.0-dev.20191119:
+  version "3.8.0-dev.20191119"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.0-dev.20191119.tgz#faf2c9977793f5338841ad6c710c2348b4a81b43"
+  integrity sha512-9YQOp2Lp1cqeoAbhpZRAUpM+6xbisNt/glvaH1x3nNT8z3kOCn4xFj0w+QnTyaOfa6d0ZqBdVgydepjk7WzOXg==
 
 uglify-js@^3.1.4:
   version "3.6.9"
@@ -6021,6 +6040,13 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
+validate-npm-package-name@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/validate-npm-package-name/-/validate-npm-package-name-3.0.0.tgz#5fa912d81eb7d0c74afc140de7317f0ca7df437e"
+  integrity sha1-X6kS2B630MdK/BQN5zF/DKffQ34=
+  dependencies:
+    builtins "^1.0.3"
+
 verror@1.10.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/verror/-/verror-1.10.0.tgz#3a105ca17053af55d6e270c1f8288682e18da400"
@@ -6108,9 +6134,9 @@ which@^1.2.9, which@^1.3.0:
     isexe "^2.0.0"
 
 which@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/which/-/which-2.0.1.tgz#f1cf94d07a8e571b6ff006aeb91d0300c47ef0a4"
-  integrity sha512-N7GBZOTswtB9lkQBZA4+zAXrjEIWAUOB93AvzUiudRzRxhUdLURQ7D/gAIMY1gatT/LTbmbcv8SiYazy3eYB7w==
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/which/-/which-2.0.2.tgz#7c6a8dd0a636a0327e10b59c9286eee93f3f51b1"
+  integrity sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==
   dependencies:
     isexe "^2.0.0"
 
@@ -6217,9 +6243,9 @@ yargs-parser@^15.0.0:
     decamelize "^1.2.0"
 
 yargs@^14.0.0:
-  version "14.2.1"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-14.2.1.tgz#2bb87b57c12b9afea40bb4ed9745bb9eb5031a9b"
-  integrity sha512-rZ00XIuGAoI58F0weHyCP3PAN17wJqdN/pF8eMp+imuP+jSdMCD5t4bSf5d5FKPvEDrK9zYlnhO7bFYKQ5UYow==
+  version "14.2.2"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-14.2.2.tgz#2769564379009ff8597cdd38fba09da9b493c4b5"
+  integrity sha512-/4ld+4VV5RnrynMhPZJ/ZpOCGSCeghMykZ3BhdFBDa9Wy/RH6uEGNWDJog+aUlq+9OM1CFTgtYRW5Is1Po9NOA==
   dependencies:
     cliui "^5.0.0"
     decamelize "^1.2.0"

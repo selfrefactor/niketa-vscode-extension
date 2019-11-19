@@ -11,7 +11,7 @@
 		"babel-cli": "^7.0.0-beta.3",
 		"babel-preset-env": "^7.0.0-beta.3",
 		"jest": "^25.0.0",
-		"typescript": "^3.8.0-dev.20191116"
+		"typescript": "^3.8.0-dev.20191119"
 	},
 	"files": [
 		"src",
@@ -24,7 +24,7 @@
 	"dependencies": {
 		"esm": "^3.2.25",
 		"fastify": "^2.10.0",
-		"lint-fn": "^1.10.0",
+		"lint-fn": "^1.11.0",
 		"helpers": "https://github.com/selfrefactor/helpers#2.2.0",
 		"rambdax": "^3.3.1",
 		"string-fn": "^2.10.2",
