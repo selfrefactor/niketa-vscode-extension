@@ -24,7 +24,7 @@ const settings = {
 
 let mainWindow
 
-const TIMEOUT = 12 * 1000
+const TIMEOUT = 8 * 1000
 
 const io = require('socket.io')(fastify.server)
 fastify.listen(3014)
