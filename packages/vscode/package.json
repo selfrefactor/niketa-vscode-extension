@@ -78,10 +78,15 @@
   },
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "jest src --watch"
+    "test": "jest src --watch",
+    "vscode:prepublish": "webpack --mode production",
+    "out": "webpack --mode production",
+    "webpack": "webpack --mode development"
   },
   "devDependencies": {
     "jest": "^24.8.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
     "typescript": "^3.2.2",
     "vscode": "^1.1.33"
   },
@@ -96,6 +101,6 @@
     "socket.io-client": "^2.2.0"
   },
   "commitMessage": {
-    "workInProgress": ""
+    "workInProgress": "webpack setup"
   }
 }
