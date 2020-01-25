@@ -22,8 +22,11 @@ function parseBeforeNotify(input){
 }
 
 const wss = new WebSocket.Server({ port : conf('PORT_2') })
+console.log(`Listen at ${conf('PORT_2')} for electron notify`)
 
 wss.on('connection', ws => {
+  console.log(`Connected at ${conf('PORT_2')} for electron notify`)
+
   notify = text => {
     if (typeof text !== 'string') return
 
@@ -38,14 +41,17 @@ function catchFn(e){
 
 export function niketaClient(){
   const app = fastify()
-  app.listen(conf('PORT_1'))
-
+  console.log(`Listen at ${conf('PORT_1')} for vscode 2`)
+  app.listen(conf('PORT_1'))  
+  
   const io = socketServer(app.server)
+  console.log(`Listen at ${conf('PORT_0')} for vscode 1`)
   const socket = socketClient(`http://localhost:${ conf('PORT_0') }`)
+  console.log(`Listen at ${conf('PORT_3')} for electron notify close`)
   const socketNotifyClose = socketClient(`http://localhost:${ conf('PORT_3') }`)
 
   socketNotifyClose.on('connect', () => {
-    console.log('connected', conf('PORT_3'))
+    console.log('connected notify close', conf('PORT_3'))
     setter('electron.connected', true)
 
     notifyClose = () => {
@@ -57,14 +63,14 @@ export function niketaClient(){
   })
 
   socket.on('connect', () => {
-    console.log('connected notify', conf('PORT_0'))
+    console.log('connected vscode 1', conf('PORT_0'))
     emit = input => {
       socket.emit(input.channel, { message : input.message })
     }
   })
 
   io.on('connection', socketInstance => {
-    console.log('connected', conf('PORT_1'))
+    console.log('connected vscode 2', conf('PORT_1'))
 
     socketInstance.on('fileSaved', input => {
       if (busyFlag) return console.log('BUSY')
@@ -85,6 +91,7 @@ export function niketaClient(){
         filePath    : input.message.filePath,
         hasReact    : input.message.hasReact,
       }
+      console.log({options, input, emit})
 
       fileSaved(options)
         .then(() => busyFlag = false)
