@@ -9,9 +9,9 @@ const FALLBACK = `${ __dirname }/files/configFallback.json`
 
 function calculateSizes(width, height){
   return {
-    width  : Math.floor(width * 0.27),
+    width  : Math.floor(width * 0.25),
     height : Math.floor(height * 0.83),
-    x      : Math.floor(width * 0.71),
+    x      : Math.floor(width * 0.75),
     y      : Math.floor(height * 0.1),
   }
 }
@@ -28,13 +28,19 @@ async function setSizes(){
   writeJsonSync(FILE_PATH, electronSizes)
 }
 
-function getSize(){
-  if (
-    existsSync(FILE_PATH)
-  ) return readJsonSync(FILE_PATH)
-  setSizes()
+function getSize(recalculateFlag = false){
+  if(!recalculateFlag){
+    if (
+      existsSync(FILE_PATH)
+    ) return readJsonSync(FILE_PATH)
+    setSizes()
+  
+    return readJsonSync(FALLBACK)
+  }
 
-  return readJsonSync(FALLBACK)
+  return new Promise(resolve => {
+    setSizes().then(resolve)
+  })
 }
 
 exports.getSize = getSize
