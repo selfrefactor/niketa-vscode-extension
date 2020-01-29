@@ -21,6 +21,7 @@ async function setSizes(){
     cwd : __dirname,
     command,
   })
+  console.log({size: sizesRaw})
   const [ sizes ] = match(/[0-9x]+/, sizesRaw)
   const [ screenWidth, screenHeight ] = sizes.split('x')
   const electronSizes = calculateSizes(screenWidth, screenHeight)
