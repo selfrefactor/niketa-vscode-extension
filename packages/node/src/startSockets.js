@@ -1,3 +1,5 @@
+const DEBUG = true
+
 import { conf } from './_modules/conf'
 conf()
 import fastify from 'fastify'
@@ -82,6 +84,7 @@ export function niketaClient(){
       busyFlag = true
 
       const options = {
+        debugFlag: DEBUG,
         disableLint : Boolean(input.message.disableLint),
         lintOnly    : input.message.mode === 'LINT_ONLY',
         dir         : input.message.dir,
@@ -90,6 +93,7 @@ export function niketaClient(){
         notifyClose,
         filePath    : input.message.filePath,
         hasReact    : input.message.hasReact,
+        hasAngular    : input.message.hasAngular,
       }
       console.log({options, input, emit})
 

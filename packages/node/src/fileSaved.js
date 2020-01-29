@@ -22,6 +22,7 @@ let specFileHolder
 // Dispatch between all possible modes
 // ============================================
 export async function fileSaved({
+  debugFlag,
   lintOnly,
   disableLint,
   dir,
@@ -38,6 +39,10 @@ export async function fileSaved({
       filePath,
       okLint : true,
     })
+  }
+  const maybeLog = (...logInputs) =>{
+    if(!debugFlag) return
+    console.log(...logInputs)
   }
 
   if (filePath !== lintFileHolder && lintFileHolder !== undefined){
@@ -64,6 +69,7 @@ export async function fileSaved({
     lintFileHolder = filePath
 
     return proveMode({
+      maybeLog,
       stopLoaders,
       startLoaders,
       notify,
@@ -92,13 +98,13 @@ export async function fileSaved({
   if (!(fileHolder && specFileHolder)){
     // This happens only until the script receives a correct filepath
     ///////////////////
-    return console.log(filePath, 'no specfile')
+    return maybeLog(filePath, 'no specfile')
   }
 
   if (!fileHolder.startsWith(dir)){
     // when we have filepath from previous project but not in the current
     ///////////////////
-    return console.log('still waiting for testable file in this project')
+    return maybeLog('still waiting for testable file in this project', dir)
   }
 
   const specFile = maybeSpecFile ? maybeSpecFile : specFileHolder
@@ -116,10 +122,12 @@ export async function fileSaved({
     ${ coveragePath }
     ${ testPattern }
   `)
-
+  
   startLoaders()
-
+  maybeLog('Start', command)
   const execResult = await execJest(command, { cwd : dir })
+  maybeLog('End', command)
+  maybeLog('Result', execResult)
 
   stopLoaders()
 

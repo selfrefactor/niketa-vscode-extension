@@ -11,6 +11,9 @@
     "workInProgress": "",
     "support": [
       "vscode"
+    ],
+    "feature": [
+      "node"
     ]
   }
 }

@@ -10,6 +10,7 @@ const SEPARATOR = '🚦'
 
 export async function proveMode({
   dir,
+  maybeLog,
   stopLoaders,
   startLoaders,
   notify,
@@ -25,6 +26,8 @@ export async function proveMode({
     file : filePath,
   }))
   console.log('PROVE_MODE_END', filePath)
+  maybeLog({execResult, err})
+  
   stopLoaders()
   additional(emit)
 

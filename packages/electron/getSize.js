@@ -21,7 +21,7 @@ async function setSizes(){
     cwd : __dirname,
     command,
   })
-  console.log({size: sizesRaw})
+  console.log({ size : sizesRaw })
   const [ sizes ] = match(/[0-9x]+/, sizesRaw)
   const [ screenWidth, screenHeight ] = sizes.split('x')
   const electronSizes = calculateSizes(screenWidth, screenHeight)
@@ -30,12 +30,10 @@ async function setSizes(){
 }
 
 function getSize(recalculateFlag = false){
-  if(!recalculateFlag){
-    if (
-      existsSync(FILE_PATH)
-    ) return readJsonSync(FILE_PATH)
+  if (!recalculateFlag){
+    if (existsSync(FILE_PATH)) return readJsonSync(FILE_PATH)
     setSizes()
-  
+
     return readJsonSync(FALLBACK)
   }
 
