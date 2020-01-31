@@ -129,6 +129,9 @@ export async function fileSaved({
   
   startLoaders()
   maybeLog('Start', command)
+  /*
+    TODO: it needs a max ms for execution of the test
+  */
   const execResult = await execJest(command, { cwd : dir })
   maybeLog('End', command)
   maybeLog('Result', execResult)
