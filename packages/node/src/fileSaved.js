@@ -129,6 +129,7 @@ export async function fileSaved({
   
   startLoaders()
   maybeLog('Start', command)
+  
   /*
     TODO: it needs a max ms for execution of the test
   */

@@ -24,8 +24,6 @@ function cleanStdout(execResult){
     .join('\n')
 }
 
-// Run coverage and send to `niketa-notify` and VSCode
-// ============================================
 export function coverageMode({
   emit,
   execResult,
