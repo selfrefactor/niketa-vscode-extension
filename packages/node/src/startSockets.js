@@ -1,4 +1,4 @@
-const DEBUG = true
+const DEBUG = false
 
 import { conf } from './_modules/conf'
 conf()

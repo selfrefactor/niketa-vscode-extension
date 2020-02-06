@@ -11,7 +11,7 @@ import { whenFileLoseFocus } from './_modules/whenFileLoseFocus'
 import { startSpinner } from './emitters/startSpinner'
 import { stopSpinner } from './emitters/stopSpinner'
 
-const ALLOW_RESULT_LOG= true
+const ALLOW_RESULT_LOG= false
 const JEST_BIN = './node_modules/jest/bin/jest.js'
 
 const isProveMode = filePath => filePath.toLowerCase().endsWith('prove.js')
