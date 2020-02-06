@@ -80,7 +80,7 @@ export function niketaClient(){
       const passed = checkExtensionMessage(input.message)
 
       if (!passed) return console.log('unknown mode', input.message)
-
+      if (!emit) return console.log('Waiting for VSCode to connecte', input.message)
       busyFlag = true
 
       const options = {
