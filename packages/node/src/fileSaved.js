@@ -1,17 +1,17 @@
+import { log, startLoadingBar, stopLoadingBar } from 'helpers'
 import { glue } from 'rambdax'
-import { startLoadingBar, stopLoadingBar, log } from 'helpers'
 
-import { coverageMode } from './coverageMode'
-import { lintMode } from './lintMode'
-import { proveMode } from './proveMode.js'
 import { execJest } from './_modules/execJest'
 import { getCoveragePath } from './_modules/getCoveragePath'
 import { getSpecFile } from './_modules/getSpecFile'
 import { whenFileLoseFocus } from './_modules/whenFileLoseFocus'
+import { coverageMode } from './coverageMode'
 import { startSpinner } from './emitters/startSpinner'
 import { stopSpinner } from './emitters/stopSpinner'
+import { lintMode } from './lintMode'
+import { proveMode } from './proveMode.js'
 
-const ALLOW_RESULT_LOG= false
+const ALLOW_RESULT_LOG = false
 const JEST_BIN = './node_modules/jest/bin/jest.js'
 
 const isProveMode = filePath => filePath.toLowerCase().endsWith('prove.js')
@@ -41,11 +41,11 @@ export async function fileSaved({
       okLint : true,
     })
   }
-  const maybeLog = (...logInputs) =>{
-    if(!debugFlag) return
-    if(logInputs[0] === 'Result'){
+  const maybeLog = (...logInputs) => {
+    if (!debugFlag) return
+    if (logInputs[ 0 ] === 'Result'){
       return ALLOW_RESULT_LOG ? console.log(...logInputs) : null
-    } 
+    }
     console.log(...logInputs)
   }
 
@@ -126,10 +126,10 @@ export async function fileSaved({
     ${ coveragePath }
     ${ testPattern }
   `)
-  
+
   startLoaders()
   maybeLog('Start', command)
-  
+
   /*
     TODO: it needs a max ms for execution of the test
   */

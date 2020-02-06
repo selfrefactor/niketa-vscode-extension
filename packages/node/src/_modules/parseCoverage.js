@@ -1,4 +1,5 @@
-import { startsWith, trim, glue } from 'rambdax'
+import { glue, startsWith, trim } from 'rambdax'
+
 import { createFileKey } from '../_helpers/createFileKey'
 
 function toNumber(x){
@@ -60,7 +61,9 @@ function diff(inputs, filePath){
   return message.trim() === '' ? '⛹' : message
 }
 
-export function parseCoverage(execResult, fileName, filePath){
+export function parseCoverage(
+  execResult, fileName, filePath
+){
   const pass = execResult.stderr.startsWith('PASS')
 
   const [ line ] = execResult.stdout

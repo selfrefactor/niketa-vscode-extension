@@ -1,9 +1,10 @@
-import { execNodeFile } from './ants/execNodeFile'
-import { show } from './emitters/show'
-import { additional } from './emitters/additional.js'
-import { ERROR_ICON, SUCCESS_ICON } from './coverageMode.js'
-import { remove, take, wait } from 'rambdax'
 import { log } from 'helpers'
+import { remove, take, wait } from 'rambdax'
+
+import { execNodeFile } from './ants/execNodeFile'
+import { ERROR_ICON, SUCCESS_ICON } from './coverageMode.js'
+import { additional } from './emitters/additional.js'
+import { show } from './emitters/show'
 
 const LIMIT = 150
 const SEPARATOR = '🚦'
@@ -26,8 +27,11 @@ export async function proveMode({
     file : filePath,
   }))
   console.log('PROVE_MODE_END', filePath)
-  maybeLog({execResult, err})
-  
+  maybeLog({
+    execResult,
+    err,
+  })
+
   stopLoaders()
   additional(emit)
 

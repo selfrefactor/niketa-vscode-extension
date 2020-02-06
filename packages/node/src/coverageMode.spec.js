@@ -1,4 +1,5 @@
-import {coverageMode} from './coverageMode'
+import { coverageMode } from './coverageMode'
+
 test('happy', () => {
-  expect(1).toBe(1 ) 
+  expect(1).toBe(1)
 })

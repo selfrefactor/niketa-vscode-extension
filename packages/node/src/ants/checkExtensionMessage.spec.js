@@ -9,7 +9,5 @@ test('happy', () => {
     mode     : 'LOCK_FILE',
   }
 
-  console.log(
-    checkExtensionMessage(message)
-  )
+  console.log(checkExtensionMessage(message))
 })

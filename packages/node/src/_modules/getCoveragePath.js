@@ -1,4 +1,4 @@
-import { endsWith, remove, last, switcher, identity, replace } from 'rambdax'
+import { endsWith, identity, last, remove, replace, switcher } from 'rambdax'
 
 export function getCoveragePath(dir, filePath){
   const extension = switcher(filePath)

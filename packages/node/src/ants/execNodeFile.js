@@ -1,12 +1,14 @@
 import { spawn } from 'child_process'
-import { ms } from 'string-fn'
-import { delay } from 'rambdax'
 import { log } from 'helpers'
+import { delay } from 'rambdax'
+import { ms } from 'string-fn'
 
 export const execNodeFile = ({ file, cwd }) =>
   new Promise((resolve, reject) => {
     let resolved = false
-    const child = spawn('node', [ file ], { cwd })
+    const child = spawn(
+      'node', [ file ], { cwd }
+    )
     const logs = []
 
     delay(ms('2min')).then(() => {

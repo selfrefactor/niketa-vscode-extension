@@ -3,13 +3,14 @@ const DEBUG = false
 import { conf } from './_modules/conf'
 conf()
 import fastify from 'fastify'
-import socketClient from 'socket.io-client'
+import { identity, setter } from 'rambdax'
 import socketServer from 'socket.io'
-import { fileSaved } from './fileSaved'
+import socketClient from 'socket.io-client'
+import WebSocket from 'ws'
+
 import { clean } from './_helpers/clean'
 import { checkExtensionMessage } from './ants/checkExtensionMessage'
-import { identity, setter } from 'rambdax'
-import WebSocket from 'ws'
+import { fileSaved } from './fileSaved'
 
 let busyFlag = false
 let notify = identity
@@ -17,17 +18,19 @@ let notifyClose
 let emit
 
 function parseBeforeNotify(input){
-  const toReturn = input.split('\n').map(clean)
+  const toReturn = input
+    .split('\n')
+    .map(clean)
     .join('\n')
 
   return toReturn
 }
 
 const wss = new WebSocket.Server({ port : conf('PORT_2') })
-console.log(`Listen at ${conf('PORT_2')} for electron notify`)
+console.log(`Listen at ${ conf('PORT_2') } for electron notify`)
 
 wss.on('connection', ws => {
-  console.log(`Connected at ${conf('PORT_2')} for electron notify`)
+  console.log(`Connected at ${ conf('PORT_2') } for electron notify`)
 
   notify = text => {
     if (typeof text !== 'string') return
@@ -43,13 +46,13 @@ function catchFn(e){
 
 export function niketaClient(){
   const app = fastify()
-  console.log(`Listen at ${conf('PORT_1')} for vscode 2`)
-  app.listen(conf('PORT_1'))  
-  
+  console.log(`Listen at ${ conf('PORT_1') } for vscode 2`)
+  app.listen(conf('PORT_1'))
+
   const io = socketServer(app.server)
-  console.log(`Listen at ${conf('PORT_0')} for vscode 1`)
+  console.log(`Listen at ${ conf('PORT_0') } for vscode 1`)
   const socket = socketClient(`http://localhost:${ conf('PORT_0') }`)
-  console.log(`Listen at ${conf('PORT_3')} for electron notify close`)
+  console.log(`Listen at ${ conf('PORT_3') } for electron notify close`)
   const socketNotifyClose = socketClient(`http://localhost:${ conf('PORT_3') }`)
 
   socketNotifyClose.on('connect', () => {
@@ -57,10 +60,7 @@ export function niketaClient(){
     setter('electron.connected', true)
 
     notifyClose = () => {
-      socketNotifyClose.emit(
-        'rabbit',
-        { message : 'hole' }
-      )
+      socketNotifyClose.emit('rabbit', { message : 'hole' })
     }
   })
 
@@ -80,11 +80,12 @@ export function niketaClient(){
       const passed = checkExtensionMessage(input.message)
 
       if (!passed) return console.log('unknown mode', input.message)
-      if (!emit) return console.log('Waiting for VSCode to connecte', input.message)
+      if (!emit)
+        return console.log('Waiting for VSCode to connecte', input.message)
       busyFlag = true
 
       const options = {
-        debugFlag: DEBUG,
+        debugFlag   : DEBUG,
         disableLint : Boolean(input.message.disableLint),
         lintOnly    : input.message.mode === 'LINT_ONLY',
         dir         : input.message.dir,
@@ -93,9 +94,15 @@ export function niketaClient(){
         notifyClose,
         filePath    : input.message.filePath,
         hasReact    : input.message.hasReact,
-        hasAngular    : input.message.hasAngular,
+        hasAngular  : input.message.hasAngular,
       }
-      console.log({options, input, emit})
+      if (DEBUG){
+        console.log({
+          options,
+          input,
+          emit,
+        })
+      }
 
       fileSaved(options)
         .then(() => busyFlag = false)

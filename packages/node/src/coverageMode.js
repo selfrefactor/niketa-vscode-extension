@@ -4,7 +4,6 @@ import { clean } from './_modules/clean'
 import { parseCoverage } from './_modules/parseCoverage'
 import { shouldNotify } from './_modules/shouldNotify'
 import { takeNotifyWhenError } from './ants/takeNotifyWhenError'
-
 import { additional } from './emitters/additional'
 import { show } from './emitters/show'
 import { tooltip } from './emitters/tooltip'
@@ -70,7 +69,9 @@ export function coverageMode({
   }
 
   show(emit, pass ? message : ERROR_ICON)
-  const cleaner = clean(execResult, pass, uncovered)
+  const cleaner = clean(
+    execResult, pass, uncovered
+  )
 
   if (cleaner.stdout.trim() === '') return
 

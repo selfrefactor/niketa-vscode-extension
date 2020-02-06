@@ -18,13 +18,11 @@ function init(){
   if (config) return
 
   config = {}
-  listOfKeys.forEach(
-    (key, defaultsIndex) => config[ key ] = maybe(
-      process.env[ `NIKETA_${ key }` ],
-      Number(process.env[ `NIKETA_${ key }` ]),
-      listOfDefaults[ defaultsIndex ]
-    )
-  )
+  listOfKeys.forEach((key, defaultsIndex) => config[ key ] = maybe(
+    process.env[ `NIKETA_${ key }` ],
+    Number(process.env[ `NIKETA_${ key }` ]),
+    listOfDefaults[ defaultsIndex ]
+  ))
   if (process.env.LOG) console.log(config)
 }
 
