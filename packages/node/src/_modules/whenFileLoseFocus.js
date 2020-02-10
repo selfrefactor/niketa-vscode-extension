@@ -6,4 +6,7 @@ export async function whenFileLoseFocus(filePath, disableLint){
   if (filePath.endsWith('.js') || filePath.endsWith('.jsx')){
     await lintAnt(filePath)
   }
+  if (filePath.endsWith('.ts')){
+    await lintAnt(filePath)
+  }
 }

@@ -30,6 +30,7 @@ export async function fileSaved({
   emit,
   filePath,
   hasReact,
+  hasAngular,
   notify,
   notifyClose,
 }){
@@ -49,7 +50,9 @@ export async function fileSaved({
     console.log(...logInputs)
   }
 
-  if (filePath !== lintFileHolder && lintFileHolder !== undefined){
+  const allowLint = filePath !== lintFileHolder && lintFileHolder !== undefined
+
+  if (allowLint){
     log(`LINT ${ lintFileHolder }`, 'box')
     whenFileLoseFocus(lintFileHolder, disableLint)
     lintFileHolder = filePath
@@ -86,13 +89,17 @@ export async function fileSaved({
 
   const maybeSpecFile = getSpecFile(filePath)
   const canStillLint =
-    filePath.endsWith('.js') || filePath.endsWith('.jsx')
+    filePath.endsWith('.js') || filePath.endsWith('.jsx') || filePath.endsWith('.ts')
 
   if (maybeSpecFile){
     fileHolder = filePath
     lintFileHolder = filePath
     specFileHolder = maybeSpecFile
+    maybeLog('saved for lint later', filePath)
+
   } else if (canStillLint){
+    maybeLog('saved for lint later even without spec', filePath)
+
     // Even if the file has no corresponding spec file
     // we keep it for further linting
     ///////////////////////////
