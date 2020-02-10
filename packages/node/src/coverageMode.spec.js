@@ -25,6 +25,5 @@ test('happy', () => {
     notifyClose,
   })
   console.log(emit.mock.calls.length)
-  console.log(emit.mock.calls[ 0 ])
-  // expect(1).toBe(1)
+  expect(emit.mock.calls).toMatchSnapshot()
 })
