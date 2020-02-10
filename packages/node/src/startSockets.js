@@ -53,7 +53,9 @@ export function niketaClient(){
   console.log(`Listen at ${ conf('PORT_0') } for vscode 1`)
   const socket = socketClient(`http://localhost:${ conf('PORT_0') }`)
   console.log(`Listen at ${ conf('PORT_3') } for electron notify close`)
-  const socketNotifyClose = socketClient(`http://localhost:${ conf('PORT_3') }`)
+  const socketNotifyClose = socketClient(
+    `http://localhost:${ conf('PORT_3') }`
+  )
 
   socketNotifyClose.on('connect', () => {
     console.log('connected notify close', conf('PORT_3'))
