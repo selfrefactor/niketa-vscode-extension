@@ -1,24 +1,30 @@
+import { setter } from 'rambdax'
+
 import { angularMock } from '../mocks/angular.js'
 import { coverageMode } from './coverageMode'
 
 const filePathSpec =
   '/home/s/repos/joke-maker-angular/src/app/helpers/foo.spec.ts'
-const filePath=   '/home/s/repos/joke-maker-angular/src/app/helpers/foo.spec.ts'
+const filePath =
+  '/home/s/repos/joke-maker-angular/src/app/helpers/foo.spec.ts'
 
 test('happy', () => {
+  Boolean(setter('electron.connected'))
   const emit = jest.fn()
   const notify = jest.fn()
   const notifyClose = jest.fn()
   const fileName = 'foo'
 
-  const result = coverageMode({
+  coverageMode({
     emit,
     execResult    : angularMock,
     fileName,
-    filePath: filePathSpec,
+    filePath      : filePathSpec,
     maybeSpecFile : filePathSpec,
     notify,
     notifyClose,
   })
-  expect(1).toBe(1)
+  console.log(emit.mock.calls.length)
+  console.log(emit.mock.calls[ 0 ])
+  // expect(1).toBe(1)
 })

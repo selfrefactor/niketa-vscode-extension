@@ -69,9 +69,7 @@ export function coverageMode({
   }
 
   show(emit, pass ? message : ERROR_ICON)
-  const cleaner = clean(
-    execResult, pass, uncovered
-  )
+  const cleaner = clean(execResult, pass, uncovered)
 
   if (cleaner.stdout.trim() === '') return
 

@@ -1,6 +1,13 @@
-import { glue, startsWith, trim } from 'rambdax'
+import { glue, remove, startsWith, trim } from 'rambdax'
 
 import { createFileKey } from '../_helpers/createFileKey'
+
+function cleanAngularLog(x){
+  return {
+    ...x,
+    stderr : remove(/ts-jest\[.+/, x.stderr),
+  }
+}
 
 function toNumber(x){
   return x === undefined || Number.isNaN(Number(x)) ? 0 : Number(x)
@@ -61,9 +68,8 @@ function diff(inputs, filePath){
   return message.trim() === '' ? '⛹' : message
 }
 
-export function parseCoverage(
-  execResult, fileName, filePath
-){
+export function parseCoverage(execResultInput, fileName, filePath){
+  const execResult = cleanAngularLog(execResultInput)
   const pass = execResult.stderr.startsWith('PASS')
 
   const [ line ] = execResult.stdout

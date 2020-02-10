@@ -11,7 +11,7 @@ import { stopSpinner } from './emitters/stopSpinner'
 import { lintMode } from './lintMode'
 import { proveMode } from './proveMode.js'
 
-const ALLOW_RESULT_LOG = false
+const ALLOW_RESULT_LOG = true
 const JEST_BIN = './node_modules/jest/bin/jest.js'
 
 const isProveMode = filePath => filePath.toLowerCase().endsWith('prove.js')
