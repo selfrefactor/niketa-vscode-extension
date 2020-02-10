@@ -15,3 +15,7 @@ export const angularMock = {
     'Time:        1.465s\n' +
     'Ran all test suites matching /\\/home\\/s\\/repos\\/joke-maker-angular\\/src\\/app\\/helpers\\/foo.spec.ts/i.\n'
 }
+
+export const angularWithLog ={}
+export const angularError ={}
+export const angularErrorWithLog ={}

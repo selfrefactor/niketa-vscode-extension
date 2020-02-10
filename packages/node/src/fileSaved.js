@@ -42,10 +42,10 @@ export async function fileSaved({
     })
   }
   const maybeLog = (...logInputs) => {
-    if (!debugFlag) return
     if (logInputs[ 0 ] === 'Result'){
       return ALLOW_RESULT_LOG ? console.log(...logInputs) : null
     }
+    if (!debugFlag) return
     console.log(...logInputs)
   }
 
