@@ -27,3 +27,4 @@ test('.js', () => {
   expect(fileName).toBe('bar')
   expect(result.endsWith('"home/sk/foo/bar.js"')).toBe(true)
 })
+ 

@@ -68,7 +68,9 @@ function diff(inputs, filePath){
   return message.trim() === '' ? '⛹' : message
 }
 
-export function parseCoverage(execResultInput, fileName, filePath){
+export function parseCoverage(
+  execResultInput, fileName, filePath
+){
   const execResult = cleanAngularLog(execResultInput)
   const pass = execResult.stderr.startsWith('PASS')
 

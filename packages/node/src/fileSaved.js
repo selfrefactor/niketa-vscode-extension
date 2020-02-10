@@ -96,7 +96,6 @@ export async function fileSaved({
     lintFileHolder = filePath
     specFileHolder = maybeSpecFile
     maybeLog('saved for lint later', filePath)
-
   } else if (canStillLint){
     maybeLog('saved for lint later even without spec', filePath)
 

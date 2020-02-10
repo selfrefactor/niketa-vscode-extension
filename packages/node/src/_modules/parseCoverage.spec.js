@@ -9,7 +9,9 @@ const filePath =
 test('happy', () => {
   const fileName = 'foo'
 
-  const result = parseCoverage(angularMock, fileName, filePathSpec)
+  const result = parseCoverage(
+    angularMock, fileName, filePathSpec
+  )
   console.log(result)
   // expect(1).toBe(1)
 })
