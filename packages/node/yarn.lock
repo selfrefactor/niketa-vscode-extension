@@ -3853,10 +3853,10 @@ light-my-request@^3.7.0:
     readable-stream "^3.4.0"
     set-cookie-parser "^2.4.1"
 
-lint-fn@^1.13.1:
-  version "1.13.1"
-  resolved "https://registry.yarnpkg.com/lint-fn/-/lint-fn-1.13.1.tgz#a519cc42f41ebf61ba00a24916141b610675d690"
-  integrity sha512-LJG2kFReR4ZWtfnD40BqLINNhZvmVQhwEzDXgKjn9jO7yxWzTc2g//MYfhi28N7coZUL2RJ1rdIUwd9RJL8wvA==
+lint-fn@^1.13.2:
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/lint-fn/-/lint-fn-1.13.2.tgz#a2f3e10da336ec439e6c538e3cb5bf088d5f94cb"
+  integrity sha512-B1AiXctw+86gKzDHaEvGwlP0deKwM+qX04uQrUmhkJtbOgCA72FftZhemWHU6CwNMKU0ZrME1dB2UZv7YV1pAA==
   dependencies:
     babel-eslint "10.0.1"
     eslint "^7.0.0-alpha.0"
