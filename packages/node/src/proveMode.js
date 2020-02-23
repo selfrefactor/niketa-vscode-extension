@@ -36,7 +36,7 @@ export async function proveMode({
   additional(emit)
 
   if (execResult === undefined){
-    console.log('execResult === undefined', err)
+    console.log('execResult === undefined', {err, execResult})
 
     return show(emit, ERROR_ICON)
   }
