@@ -32,9 +32,9 @@ function getCornerCases(dir){
     dependencies === undefined ? false : '@angular/core' in dependencies
 
   holder[ dir ] = {
-    react: isDependecy || isDevDependecy,
-    angular: isAngularDependecy || isAngularDevDependecy,
-    wallaby: hasWallaby
+    hasReact: isDependecy || isDevDependecy,
+    hasAngular: isAngularDependecy || isAngularDevDependecy,
+    hasWallaby
   }
 
   return holder[ dir ]
