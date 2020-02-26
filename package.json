@@ -6,7 +6,8 @@
   },
   "commitMessage": {
     "fix": [
-      "node"
+      "node",
+      "vscode"
     ],
     "workInProgress": "",
     "support": [
