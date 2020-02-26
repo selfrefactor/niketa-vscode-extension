@@ -31,10 +31,11 @@ export async function fileSaved({
   filePath,
   hasReact,
   hasAngular,
+  hasWallaby,
   notify,
   notifyClose,
 }){
-  if (lintOnly){
+  if (lintOnly || hasWallaby){
     return lintMode({
       notify,
       notifyClose,

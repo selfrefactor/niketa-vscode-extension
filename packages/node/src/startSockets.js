@@ -95,6 +95,7 @@ export function niketaClient(){
         filePath    : input.message.filePath,
         hasReact    : input.message.hasReact,
         hasAngular  : input.message.hasAngular,
+        hasWallaby  : input.message.hasWallaby,
       }
       if (DEBUG){
         console.log({
