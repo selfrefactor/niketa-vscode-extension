@@ -1,13 +1,13 @@
 const { existsSync, readFileSync } = require('fs')
 const holder = {}
 
-function hasReactAngular(dir){
+function getCornerCases(dir){
   if (holder[ dir ] !== undefined){
     return holder[ dir ]
   }
 
   const location = `${ dir }/package.json`
-
+  const hasWallaby = existsSync(`${ dir }/wallaby.js`)
   if (!existsSync(location)){
     holder[ dir ] = false
 
@@ -34,9 +34,10 @@ function hasReactAngular(dir){
   holder[ dir ] = {
     react: isDependecy || isDevDependecy,
     angular: isAngularDependecy || isAngularDevDependecy,
+    wallaby: hasWallaby
   }
 
   return holder[ dir ]
 }
 
-exports.hasReactAngular = hasReactAngular
+exports.getCornerCases = getCornerCases

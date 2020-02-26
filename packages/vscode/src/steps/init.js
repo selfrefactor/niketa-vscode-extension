@@ -13,7 +13,7 @@ const { saved } = require('./saved')
 
 const { emit } = require('../_modules/emitter')
 const { getCwd } = require('../_modules/getCwd')
-const { hasReactAngular } = require('../_modules/hasReactAngular')
+const { getCornerCases } = require('../_modules/getCornerCases')
 const { ok, getter } = require('rambdax')
 
 function showRoute(request){
@@ -56,14 +56,15 @@ io.on('connection', socket => {
 function emitAnt({ filePath, mode }){
   const dir = getCwd(filePath)
   if (dir === false) return
-  const {react,angular} = hasReactAngular(dir)
+  const {hasReact,hasAngular, hasWallaby} = getCornerCases(dir)
 
   emit({
     channel  : 'fileSaved',
     dir,
     filePath,
-    hasReact : react,
-    hasAngular : angular,
+    hasReact,
+    hasAngular,
+    hasWallaby,
     mode,
   })
 }

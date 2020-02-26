@@ -13,7 +13,8 @@
       "vscode"
     ],
     "feature": [
-      "node"
+      "node",
+      "vscode"
     ]
   }
 }
