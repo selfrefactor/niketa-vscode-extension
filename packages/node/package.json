@@ -8,12 +8,12 @@
 	"main": "./index.js",
 	"typings": "./index.d.ts",
 	"devDependencies": {
-		"@types/jest": "^25.1.2",
-		"@types/node": "^13.7.0",
+		"@types/jest": "^25.1.3",
+		"@types/node": "^13.7.6",
 		"babel-cli": "^7.0.0-beta.3",
 		"babel-preset-env": "^7.0.0-beta.3",
 		"jest": "^25.1.0",
-		"typescript": "^3.8.1-rc"
+		"typescript": "^3.9.0-dev.20200227"
 	},
 	"files": [
 		"src",
@@ -26,9 +26,9 @@
 	"dependencies": {
 		"esm": "^3.2.25",
 		"fastify": "^2.12.0",
-		"lint-fn": "^1.13.2",
+		"lint-fn": "^1.13.3",
 		"helpers": "https://github.com/selfrefactor/helpers#2.4.0",
-		"rambdax": "^3.5.0",
+		"rambdax": "^3.6.0",
 		"string-fn": "^2.10.2",
 		"socket.io": "^2.3.0",
 		"socket.io-client": "^2.3.0",
