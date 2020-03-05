@@ -1,11 +1,11 @@
 body{
-  background:#2a3343fe;
+  background:#ede8e1;
   overflow: hidden;
 }
 
 div.container {
-  color: #fafafa;
-  font-family: Operator Mono !important;
+  color: #35495f;
+  font-family: Bar !important;
   font-size: 17px;
   min-height: 98vh;
 }
@@ -22,5 +22,5 @@ div.close > button{
 }
 p:nth-child(odd){
   margin:2px;                                                 
-  color: #40c4ff;
+  color: #792138;
 }
