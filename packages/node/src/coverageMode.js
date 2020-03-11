@@ -1,4 +1,4 @@
-import { allTrue, getter, ok, take } from 'rambdax'
+import { allTrue, getter, ok, repeat, take } from 'rambdax'
 
 import { clean } from './_modules/clean'
 import { parseCoverage } from './_modules/parseCoverage'
@@ -23,21 +23,28 @@ function cleanStdout(execResult){
     .join('\n')
 }
 
+const maybeLogFn = debugFlag => (toLog, label = 'coverage log') => {
+  if (!debugFlag) return
+  console.log(label, 'START')
+  console.log(repeat(SUCCESS_ICON, 20).join``)
+  console.log(toLog)
+  console.log(repeat(SUCCESS_ICON, 20).join``)
+}
+
 export function coverageMode({
   emit,
   execResult,
+  debugFlag,
   fileName,
   filePath,
   maybeSpecFile,
   notify,
   notifyClose,
 }){
+  const maybeLog = maybeLogFn(debugFlag)
   const electronConnected = Boolean(getter('electron.connected'))
 
-  if (
-    execResult.stderr.startsWith('FAIL') ||
-    execResult.stderr.includes('ERROR:')
-  ){
+  if (execResult.stderr.startsWith('FAIL') || execResult.stderr.includes('ERROR:')){
     const notifyWhenError = takeNotifyWhenError(execResult)
     if (notifyWhenError && Boolean(notify) && Boolean(notifyClose)){
       notify(notifyWhenError)
@@ -51,9 +58,7 @@ export function coverageMode({
   }
 
   const { pass, message, uncovered } = parseCoverage(
-    execResult,
-    fileName,
-    filePath
+    execResult, fileName, filePath
   )
   ok(message)('string')
 
@@ -82,6 +87,7 @@ export function coverageMode({
   )
 
   if (okNotify){
+    maybeLog(cleaner.stdout)
     notify(cleaner.stdout)
     notifyClose()
   }

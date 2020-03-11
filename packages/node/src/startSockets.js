@@ -1,4 +1,4 @@
-const DEBUG = false
+const DEBUG = true
 
 import { conf } from './_modules/conf'
 conf()
@@ -80,7 +80,7 @@ export function niketaClient(){
       const passed = checkExtensionMessage(input.message)
 
       if (!passed) return console.log('unknown mode', input.message)
-      
+
       if (!emit){
         return console.log('Waiting for VSCode to connecte', input.message)
       }
@@ -88,18 +88,18 @@ export function niketaClient(){
       busyFlag = true
 
       const options = {
-        debugFlag   : DEBUG,
-        disableLint : Boolean(input.message.disableLint),
-        lintOnly    : input.message.mode === 'LINT_ONLY',
-        dir         : input.message.dir,
+        debugFlag      : DEBUG,
+        disableLint    : Boolean(input.message.disableLint),
+        lintOnly       : input.message.mode === 'LINT_ONLY',
+        dir            : input.message.dir,
         emit,
         notify,
         notifyClose,
-        filePath    : input.message.filePath,
-        hasReact    : input.message.hasReact,
-        hasAngular  : input.message.hasAngular,
-        hasWallaby  : input.message.hasWallaby,
-        prettyHtmlMode  : input.message.filePath.endsWith('.html'),
+        filePath       : input.message.filePath,
+        hasReact       : input.message.hasReact,
+        hasAngular     : input.message.hasAngular,
+        hasWallaby     : input.message.hasWallaby,
+        prettyHtmlMode : input.message.filePath.endsWith('.html'),
       }
       if (DEBUG){
         console.log({

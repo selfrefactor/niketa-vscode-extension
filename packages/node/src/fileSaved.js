@@ -9,8 +9,8 @@ import { coverageMode } from './coverageMode'
 import { startSpinner } from './emitters/startSpinner'
 import { stopSpinner } from './emitters/stopSpinner'
 import { lintMode } from './lintMode'
+import { prettyHtmlMode as prettyHtmlModeMethod } from './prettyHtmlMode.js'
 import { proveMode } from './proveMode.js'
-import { prettyHtmlMode as prettyHtmlModeMethod} from './prettyHtmlMode.js'
 
 const ALLOW_RESULT_LOG = false
 const JEST_BIN = './node_modules/jest/bin/jest.js'
@@ -37,10 +37,10 @@ export async function fileSaved({
   notify,
   notifyClose,
 }){
-  if(prettyHtmlMode){
+  if (prettyHtmlMode){
     return prettyHtmlModeMethod(filePath)
   }
-  
+
   if (lintOnly || hasWallaby){
     return lintMode({
       notify,
@@ -130,7 +130,6 @@ export async function fileSaved({
   const [ coveragePath, fileName ] = getCoveragePath(dir, fileHolder)
 
   const command = glue(`
-    RAMBDAX_LOG=true
     ${ JEST_BIN }
     '-u'
     --maxWorkers=1
@@ -163,5 +162,6 @@ export async function fileSaved({
     maybeSpecFile,
     notify,
     notifyClose,
+    debugFlag,
   })
 }
