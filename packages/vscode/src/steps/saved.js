@@ -1,5 +1,5 @@
 const { setter, getter } = require('rambdax')
-const allowed = [ '.js', '.jsx', '.tsx', '.ts' ]
+const allowed = [ '.js', '.jsx', '.tsx', '.ts', '.html' ]
 
 function saved({ filePath, rabbitHole }){
   if (!allowed.some(x => filePath.endsWith(x))) return
@@ -7,7 +7,9 @@ function saved({ filePath, rabbitHole }){
 
   if (currentMode === 'OFF') return
 
-  if (currentMode !== 'LOCK_FILE') return rabbitHole(filePath)
+  if (currentMode !== 'LOCK_FILE' || filePath.endsWith('.html')){
+    return rabbitHole(filePath)
+  } 
 
   if (!getter('LOCK_FILE')) setter('LOCK_FILE', filePath)
 
