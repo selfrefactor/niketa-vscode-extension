@@ -4,4 +4,4 @@ const demoPath = `/home/s/repos/joke-maker/src/app/rough-demo/rough-demo.compone
 
 test('happy', async () => {
   await prettyHtmlMode(demoPath)
-})  
+})

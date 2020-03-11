@@ -1,14 +1,16 @@
-const DEBUG = true
-
 import { conf } from './_modules/conf'
 conf()
-import fastify from 'fastify'
+
 import { identity, setter } from 'rambdax'
+const VSCODE_INPUT_LOG = false
+setter('DEBUG_LOG', true)
+
+import fastify from 'fastify'
 import socketServer from 'socket.io'
 import socketClient from 'socket.io-client'
 import WebSocket from 'ws'
-
-import { clean } from './_helpers/clean'
+import { log } from 'helpers'
+import { parseBeforeNotify } from './_modules/parseBeforeNotify'
 import { checkExtensionMessage } from './ants/checkExtensionMessage'
 import { fileSaved } from './fileSaved'
 
@@ -17,20 +19,11 @@ let notify = identity
 let notifyClose
 let emit
 
-function parseBeforeNotify(input){
-  const toReturn = input
-    .split('\n')
-    .map(clean)
-    .join('\n')
-
-  return toReturn
-}
-
 const wss = new WebSocket.Server({ port : conf('PORT_2') })
-console.log(`Listen at ${ conf('PORT_2') } for electron notify`)
+log(`Listen at ${ conf('PORT_2') } for electron notify`, 'info')
 
 wss.on('connection', ws => {
-  console.log(`Connected at ${ conf('PORT_2') } for electron notify`)
+  log(`Connected at ${ conf('PORT_2') } for electron notify`, 'info')
 
   notify = text => {
     if (typeof text !== 'string') return
@@ -88,7 +81,6 @@ export function niketaClient(){
       busyFlag = true
 
       const options = {
-        debugFlag      : DEBUG,
         disableLint    : Boolean(input.message.disableLint),
         lintOnly       : input.message.mode === 'LINT_ONLY',
         dir            : input.message.dir,
@@ -101,7 +93,7 @@ export function niketaClient(){
         hasWallaby     : input.message.hasWallaby,
         prettyHtmlMode : input.message.filePath.endsWith('.html'),
       }
-      if (DEBUG){
+      if (VSCODE_INPUT_LOG){
         console.log({
           options,
           input,

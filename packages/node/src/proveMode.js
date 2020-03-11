@@ -1,6 +1,7 @@
 import { log } from 'helpers'
 import { remove, take, wait } from 'rambdax'
 
+import { debugLog } from './_helpers/debugLog'
 import { execNodeFile } from './ants/execNodeFile'
 import { ERROR_ICON, SUCCESS_ICON } from './coverageMode.js'
 import { additional } from './emitters/additional.js'
@@ -11,7 +12,6 @@ const SEPARATOR = '🚦'
 
 export async function proveMode({
   dir,
-  maybeLog,
   stopLoaders,
   startLoaders,
   notify,
@@ -26,24 +26,26 @@ export async function proveMode({
     cwd  : dir,
     file : filePath,
   }))
-  console.log('PROVE_MODE_END', filePath)
-  maybeLog({
+
+  debugLog({
     execResult,
     err,
-  })
+  },
+  'prove mode result')
 
   stopLoaders()
   additional(emit)
 
   if (execResult === undefined){
-    console.log('execResult === undefined', {err, execResult})
+    console.log('execResult === undefined', {
+      err,
+      execResult,
+    })
 
     return show(emit, ERROR_ICON)
   }
 
-  const toShow = err ?
-    remove([ filePath, /\n/g ], err) :
-    remove(/\n/g, execResult.join(SEPARATOR))
+  const toShow = err ? remove([ filePath, /\n/g ], err) : remove(/\n/g, execResult.join(SEPARATOR))
 
   if (toShow.length === 0) return show(emit, SUCCESS_ICON)
 
@@ -58,7 +60,6 @@ export async function proveMode({
   if (toShow.length < LIMIT) return show(emit, toShow)
 
   if (!notifyClose){
-
     return show(emit, `${ take(LIMIT, toShow) } ...`)
   }
 

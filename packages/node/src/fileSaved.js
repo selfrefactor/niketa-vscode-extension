@@ -1,6 +1,7 @@
 import { log, startLoadingBar, stopLoadingBar } from 'helpers'
 import { glue } from 'rambdax'
 
+import { debugLog } from './_helpers/debugLog'
 import { execJest } from './_modules/execJest'
 import { getCoveragePath } from './_modules/getCoveragePath'
 import { getSpecFile } from './_modules/getSpecFile'
@@ -12,7 +13,6 @@ import { lintMode } from './lintMode'
 import { prettyHtmlMode as prettyHtmlModeMethod } from './prettyHtmlMode.js'
 import { proveMode } from './proveMode.js'
 
-const ALLOW_RESULT_LOG = false
 const JEST_BIN = './node_modules/jest/bin/jest.js'
 
 const isProveMode = filePath => filePath.toLowerCase().endsWith('prove.js')
@@ -24,7 +24,6 @@ let specFileHolder
 // Dispatch between all possible modes
 // ============================================
 export async function fileSaved({
-  debugFlag,
   lintOnly,
   disableLint,
   dir,
@@ -48,13 +47,6 @@ export async function fileSaved({
       filePath,
       okLint : true,
     })
-  }
-  const maybeLog = (...logInputs) => {
-    if (logInputs[ 0 ] === 'Result'){
-      return ALLOW_RESULT_LOG ? console.log(...logInputs) : null
-    }
-    if (!debugFlag) return
-    console.log(...logInputs)
   }
 
   const allowLint = filePath !== lintFileHolder && lintFileHolder !== undefined
@@ -83,7 +75,6 @@ export async function fileSaved({
     lintFileHolder = filePath
 
     return proveMode({
-      maybeLog,
       stopLoaders,
       startLoaders,
       notify,
@@ -102,9 +93,9 @@ export async function fileSaved({
     fileHolder = filePath
     lintFileHolder = filePath
     specFileHolder = maybeSpecFile
-    maybeLog('saved for lint later', filePath)
+    debugLog(filePath, 'saved for lint later')
   } else if (canStillLint){
-    maybeLog('saved for lint later even without spec', filePath)
+    debugLog(filePath, 'saved for lint later even without spec')
 
     // Even if the file has no corresponding spec file
     // we keep it for further linting
@@ -115,13 +106,13 @@ export async function fileSaved({
   if (!(fileHolder && specFileHolder)){
     // This happens only until the script receives a correct filepath
     ///////////////////
-    return maybeLog(filePath, 'no specfile')
+    return debugLog('no specfile', filePath)
   }
 
   if (!fileHolder.startsWith(dir)){
     // when we have filepath from previous project but not in the current
     ///////////////////
-    return maybeLog('still waiting for testable file in this project', dir)
+    return debugLog(dir, 'still waiting for testable file in this project')
   }
 
   const specFile = maybeSpecFile ? maybeSpecFile : specFileHolder
@@ -140,14 +131,12 @@ export async function fileSaved({
   `)
 
   startLoaders()
-  maybeLog('Start', command)
-
   /*
     TODO: it needs a max ms for execution of the test
   */
   const execResult = await execJest(command, { cwd : dir })
-  maybeLog('End', command)
-  maybeLog('Result', execResult)
+  debugLog(command, 'command end')
+  debugLog(execResult, 'jest result')
 
   stopLoaders()
 
@@ -162,6 +151,5 @@ export async function fileSaved({
     maybeSpecFile,
     notify,
     notifyClose,
-    debugFlag,
   })
 }
