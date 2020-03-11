@@ -7,5 +7,5 @@ test('happy', () => {
 --------------|----------|---------|---------|-------------------
 `
   const result = parseBeforeNotify(demoInput)
-  expect(result).toMatchInlineSnapshot('')
+  expect(result).toMatchSnapshot()
 })

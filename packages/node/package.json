@@ -1,6 +1,6 @@
 {
 	"scripts": {
-		"dev": "jest src/_modules/parseBeforeNotify.spec.js",
+		"dev": "jest -u src/_modules/parseBeforeNotify.spec.js",
 		"test": "jest src",
 		"start": "node prove"
 	},
