@@ -5,6 +5,9 @@ const schema = {
   dir      : 'string',
   filePath : 'string',
   hasReact : 'boolean',
+  hasAngular : 'boolean',
+  hasWallaby : 'boolean',
+  // prettyHtmlMode : 'boolean',
   mode     : modes,
 }
 

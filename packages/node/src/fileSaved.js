@@ -10,6 +10,7 @@ import { startSpinner } from './emitters/startSpinner'
 import { stopSpinner } from './emitters/stopSpinner'
 import { lintMode } from './lintMode'
 import { proveMode } from './proveMode.js'
+import { prettyHtmlMode as prettyHtmlModeMethod} from './prettyHtmlMode.js'
 
 const ALLOW_RESULT_LOG = false
 const JEST_BIN = './node_modules/jest/bin/jest.js'
@@ -31,10 +32,15 @@ export async function fileSaved({
   filePath,
   hasReact,
   hasAngular,
+  prettyHtmlMode,
   hasWallaby,
   notify,
   notifyClose,
 }){
+  if(prettyHtmlMode){
+    return prettyHtmlModeMethod(filePath)
+  }
+  
   if (lintOnly || hasWallaby){
     return lintMode({
       notify,

@@ -99,6 +99,7 @@ export function niketaClient(){
         hasReact    : input.message.hasReact,
         hasAngular  : input.message.hasAngular,
         hasWallaby  : input.message.hasWallaby,
+        prettyHtmlMode  : input.message.prettyHtmlMode,
       }
       if (DEBUG){
         console.log({
