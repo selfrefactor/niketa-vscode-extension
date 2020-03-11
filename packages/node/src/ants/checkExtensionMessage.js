@@ -7,7 +7,6 @@ const schema = {
   hasReact : 'boolean',
   hasAngular : 'boolean',
   hasWallaby : 'boolean',
-  // prettyHtmlMode : 'boolean',
   mode     : modes,
 }
 
