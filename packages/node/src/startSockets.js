@@ -3,13 +3,14 @@ conf()
 
 import { identity, setter } from 'rambdax'
 const VSCODE_INPUT_LOG = false
-setter('DEBUG_LOG', true)
+setter('DEBUG_LOG', false)
 
 import fastify from 'fastify'
+import { log } from 'helpers'
 import socketServer from 'socket.io'
 import socketClient from 'socket.io-client'
 import WebSocket from 'ws'
-import { log } from 'helpers'
+
 import { parseBeforeNotify } from './_modules/parseBeforeNotify'
 import { checkExtensionMessage } from './ants/checkExtensionMessage'
 import { fileSaved } from './fileSaved'

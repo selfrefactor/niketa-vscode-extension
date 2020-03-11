@@ -10,8 +10,7 @@ const demoStdout = '  console.log node_modules/helpers/src/log/index.js:98\n' +
 ' prettyHtmlMode.js |     100 |      100 |     100 |     100 |                   \n' +
 '-------------------|---------|----------|---------|---------|-------------------\n'
 
-
 test('happy', () => {
   const result = cleanStdout(demoStdout)
-  console.log({result})
+  console.log({ result })
 })
