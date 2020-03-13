@@ -62,16 +62,6 @@
           "type": "number",
           "default": 3012,
           "description": "VSCode out port"
-        },
-        "niketa.PORT_2": {
-          "type": "number",
-          "default": 3013,
-          "description": "Niketa notify port"
-        },
-        "niketa.PORT_3": {
-          "type": "number",
-          "default": 3014,
-          "description": "Niketa notify close port"
         }
       }
     }
