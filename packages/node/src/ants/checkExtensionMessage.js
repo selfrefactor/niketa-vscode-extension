@@ -5,7 +5,6 @@ const schema = {
   dir        : 'string',
   filePath   : 'string',
   hasReact   : 'boolean',
-  hasAngular : 'boolean',
   hasWallaby : 'boolean',
   mode       : modes,
 }

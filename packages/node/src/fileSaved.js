@@ -30,7 +30,6 @@ export async function fileSaved({
   emit,
   filePath,
   hasReact,
-  hasAngular,
   prettyHtmlMode,
   hasWallaby,
   notify,
@@ -131,14 +130,17 @@ export async function fileSaved({
   `)
 
   startLoaders()
-  /*
-    TODO: it needs a max ms for execution of the test
-  */
+  
   const execResult = await execJest(command, { cwd : dir })
   debugLog(command, 'command end')
   debugLog(execResult, 'jest result')
 
   stopLoaders()
+
+  if(execResult.takesTooLong){
+    log(command, 'box')
+    return log('TAKES TOO LONG', 'error')
+  }
 
   process.stderr.write(execResult.stderr)
   process.stderr.write(execResult.stdout)

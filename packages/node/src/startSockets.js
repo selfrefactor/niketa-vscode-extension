@@ -3,7 +3,7 @@ conf()
 
 import { identity, setter } from 'rambdax'
 const VSCODE_INPUT_LOG = false
-setter('DEBUG_LOG', false)
+setter('DEBUG_LOG', true)
 
 import fastify from 'fastify'
 import { log } from 'helpers'
@@ -90,7 +90,6 @@ export function niketaClient(){
         notifyClose,
         filePath       : input.message.filePath,
         hasReact       : input.message.hasReact,
-        hasAngular     : input.message.hasAngular,
         hasWallaby     : input.message.hasWallaby,
         prettyHtmlMode : input.message.filePath.endsWith('.html'),
       }
