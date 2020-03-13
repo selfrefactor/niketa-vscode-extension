@@ -3,7 +3,7 @@ conf()
 
 import { identity, setter } from 'rambdax'
 const VSCODE_INPUT_LOG = false
-setter('DEBUG_LOG', true)
+setter('DEBUG_LOG', false)
 
 import fastify from 'fastify'
 import { log } from 'helpers'
@@ -14,6 +14,7 @@ import WebSocket from 'ws'
 import { parseBeforeNotify } from './_modules/parseBeforeNotify'
 import { checkExtensionMessage } from './ants/checkExtensionMessage'
 import { fileSaved } from './fileSaved'
+import { debugLog } from './_helpers/debugLog'
 
 let busyFlag = false
 let notify = identity
@@ -28,29 +29,35 @@ wss.on('connection', ws => {
 
   notify = text => {
     if (typeof text !== 'string') return
+    const toSend = parseBeforeNotify(text)
 
-    return ws.send(parseBeforeNotify(text))
+    debugLog(toSend, 'before send to electron')
+    return ws.send(toSend)
   }
 })
 
 function catchFn(e){
+  log('sep')
+  log('sep')
   console.log(e, 'catchFn')
   busyFlag = false
 }
 
 export function niketaClient(){
   const app = fastify()
-  console.log(`Listen at ${ conf('PORT_1') } for vscode 2`)
+  log(`Listen at ${ conf('PORT_1') } for vscode 2`, 'back')
   app.listen(conf('PORT_1'))
 
   const io = socketServer(app.server)
-  console.log(`Listen at ${ conf('PORT_0') } for vscode 1`)
+  log(`Listen at ${ conf('PORT_0') } for vscode 1`, 'icon.tag=bar')
+  
   const socket = socketClient(`http://localhost:${ conf('PORT_0') }`)
-  console.log(`Listen at ${ conf('PORT_3') } for electron notify close`)
+  log(`Listen at ${ conf('PORT_3') } for electron notify close`, 'box')
+  
   const socketNotifyClose = socketClient(`http://localhost:${ conf('PORT_3') }`)
 
   socketNotifyClose.on('connect', () => {
-    console.log('connected notify close', conf('PORT_3'))
+    log(`connected notify close ${conf('PORT_3')}`, 'box')
     setter('electron.connected', true)
 
     notifyClose = () => {
@@ -59,14 +66,14 @@ export function niketaClient(){
   })
 
   socket.on('connect', () => {
-    console.log('connected vscode 1', conf('PORT_0'))
+    log(`connected vscode 1 ${conf('PORT_0')}`, 'icon.tag=bar')
     emit = input => {
       socket.emit(input.channel, { message : input.message })
     }
   })
 
   io.on('connection', socketInstance => {
-    console.log('connected vscode 2', conf('PORT_1'))
+    log(`connected vscode 2 ${conf('PORT_1')}`, 'back')
 
     socketInstance.on('fileSaved', input => {
       if (busyFlag) return console.log('BUSY')

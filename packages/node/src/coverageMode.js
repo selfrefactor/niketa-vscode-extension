@@ -1,5 +1,5 @@
 import { allTrue, getter, ok, take } from 'rambdax'
-
+import { log } from 'helpers'
 import { clean } from './_modules/clean'
 import { parseCoverage } from './_modules/parseCoverage'
 import { shouldNotify } from './_modules/shouldNotify'
@@ -79,6 +79,13 @@ export function coverageMode({
   if (okNotify){
     notify(cleaner.stdout)
     notifyClose()
+  }else{
+    console.log({
+      should: shouldNotify(maybeSpecFile),
+      cleaner: cleaner.stdout.includes('console.log'),
+      electronConnected
+    })
+    log('!okNotify', 'error')
   }
 
   tooltip(emit, `${ cleaner.stderr }${ cleaner.stdout }${ cleaner.uncovered }`)
