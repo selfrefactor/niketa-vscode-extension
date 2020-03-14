@@ -12,7 +12,7 @@ div.container {
 div.close {
   position: fixed;
   right: 1vmin;
-  top: 1vmin;
+  bottom: 1vmin;
 }
 div.close > button{
   cursor: pointer;
