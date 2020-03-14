@@ -130,15 +130,16 @@ export async function fileSaved({
   `)
 
   startLoaders()
-  
+
   const execResult = await execJest(command, { cwd : dir })
   debugLog(command, 'command end')
   debugLog(execResult, 'jest result')
 
   stopLoaders()
 
-  if(execResult.takesTooLong){
+  if (execResult.takesTooLong){
     log(command, 'box')
+
     return log('TAKES TOO LONG', 'error')
   }
 

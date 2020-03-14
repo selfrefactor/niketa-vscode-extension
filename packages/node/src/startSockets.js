@@ -11,10 +11,10 @@ import socketServer from 'socket.io'
 import socketClient from 'socket.io-client'
 import WebSocket from 'ws'
 
+import { debugLog } from './_helpers/debugLog'
 import { parseBeforeNotify } from './_modules/parseBeforeNotify'
 import { checkExtensionMessage } from './ants/checkExtensionMessage'
 import { fileSaved } from './fileSaved'
-import { debugLog } from './_helpers/debugLog'
 
 let busyFlag = false
 let notify = identity
@@ -32,6 +32,7 @@ wss.on('connection', ws => {
     const toSend = parseBeforeNotify(text)
 
     debugLog(toSend, 'before send to electron')
+
     return ws.send(toSend)
   }
 })
@@ -50,14 +51,14 @@ export function niketaClient(){
 
   const io = socketServer(app.server)
   log(`Listen at ${ conf('PORT_0') } for vscode 1`, 'icon.tag=bar')
-  
+
   const socket = socketClient(`http://localhost:${ conf('PORT_0') }`)
   log(`Listen at ${ conf('PORT_3') } for electron notify close`, 'box')
-  
+
   const socketNotifyClose = socketClient(`http://localhost:${ conf('PORT_3') }`)
 
   socketNotifyClose.on('connect', () => {
-    log(`connected notify close ${conf('PORT_3')}`, 'box')
+    log(`connected notify close ${ conf('PORT_3') }`, 'box')
     setter('electron.connected', true)
 
     notifyClose = () => {
@@ -66,14 +67,14 @@ export function niketaClient(){
   })
 
   socket.on('connect', () => {
-    log(`connected vscode 1 ${conf('PORT_0')}`, 'icon.tag=bar')
+    log(`connected vscode 1 ${ conf('PORT_0') }`, 'icon.tag=bar')
     emit = input => {
       socket.emit(input.channel, { message : input.message })
     }
   })
 
   io.on('connection', socketInstance => {
-    log(`connected vscode 2 ${conf('PORT_1')}`, 'back')
+    log(`connected vscode 2 ${ conf('PORT_1') }`, 'back')
 
     socketInstance.on('fileSaved', input => {
       if (busyFlag) return console.log('BUSY')

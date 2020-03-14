@@ -1,13 +1,9 @@
-const {ms} = require('string-fn') 
 const { exec } = require('child_process')
+const { ms } = require('string-fn')
 
 function execJest(command, options){
   return new Promise(resolve => {
-    const timeoutHolder = setTimeout(() => {
-      return resolve({
-        takesTooLong: true,
-      })
-    }, ms('3 minutes'));
+    const timeoutHolder = setTimeout(() => resolve({ takesTooLong : true }), ms('3 minutes'))
 
     exec(
       command, options, (
