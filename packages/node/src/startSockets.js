@@ -100,6 +100,7 @@ export function niketaClient(){
         hasReact       : input.message.hasReact,
         hasWallaby     : input.message.hasWallaby,
         prettyHtmlMode : input.message.filePath.endsWith('.html'),
+        stylelintMode  : input.message.filePath.endsWith('.css'),
       }
       if (VSCODE_INPUT_LOG){
         console.log({

@@ -12,6 +12,7 @@ import { stopSpinner } from './emitters/stopSpinner'
 import { lintMode } from './lintMode'
 import { prettyHtmlMode as prettyHtmlModeMethod } from './prettyHtmlMode.js'
 import { proveMode } from './proveMode.js'
+import { stylelintMode as stylelintModeMethod } from './stylelintMode.js'
 
 const JEST_BIN = './node_modules/jest/bin/jest.js'
 
@@ -21,22 +22,24 @@ let fileHolder
 let lintFileHolder
 let specFileHolder
 
-// Dispatch between all possible modes
-// ============================================
 export async function fileSaved({
-  lintOnly,
-  disableLint,
   dir,
+  disableLint,
   emit,
   filePath,
   hasReact,
-  prettyHtmlMode,
   hasWallaby,
+  lintOnly,
   notify,
   notifyClose,
+  prettyHtmlMode,
+  stylelintMode,
 }){
   if (prettyHtmlMode){
     return prettyHtmlModeMethod(filePath)
+  }
+  if (stylelintMode){
+    return stylelintModeMethod(filePath)
   }
 
   if (lintOnly || hasWallaby){
