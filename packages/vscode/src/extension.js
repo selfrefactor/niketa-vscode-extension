@@ -12,8 +12,7 @@ setter('MODE', head(MODES))
 
 function activate(context){
 
-  const startCommand = vscode.commands.registerCommand(
-    START,
+  const startCommand = vscode.commands.registerCommand(START,
     () => {
       if (!getter('ACTIVATED')){
         setter('ACTIVATED', true)
@@ -25,13 +24,10 @@ function activate(context){
       }
 
       setter('ACTIVE_FLAG', !getter('ACTIVE_FLAG'))
-    }
-  )
+    })
 
-  const changeModeCommand = vscode.commands.registerCommand(
-    CHANGE_MODE,
-    changeMode
-  )
+  const changeModeCommand = vscode.commands.registerCommand(CHANGE_MODE,
+    changeMode)
 
   context.subscriptions.push(startCommand)
   context.subscriptions.push(changeModeCommand)

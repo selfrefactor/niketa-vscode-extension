@@ -34,7 +34,7 @@ function getCornerCases(dir){
   holder[ dir ] = {
     hasReact: isDependecy || isDevDependecy,
     hasAngular: isAngularDependecy || isAngularDevDependecy,
-    hasWallaby
+    hasWallaby,
   }
 
   return holder[ dir ]

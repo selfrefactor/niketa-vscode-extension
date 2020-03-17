@@ -1,8 +1,6 @@
 const { niketaConfig } = require('./niketaConfig')
 
-const socket = require(
-  'socket.io-client'
-)(`http://localhost:${ niketaConfig('PORT_1') }`)
+const socket = require('socket.io-client')(`http://localhost:${ niketaConfig('PORT_1') }`)
 const DISABLE_LINT = niketaConfig('DISABLE_LINT')
 const { ok } = require('rambdax')
 
@@ -15,10 +13,13 @@ const initEmitter = () => {
 const emit = input => {
   ok(input)({ channel : 'string' })
 
-  socket.emit(
-    input.channel,
-    { message : {...input, disableLint: DISABLE_LINT} }
-  )
+  socket.emit(input.channel,
+    {
+      message : {
+        ...input,
+        disableLint : DISABLE_LINT,
+      },
+    })
 }
 
 exports.initEmitter = initEmitter

@@ -12,8 +12,8 @@ const { niketaConfig } = require('../_modules/niketaConfig')
 const { saved } = require('./saved')
 
 const { emit } = require('../_modules/emitter')
-const { getCwd } = require('../_modules/getCwd')
 const { getCornerCases } = require('../_modules/getCornerCases')
+const { getCwd } = require('../_modules/getCwd')
 const { ok, getter } = require('rambdax')
 
 function showRoute(request){
@@ -56,10 +56,10 @@ io.on('connection', socket => {
 function emitAnt({ filePath, mode }){
   const dir = getCwd(filePath)
   if (dir === false) return
-  const {hasReact,hasAngular, hasWallaby} = getCornerCases(dir)
+  const { hasReact, hasAngular, hasWallaby } = getCornerCases(dir)
 
   emit({
-    channel  : 'fileSaved',
+    channel : 'fileSaved',
     dir,
     filePath,
     hasReact,
@@ -85,9 +85,7 @@ function initWatcher(){
   })
 }
 
-fastify.listen(
-  niketaConfig('PORT_0')
-)
+fastify.listen(niketaConfig('PORT_0'))
 
 exports.init = () => {
   initWatcher()

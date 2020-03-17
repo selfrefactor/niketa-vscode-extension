@@ -15,25 +15,19 @@ const PRIORITY = 200
 
 const holder = {}
 
-holder.bar = vscode.window.createStatusBarItem(
-  vscode.StatusBarAlignment.Right,
-  PRIORITY
-)
+holder.bar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right,
+  PRIORITY)
 
 holder.secondBar = config.secondBar.enabled ?
 
-  vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Right,
-    PRIORITY + 1
-  ) :
+  vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right,
+    PRIORITY + 1) :
   dummy
 
 holder.thirdBar = config.thirdBar.enabled ?
 
-  vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Right,
-    PRIORITY + 2
-  ) :
+  vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right,
+    PRIORITY + 2) :
   dummy
 
 holder.bar.command = CHANGE_MODE
