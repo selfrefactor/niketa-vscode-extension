@@ -89,7 +89,7 @@ export async function fileSaved({
 
   const maybeSpecFile = getSpecFile(filePath)
   const canStillLint =
-    filePath.endsWith('.js') || filePath.endsWith('.jsx') || filePath.endsWith('.ts')
+    filePath.endsWith('.js') || filePath.endsWith('.ts')
 
   if (maybeSpecFile){
     fileHolder = filePath

@@ -5,6 +5,9 @@
       "checkJs": true,
       "lib": [
           "es6",
+          "es7",
+          "es2019",
+          "es2020",
           "dom"
       ]
   },
