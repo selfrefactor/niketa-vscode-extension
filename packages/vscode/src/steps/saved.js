@@ -1,5 +1,5 @@
 const { setter, getter } = require('rambdax')
-const allowed = [ '.js', '.jsx', '.tsx', '.ts', '.html', '.css' ]
+const allowed = [ '.js', '.ts', '.html', '.css' ]
 
 function saved({ filePath, rabbitHole }){
   if (!allowed.some(x => filePath.endsWith(x))) return
