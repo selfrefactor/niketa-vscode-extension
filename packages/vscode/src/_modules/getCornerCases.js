@@ -17,23 +17,16 @@ function getCornerCases(dir){
   const packageJsonString = readFileSync(location).toString()
   const { dependencies, devDependencies } = JSON.parse(packageJsonString)
 
-  const isDevDependecy =
-    devDependencies === undefined ? false : 'react' in devDependencies
-
   const isAngularDevDependecy =
     devDependencies === undefined ?
       false :
       '@angular/core' in devDependencies
 
-  const isDependecy =
-    dependencies === undefined ? false : 'react' in dependencies
-
   const isAngularDependecy =
     dependencies === undefined ? false : '@angular/core' in dependencies
 
   holder[ dir ] = {
-    hasReact: isDependecy || isDevDependecy,
-    hasAngular: isAngularDependecy || isAngularDevDependecy,
+    hasAngular : isAngularDependecy || isAngularDevDependecy,
     hasWallaby,
   }
 

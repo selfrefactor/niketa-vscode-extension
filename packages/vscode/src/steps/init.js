@@ -56,13 +56,12 @@ io.on('connection', socket => {
 function emitAnt({ filePath, mode }){
   const dir = getCwd(filePath)
   if (dir === false) return
-  const { hasReact, hasAngular, hasWallaby } = getCornerCases(dir)
+  const { hasAngular, hasWallaby } = getCornerCases(dir)
 
   emit({
     channel : 'fileSaved',
     dir,
     filePath,
-    hasReact,
     hasAngular,
     hasWallaby,
     mode,
