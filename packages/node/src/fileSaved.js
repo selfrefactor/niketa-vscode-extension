@@ -5,6 +5,7 @@ import { debugLog } from './_helpers/debugLog'
 import { execJest } from './_modules/execJest'
 import { getCoveragePath } from './_modules/getCoveragePath'
 import { getSpecFile } from './_modules/getSpecFile'
+import { onStart, onEnd, isLocked } from './_modules/lock'
 import { whenFileLoseFocus } from './_modules/whenFileLoseFocus'
 import { coverageMode } from './coverageMode'
 import { startSpinner } from './emitters/startSpinner'
@@ -35,6 +36,10 @@ export async function fileSaved({
   prettyHtmlMode,
   stylelintMode,
 }){
+  if(isLocked()){
+    return log('LOCKED', 'error')
+  }
+  onStart()
   if (prettyHtmlMode){
     return prettyHtmlModeMethod(filePath)
   }
@@ -108,12 +113,14 @@ export async function fileSaved({
   if (!(fileHolder && specFileHolder)){
     // This happens only until the script receives a correct filepath
     ///////////////////
+    onEnd()
     return debugLog('no specfile', filePath)
   }
 
   if (!fileHolder.startsWith(dir)){
     // when we have filepath from previous project but not in the current
     ///////////////////
+    onEnd()
     return debugLog(dir, 'still waiting for testable file in this project')
   }
 

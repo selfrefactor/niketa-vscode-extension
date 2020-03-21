@@ -12,6 +12,7 @@ import socketClient from 'socket.io-client'
 import WebSocket from 'ws'
 
 import { debugLog } from './_helpers/debugLog'
+import { initLock } from './_modules/lock'
 import { parseBeforeNotify } from './_modules/parseBeforeNotify'
 import { checkExtensionMessage } from './ants/checkExtensionMessage'
 import { fileSaved } from './fileSaved'
@@ -45,6 +46,7 @@ function catchFn(e){
 }
 
 export function niketaClient(){
+  initLock()
   const app = fastify()
   log(`Listen at ${ conf('PORT_1') } for vscode 2`, 'back')
   app.listen(conf('PORT_1'))

@@ -2631,7 +2631,7 @@ eslint-plugin-jest-formatting@^1.2.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-jest-formatting/-/eslint-plugin-jest-formatting-1.2.0.tgz#a9eef225520d53e63665d0f2fcf4d3eda894a18e"
   integrity sha512-EqsbDByAtdQa5vEhJFUFMqTW7fghN0Qhb8oulM7R3j9+9xRuMsQKCPjWvCIxpWhl3SJJmlxBC25o1pUXiBHaAw==
 
-eslint-plugin-jest@^23.8.0:
+eslint-plugin-jest@^23.8.2:
   version "23.8.2"
   resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-23.8.2.tgz#6f28b41c67ef635f803ebd9e168f6b73858eb8d4"
   integrity sha512-xwbnvOsotSV27MtAe7s8uGWOori0nUsrXh2f1EnpmXua8sDfY6VZhHAhHg2sqK7HBNycRQExF074XSZ7DvfoFg==
@@ -2645,12 +2645,12 @@ eslint-plugin-no-unsafe-regex@^1.0.0:
   dependencies:
     safe-regex "*"
 
-eslint-plugin-react-hooks@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-2.5.0.tgz#c50ab7ca5945ce6d1cf8248d9e185c80b54171b6"
-  integrity sha512-bzvdX47Jx847bgAYf0FPX3u1oxU+mKU8tqrpj4UX9A96SbAmj/HVEefEy6rJUog5u8QIlOPTKZcBpGn5kkKfAQ==
+eslint-plugin-react-hooks@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-2.5.1.tgz#4ef5930592588ce171abeb26f400c7fbcbc23cd0"
+  integrity sha512-Y2c4b55R+6ZzwtTppKwSmK/Kar8AdLiC2f9NADCuxbcTgPPg41Gyqa6b9GppgXSvCtkRw43ZE86CT5sejKC6/g==
 
-eslint-plugin-react@^7.18.3:
+eslint-plugin-react@^7.19.0:
   version "7.19.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.19.0.tgz#6d08f9673628aa69c5559d33489e855d83551666"
   integrity sha512-SPT8j72CGuAP+JFbT0sJHOB80TX/pu44gQ4vXH/cq+hQTiY2PuZ6IHkqXJV6x1b28GDdo1lbInjKUrrdUf0LOQ==
@@ -2668,7 +2668,7 @@ eslint-plugin-react@^7.18.3:
     string.prototype.matchall "^4.0.2"
     xregexp "^4.3.0"
 
-eslint-plugin-simple-import-sort@^5.0.1:
+eslint-plugin-simple-import-sort@^5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/eslint-plugin-simple-import-sort/-/eslint-plugin-simple-import-sort-5.0.2.tgz#43b5c4ab5affa2dd8481ef40216c71723becd2e2"
   integrity sha512-YPEGo7DbMANQ01d2OXlREcaHRszsW8LoUQ9mIjI7gXSdwpnWKfogtzL6FiBfDf1teCBx+AdcjcfDXSKpmhTWeA==
@@ -2716,7 +2716,7 @@ eslint-visitor-keys@^1.0.0, eslint-visitor-keys@^1.1.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.1.0.tgz#e2a82cea84ff246ad6fb57f9bde5b46621459ec2"
   integrity sha512-8y9YjtM1JBJU/A9Kc+SbaOV4y29sSWckBwMHa+FGtVj5gN/sbnKDf6xJUl+8g7FAij9LVaP8C24DUiH/f/2Z9A==
 
-eslint@^7.0.0-alpha.1:
+eslint@^7.0.0-alpha.2:
   version "7.0.0-alpha.2"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.0.0-alpha.2.tgz#973d54582ed978c89f28766b36e63568c800f7ab"
   integrity sha512-QG8ZiHBQYhYfBTp2gPUtPpvLMHwGk31vozmarT8GNoqtslB9FmV06Mkb6tZJiCnE0+fwc0lRZ1+r2MdvJ5gzhg==
@@ -4761,24 +4761,24 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
 
-lint-fn@^1.13.3:
-  version "1.13.3"
-  resolved "https://registry.yarnpkg.com/lint-fn/-/lint-fn-1.13.3.tgz#a5a9ef3ba37db50348f4aa2d19124985a7e800fe"
-  integrity sha512-ZgRGthtWVOgATouNzT9gCA1IQgX66n1Jfkurk3cCgkQ00PDRwKT7VjJSobENl14aJE6VXcsi5R+Rzpi8kHZeNA==
+lint-fn@^1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/lint-fn/-/lint-fn-1.14.0.tgz#594359e21c5367b2aa4f0a1e0ff315ac0df7e400"
+  integrity sha512-jInPpZE85BXUzT7+V8iolnCPPcIn0Irp6WI02REcmeF7o8aTAgD5bl2ZBroHKg/MAI+Y6TdKVz3QKU1AgUNDYg==
   dependencies:
     babel-eslint "10.0.1"
-    eslint "^7.0.0-alpha.1"
+    eslint "^7.0.0-alpha.2"
     eslint-plugin-async-await "^0.0.0"
     eslint-plugin-babel "^5.3.0"
-    eslint-plugin-jest "^23.8.0"
+    eslint-plugin-jest "^23.8.2"
     eslint-plugin-jest-formatting "^1.2.0"
     eslint-plugin-no-unsafe-regex "^1.0.0"
-    eslint-plugin-react "^7.18.3"
-    eslint-plugin-react-hooks "^2.5.0"
-    eslint-plugin-simple-import-sort "^5.0.1"
+    eslint-plugin-react "^7.19.0"
+    eslint-plugin-react-hooks "^2.5.1"
+    eslint-plugin-simple-import-sort "^5.0.2"
     eslint-plugin-sort-class-members "^1.6.0"
     eslint-plugin-sort-requires "^2.1.0"
-    rambdax "^3.6.0"
+    rambdax "^3.7.0"
 
 load-json-file@^4.0.0:
   version "4.0.0"
@@ -5972,7 +5972,7 @@ rambda@2.7.1:
   resolved "https://registry.yarnpkg.com/rambda/-/rambda-2.7.1.tgz#56c3d4100131db0e252236a26bed75faffa229d8"
   integrity sha512-EjTEdqAOqMWSgiyIs/7cd9ByCN1hlVq5YBxaTdlmGygIpvAtM+qv4rO2eptiTUIkP8E5lGusuq7hohtFM23knw==
 
-rambdax@3.7.0, rambdax@^3.3.1, rambdax@^3.6.0, rambdax@^3.7.0:
+rambdax@3.7.0, rambdax@^3.3.1, rambdax@^3.7.0:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/rambdax/-/rambdax-3.7.0.tgz#bc89ced092f95521555eb24fe0a29039807a4756"
   integrity sha512-EaV46HD0sqoFGmm0BT7cMSUXJw0l+iMCH52CkhAuByJNLC+WXE13KgxRd5UsnwdLg/tEskgPADYacOuR0zVa9Q==
