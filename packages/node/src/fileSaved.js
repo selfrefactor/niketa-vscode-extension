@@ -5,12 +5,11 @@ import { debugLog } from './_helpers/debugLog'
 import { execJest } from './_modules/execJest'
 import { getCoveragePath } from './_modules/getCoveragePath'
 import { getSpecFile } from './_modules/getSpecFile'
-import { isLocked, onEnd, onStart } from './_modules/lock'
 import { whenFileLoseFocus } from './_modules/whenFileLoseFocus'
+import { lintAnt } from './ants/lint'
 import { coverageMode } from './coverageMode'
 import { startSpinner } from './emitters/startSpinner'
 import { stopSpinner } from './emitters/stopSpinner'
-import { lintMode } from './lintMode'
 import { prettyHtmlMode as prettyHtmlModeMethod } from './prettyHtmlMode.js'
 import { proveMode } from './proveMode.js'
 import { stylelintMode as stylelintModeMethod } from './stylelintMode.js'
@@ -36,27 +35,12 @@ export async function fileSaved({
   prettyHtmlMode,
   stylelintMode,
 }){
-  if (isLocked()){
-    return log('LOCKED', 'error')
-  }
-  onStart()
-  if (prettyHtmlMode){
-    return prettyHtmlModeMethod(filePath)
-  }
-  if (stylelintMode){
-    return stylelintModeMethod(filePath)
-  }
+  if (prettyHtmlMode) return prettyHtmlModeMethod(filePath)
+  if (stylelintMode) return stylelintModeMethod(filePath)
+  if (lintOnly || hasWallaby) return lintAnt(filePath)
 
-  if (lintOnly || hasWallaby){
-    return lintMode({
-      notify,
-      notifyClose,
-      filePath,
-      okLint : true,
-    })
-  }
-
-  const allowLint = filePath !== lintFileHolder && lintFileHolder !== undefined
+  const allowLint =
+    filePath !== lintFileHolder && lintFileHolder !== undefined
 
   if (allowLint){
     log(`LINT ${ lintFileHolder }`, 'box')
@@ -112,15 +96,13 @@ export async function fileSaved({
   if (!(fileHolder && specFileHolder)){
     // This happens only until the script receives a correct filepath
     ///////////////////
-    onEnd()
-
+    
     return debugLog('no specfile', filePath)
   }
 
   if (!fileHolder.startsWith(dir)){
     // when we have filepath from previous project but not in the current
     ///////////////////
-    onEnd()
 
     return debugLog(dir, 'still waiting for testable file in this project')
   }
@@ -150,7 +132,6 @@ export async function fileSaved({
 
   if (execResult.takesTooLong){
     log(command, 'box')
-
     return log('TAKES TOO LONG', 'error')
   }
 

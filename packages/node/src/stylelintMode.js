@@ -1,8 +1,6 @@
 import { log } from 'helpers'
 import { resolve } from 'path'
-
 import { execCommandAnt } from './ants/execCommand'
-
 const STYLELINT_PATH = 'node_modules/stylelint/bin/stylelint.js'
 
 export async function stylelintMode(filePath){
