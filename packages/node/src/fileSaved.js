@@ -96,7 +96,7 @@ export async function fileSaved({
   if (!(fileHolder && specFileHolder)){
     // This happens only until the script receives a correct filepath
     ///////////////////
-    
+
     return debugLog('no specfile', filePath)
   }
 
@@ -132,6 +132,7 @@ export async function fileSaved({
 
   if (execResult.takesTooLong){
     log(command, 'box')
+
     return log('TAKES TOO LONG', 'error')
   }
 

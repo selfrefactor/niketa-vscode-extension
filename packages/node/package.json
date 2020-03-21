@@ -42,6 +42,9 @@
     "workInProgress": "",
     "feature": [
       "dep"
+    ],
+    "support": [
+      "lint"
     ]
   }
 }

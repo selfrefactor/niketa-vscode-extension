@@ -34,7 +34,10 @@ export function coverageMode({
 }){
   const electronConnected = Boolean(getter('electron.connected'))
 
-  if (execResult.stderr.startsWith('FAIL') || execResult.stderr.includes('ERROR:')){
+  if (
+    execResult.stderr.startsWith('FAIL') ||
+    execResult.stderr.includes('ERROR:')
+  ){
     const notifyWhenError = takeNotifyWhenError(execResult)
     if (notifyWhenError && Boolean(notify) && Boolean(notifyClose)){
       notify(notifyWhenError)
@@ -48,7 +51,9 @@ export function coverageMode({
   }
 
   const { pass, message, uncovered } = parseCoverage(
-    execResult, fileName, filePath
+    execResult,
+    fileName,
+    filePath
   )
   ok(message)('string')
 

@@ -41,14 +41,17 @@ export async function proveMode({
       err,
       execResult,
     })
+
     return show(emit, ERROR_ICON)
   }
 
-  const toShow = err ? remove([ filePath, /\n/g ], err) : remove(/\n/g, execResult.join(SEPARATOR))
+  const toShow = err ?
+    remove([ filePath, /\n/g ], err) :
+    remove(/\n/g, execResult.join(SEPARATOR))
 
   if (toShow.length === 0){
     return show(emit, SUCCESS_ICON)
-  } 
+  }
 
   if (err){
     console.log(err)
@@ -60,7 +63,7 @@ export async function proveMode({
 
   if (toShow.length < LIMIT){
     return show(emit, toShow)
-  } 
+  }
 
   if (!notifyClose){
     return show(emit, `${ take(LIMIT, toShow) } ...`)

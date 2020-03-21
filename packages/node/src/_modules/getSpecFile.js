@@ -2,8 +2,7 @@ const { existsSync } = require('fs')
 const { last, replace } = require('rambdax')
 
 function getSpecFile(filePath){
-  const filtered = [ '.js', '.ts' ].filter(x =>
-    filePath.includes(x))
+  const filtered = [ '.js', '.ts' ].filter(x => filePath.includes(x))
   if (filtered.length === 0) return false
 
   const extension = last(filtered)

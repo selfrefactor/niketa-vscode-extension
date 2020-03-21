@@ -7,9 +7,7 @@ export function takeNotifyWhenError({ stdout, stderr }){
   const cleaner = cleanStdout(stdout)
   const [ , ...toNotify ] = cleaner.split('console.log')
 
-  const maybeErrorMessage = stderr.includes('FAIL') ?
-    `====\n ${ stderr }` :
-    ''
+  const maybeErrorMessage = stderr.includes('FAIL') ? `====\n ${ stderr }` : ''
 
   return `console.log ${ toNotify.join('console.log') } ${ maybeErrorMessage }`
 }
