@@ -37,18 +37,20 @@ export async function fileSaved({
 }){
   if (prettyHtmlMode) return prettyHtmlModeMethod(filePath)
   if (stylelintMode) return stylelintModeMethod(filePath)
-  if (lintOnly || hasWallaby) return lintAnt(filePath)
-
   const allowLint =
     filePath !== lintFileHolder && lintFileHolder !== undefined
 
+  const proveModeEligible = isProveMode(filePath)
+
   if (allowLint){
     log(`LINT ${ lintFileHolder }`, 'box')
-    whenFileLoseFocus(lintFileHolder, disableLint)
+    await whenFileLoseFocus(lintFileHolder, disableLint)
     lintFileHolder = filePath
   } else {
     log(`SKIP_LINT ${ lintFileHolder }`, 'box')
   }
+
+  if ((lintOnly || hasWallaby) && !proveModeEligible) return
 
   const startLoaders = () => {
     startSpinner(emit)
@@ -62,7 +64,7 @@ export async function fileSaved({
     stopLoadingBar()
   }
 
-  if (isProveMode(filePath)){
+  if (proveModeEligible){
     lintFileHolder = filePath
 
     return proveMode({
@@ -77,14 +79,13 @@ export async function fileSaved({
   }
 
   const maybeSpecFile = getSpecFile(filePath)
-  const canStillLint = filePath.endsWith('.js') || filePath.endsWith('.ts')
 
   if (maybeSpecFile){
     fileHolder = filePath
     lintFileHolder = filePath
     specFileHolder = maybeSpecFile
     debugLog(filePath, 'saved for lint later')
-  } else if (canStillLint){
+  } else {
     debugLog(filePath, 'saved for lint later even without spec')
 
     // Even if the file has no corresponding spec file
