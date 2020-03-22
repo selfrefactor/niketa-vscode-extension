@@ -4,7 +4,7 @@ const modes = [ 'LOCK_FILE', 'WITH_COVERAGE', 'LINT_ONLY' ]
 const schema = {
   dir        : 'string',
   filePath   : 'string',
-  hasReact   : 'boolean',
+  hasAngular   : 'boolean',
   hasWallaby : 'boolean',
   mode       : modes,
 }
