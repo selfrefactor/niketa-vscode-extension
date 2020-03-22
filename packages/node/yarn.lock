@@ -4394,10 +4394,10 @@ light-my-request@^3.7.0:
     readable-stream "^3.4.0"
     set-cookie-parser "^2.4.1"
 
-lint-fn@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/lint-fn/-/lint-fn-2.2.0.tgz#f222cc2d56d4b543d178e05b414058af8b42fc00"
-  integrity sha512-JKHx5bca2zPVayOOsfIb/+KT8PJUqgnl8N3THHNn9eCil2AiZPQHmWq/ewpR3xeLSjmrUPrQfw3XrgvaSOasCw==
+lint-fn@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/lint-fn/-/lint-fn-2.3.0.tgz#a63d7ebe127d17005870415ec937de9a6cb2f545"
+  integrity sha512-8L14BBzIjNIoByeU5h7OySdtpHvmheco8hktNuHbposv8J3bY+wrNwxatupUwx4rUCN/0RSFmrY+Tz2TIctcEQ==
   dependencies:
     babel-eslint "10.0.1"
     eslint "^7.0.0-alpha.2"
@@ -4409,6 +4409,7 @@ lint-fn@^2.2.0:
     eslint-plugin-simple-import-sort "^5.0.2"
     eslint-plugin-sort-class-members "^1.6.0"
     eslint-plugin-sort-requires "^2.1.0"
+    prettier "^2.0.1"
     rambdax "^3.7.0"
 
 load-json-file@^4.0.0:
@@ -5238,6 +5239,11 @@ prettier@^1.18.2:
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
   integrity sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
+
+prettier@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.1.tgz#3f00ac71263be34684b2b2c8d7e7f63737592dac"
+  integrity sha512-piXGBcY1zoFOG0MvHpNE5reAGseLmaCRifQ/fmfF49BcYkInEs/naD/unxGNAeOKFA5+JxVrPyMvMlpzcd20UA==
 
 pretty-format@^25.1.0:
   version "25.1.0"

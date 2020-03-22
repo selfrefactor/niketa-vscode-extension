@@ -7,7 +7,7 @@ const html = `${ base }/whole.component.html`
 test('html', async () => {
   await lintOnlyMode(html)
 })
-
+ 
 test('sass', async () => {
   await lintOnlyMode(scss)
 })
