@@ -5,7 +5,6 @@ test('happy', () => {
     dir      : '/home/matrix/repos/stories',
     filePath : '/home/matrix/repos/stories/src/ants/uuid.spec.js',
     // filePath : { fileName : '/home/matrix/repos/stories/src/ants/uuid.spec.js' },
-    hasReact : true,
     mode     : 'LOCK_FILE',
   }
 

@@ -12,6 +12,7 @@ import socketClient from 'socket.io-client'
 import WebSocket from 'ws'
 
 import { debugLog } from './_helpers/debugLog'
+import { isLintOnlyMode } from './_helpers/isLintOnlyMode'
 import { parseBeforeNotify } from './_modules/parseBeforeNotify'
 import { checkExtensionMessage } from './ants/checkExtensionMessage'
 import { fileSaved } from './fileSaved'
@@ -85,6 +86,7 @@ export function niketaClient(){
 
       if (!passed){
         console.log(input.message)
+
         return log('unknown VSCode message error', 'box')
       }
 
@@ -95,17 +97,15 @@ export function niketaClient(){
       busyFlag = true
 
       const options = {
-        disableLint    : Boolean(input.message.disableLint),
-        lintOnly       : input.message.mode === 'LINT_ONLY',
-        dir            : input.message.dir,
+        disableLint  : Boolean(input.message.disableLint),
+        lintOnly     : input.message.mode === 'LINT_ONLY',
+        dir          : input.message.dir,
         emit,
         notify,
         notifyClose,
-        filePath       : input.message.filePath,
-        hasReact       : input.message.hasReact,
-        hasWallaby     : input.message.hasWallaby,
-        prettyHtmlMode : input.message.filePath.endsWith('.html'),
-        stylelintMode  : input.message.filePath.endsWith('.css'),
+        filePath     : input.message.filePath,
+        hasWallaby   : input.message.hasWallaby,
+        lintOnlyMode : isLintOnlyMode(input.message.filePath),
       }
       if (VSCODE_INPUT_LOG){
         console.log({

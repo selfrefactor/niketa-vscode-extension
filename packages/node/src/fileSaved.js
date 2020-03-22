@@ -9,9 +9,8 @@ import { whenFileLoseFocus } from './_modules/whenFileLoseFocus'
 import { coverageMode } from './coverageMode'
 import { startSpinner } from './emitters/startSpinner'
 import { stopSpinner } from './emitters/stopSpinner'
-import { prettyHtmlMode as prettyHtmlModeMethod } from './prettyHtmlMode.js'
+import { lintOnlyMode as lintOnlyModeMethod } from './lintOnlyMode.js'
 import { proveMode } from './proveMode.js'
-import { stylelintMode as stylelintModeMethod } from './stylelintMode.js'
 
 const JEST_BIN = './node_modules/jest/bin/jest.js'
 
@@ -26,16 +25,13 @@ export async function fileSaved({
   disableLint,
   emit,
   filePath,
-  hasReact,
   hasWallaby,
   lintOnly,
   notify,
   notifyClose,
-  prettyHtmlMode,
-  stylelintMode,
+  lintOnlyMode,
 }){
-  if (prettyHtmlMode) return prettyHtmlModeMethod(filePath)
-  if (stylelintMode) return stylelintModeMethod(filePath)
+  if (lintOnlyMode) return lintOnlyModeMethod(filePath)
   const allowLint =
     filePath !== lintFileHolder && lintFileHolder !== undefined
 
@@ -116,7 +112,7 @@ export async function fileSaved({
     ${ JEST_BIN }
     '-u'
     --maxWorkers=1
-    ${ hasReact ? '' : '--env=node' }
+    --env=node
     --collectCoverage=true
     ${ coveragePath }
     ${ testPattern }
