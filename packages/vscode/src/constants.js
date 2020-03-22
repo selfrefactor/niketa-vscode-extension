@@ -1,11 +1,6 @@
 const DEFAULT_MODE = 'WITH_COVERAGE'
 
-const MODES = [
-  DEFAULT_MODE,
-  'LOCK_FILE',
-  'LINT_ONLY',
-  'OFF',
-]
+const MODES = [ DEFAULT_MODE, 'LOCK_FILE', 'LINT_ONLY', 'OFF' ]
 
 exports.MODES = MODES
 

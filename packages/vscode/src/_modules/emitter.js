@@ -13,13 +13,12 @@ const initEmitter = () => {
 const emit = input => {
   ok(input)({ channel : 'string' })
 
-  socket.emit(input.channel,
-    {
-      message : {
-        ...input,
-        disableLint : DISABLE_LINT,
-      },
-    })
+  socket.emit(input.channel, {
+    message : {
+      ...input,
+      disableLint : DISABLE_LINT,
+    },
+  })
 }
 
 exports.initEmitter = initEmitter

@@ -19,13 +19,11 @@ holder.bar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right,
   PRIORITY)
 
 holder.secondBar = config.secondBar.enabled ?
-
   vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right,
     PRIORITY + 1) :
   dummy
 
 holder.thirdBar = config.thirdBar.enabled ?
-
   vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right,
     PRIORITY + 2) :
   dummy
@@ -60,8 +58,7 @@ const init = () => {
     holder[ x ].text = config[ x ].text
     holder[ x ].tooltip = config[ x ].tooltip
 
-    delay(config[ x ].closeAfter)
-      .then(() => holder[ x ].text = config[ x ].afterText)
+    delay(config[ x ].closeAfter).then(() => holder[ x ].text = config[ x ].afterText)
   })
 }
 
@@ -79,8 +76,7 @@ const emitToBar = input => {
   holder[ input.name ].text = input.text
 
   if (input.afterText !== undefined){
-    delay(4000)
-      .then(() => holder[ input.name ].text = input.afterText)
+    delay(4000).then(() => holder[ input.name ].text = input.afterText)
   }
 }
 
