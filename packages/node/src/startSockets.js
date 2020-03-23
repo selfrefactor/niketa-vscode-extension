@@ -2,8 +2,8 @@ import { conf } from './_modules/conf'
 conf()
 
 import { identity, setter } from 'rambdax'
-const VSCODE_INPUT_LOG = false
-setter('DEBUG_LOG', false)
+const VSCODE_INPUT_LOG = true
+setter('DEBUG_LOG', true)
 
 import fastify from 'fastify'
 import { log } from 'helpers'

@@ -44,8 +44,12 @@ export async function fileSaved({
   } else {
     log(`SKIP_LINT ${ lintFileHolder }`, 'box')
   }
-
-  if ((lintOnly || hasWallaby) && !proveModeEligible) return
+  
+  if ((lintOnly || hasWallaby) && !proveModeEligible){
+    lintFileHolder = filePath
+    return debugLog(filePath, 'saved for lint later')
+  } 
+    
 
   const startLoaders = () => {
     startSpinner(emit)
