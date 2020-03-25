@@ -1,13 +1,13 @@
 const base = {
   tooltip    : '',
-  closeAfter : 5000,
+  closeAfter : 3500,
   enabled    : true,
 }
 
 exports.config = {
   bar : {
     ...base,
-    text      : 'NIKETA',
+    text      : 'START NIKETA',
     afterText : '',
   },
   secondBar : {
