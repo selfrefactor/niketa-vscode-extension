@@ -8,7 +8,7 @@ exports.config = {
   bar : {
     ...base,
     text      : 'NIKETA',
-    afterText : 'NIKETA',
+    afterText : '',
   },
   secondBar : {
     ...base,
