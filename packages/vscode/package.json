@@ -9,7 +9,7 @@
   "name": "niketa",
   "displayName": "niketa",
   "description": "Auto run jest tests with coverage",
-  "version": "2.20.0",
+  "version": "2.20.1",
   "license": "MIT",
   "publisher": "selfrefactor",
   "engines": {
