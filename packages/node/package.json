@@ -12,7 +12,7 @@
     "@starptech/prettyhtml": "^0.10.0",
     "esm": "^3.2.25",
     "fastify": "^2.12.1",
-    "helpers": "https://github.com/selfrefactor/helpers#2.4.0",
+    "helpers-fn": "0.1.1",
     "lint-fn": "^2.3.0",
     "rambdax": "^3.7.0",
     "socket.io": "^2.3.0",

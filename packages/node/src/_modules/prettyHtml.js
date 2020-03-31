@@ -1,6 +1,6 @@
 import prettyHtmlLib from '@starptech/prettyhtml'
 import { readFileSync, writeFileSync } from 'fs'
-import { log } from 'helpers'
+import { log } from 'helpers-fn'
 
 export async function prettyHtml(filePath){
   const input = readFileSync(filePath, 'utf8')

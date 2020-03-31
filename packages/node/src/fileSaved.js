@@ -1,4 +1,4 @@
-import { log, startLoadingBar, stopLoadingBar } from 'helpers'
+import { log, startLoadingBar, stopLoadingBar } from 'helpers-fn'
 import { glue } from 'rambdax'
 
 import { debugLog } from './_helpers/debugLog'

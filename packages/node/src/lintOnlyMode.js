@@ -1,4 +1,4 @@
-import { log } from 'helpers'
+import { log } from 'helpers-fn'
 import { execPrettier } from 'lint-fn'
 
 import { prettyHtml } from './_modules/prettyHtml'

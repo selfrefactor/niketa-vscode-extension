@@ -1,4 +1,4 @@
-const { exec } = require('helpers')
+const { exec } = require('helpers-fn')
 const { existsSync } = require('fs')
 const { match } = require('rambdax')
 const { writeJsonSync, readJsonSync } = require('fs-extra')

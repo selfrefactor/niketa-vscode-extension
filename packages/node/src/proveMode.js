@@ -1,4 +1,4 @@
-import { log } from 'helpers'
+import { log } from 'helpers-fn'
 import { remove, take, wait } from 'rambdax'
 
 import { debugLog } from './_helpers/debugLog'

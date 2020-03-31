@@ -51,7 +51,7 @@
     "css-loader": "^1.0.0",
     "electron-packager": "^13.0.1",
     "file-loader": "^2.0.0",
-    "helpers": "https://github.com/selfrefactor/helpers#2.2.0",
+    "helpers-fn": "0.1.1",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.4.4",
     "nightmare": "3.0.2",

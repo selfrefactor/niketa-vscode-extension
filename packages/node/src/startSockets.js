@@ -6,7 +6,7 @@ const VSCODE_INPUT_LOG = false
 setter('DEBUG_LOG', false)
 
 import fastify from 'fastify'
-import { log } from 'helpers'
+import { log } from 'helpers-fn'
 import socketServer from 'socket.io'
 import socketClient from 'socket.io-client'
 import WebSocket from 'ws'

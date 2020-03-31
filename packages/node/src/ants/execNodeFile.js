@@ -1,5 +1,5 @@
 import { spawn } from 'child_process'
-import { log } from 'helpers'
+import { log } from 'helpers-fn'
 import { delay } from 'rambdax'
 import { ms } from 'string-fn'
 
