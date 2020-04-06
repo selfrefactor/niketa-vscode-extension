@@ -47,6 +47,10 @@ function catchFn(e){
   log('sep')
 }
 
+function isWorkFile(filePath){
+  return filePath.startsWith(`${process.env.HOME}/work/`)
+}
+
 export function niketaClient(){
   const app = fastify()
   log(`Listen at ${ conf('PORT_1') } for vscode 2`, 'back')
@@ -97,7 +101,7 @@ export function niketaClient(){
       busyFlag = true
 
       const options = {
-        disableLint  : Boolean(input.message.disableLint),
+        disableLint  : isWorkFile(input.message.filePath) || Boolean(input.message.disableLint),
         lintOnly     : input.message.mode === 'LINT_ONLY',
         dir          : input.message.dir,
         emit,
