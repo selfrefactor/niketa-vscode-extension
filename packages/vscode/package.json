@@ -9,7 +9,7 @@
 	"name": "niketa",
 	"displayName": "niketa",
 	"description": "Auto run jest tests with coverage",
-	"version": "2.20.2",
+	"version": "2.20.3",
 	"license": "MIT",
 	"publisher": "selfrefactor",
 	"engines": {
@@ -47,6 +47,7 @@
 					"type": "string",
 					"default": "WITH_COVERAGE",
 					"description": "Set default mode of Niketa"
+				},
 				"niketa.PORT_0": {
 					"type": "number",
 					"default": 3011,
