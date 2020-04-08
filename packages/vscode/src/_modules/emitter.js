@@ -12,7 +12,9 @@ const initEmitter = () => {
 const emit = input => {
   ok(input)({ channel : 'string' })
 
-  socket.emit(input.channel, input)
+  socket.emit(input.channel, {
+    message : input
+  })
 }
 
 exports.initEmitter = initEmitter

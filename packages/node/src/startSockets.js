@@ -89,13 +89,13 @@ export function niketaClient(){
       const passed = checkExtensionMessage(input.message)
 
       if (!passed){
-        console.log(input.message)
+        console.log(input)
 
         return log('unknown VSCode message error', 'box')
       }
 
       if (!emit){
-        return console.log('Waiting for VSCode to connecte', input.message)
+        return console.log('Waiting for VSCode to connect', input.message)
       }
 
       busyFlag = true
