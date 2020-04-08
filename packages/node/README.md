@@ -14,7 +14,7 @@ This library does the heavy work, while `Niketa` VSCode extension provides the c
 
 4. `yarn`
 
-5. Run `node ant`
+5. Run `node start`
 
 6. Open with VSCode project which already has `Jest` in `package.json` and also has its dependecies installed.
 

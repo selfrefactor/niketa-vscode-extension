@@ -1,7 +1,8 @@
 {
   "scripts": {
     "dev": "jest -u src/_modules/parseBeforeNotify.spec.js",
-    "test": "jest src"
+    "test": "jest src",
+    "start": "node start"
   },
   "name": "niketa-client",
   "version": "1.0.0",
