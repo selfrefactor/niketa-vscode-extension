@@ -29,12 +29,12 @@ holder.thirdBar = config.thirdBar.enabled ?
   dummy
 
 holder.bar.command = CHANGE_MODE
-
+const WAIT_TICKS = 2000
 let intervalHolder
-let counter = 100
+let counter = WAIT_TICKS
 
 const stopSpinner = () => {
-  counter = 100
+  counter = WAIT_TICKS
   clearInterval(intervalHolder)
 }
 
