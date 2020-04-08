@@ -101,7 +101,7 @@ export function niketaClient(){
       busyFlag = true
 
       const options = {
-        disableLint  : isWorkFile(input.message.filePath) || Boolean(input.message.disableLint),
+        disableLint  : isWorkFile(input.message.filePath),
         lintOnly     : input.message.mode === 'LINT_ONLY',
         dir          : input.message.dir,
         emit,

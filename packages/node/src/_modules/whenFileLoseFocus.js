@@ -1,6 +1,9 @@
-import { lintAnt } from '../ants/lint'
+import { existsSync } from 'fs'
+import { lintFn } from 'lint-fn'
 
 export async function whenFileLoseFocus(filePath, disableLint){
   if (disableLint) return
-  await lintAnt(filePath)
+  if (!existsSync(filePath)) return
+
+  await lintFn(filePath)
 }

@@ -47,12 +47,6 @@
 					"type": "string",
 					"default": "WITH_COVERAGE",
 					"description": "Set default mode of Niketa"
-				},
-				"niketa.DISABLE_LINT": {
-					"type": "boolean",
-					"default": false,
-					"description": "Disable lint in niketa node part"
-				},
 				"niketa.PORT_0": {
 					"type": "number",
 					"default": 3011,
