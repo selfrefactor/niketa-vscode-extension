@@ -10,11 +10,8 @@ import { coverageMode } from './coverageMode'
 import { startSpinner } from './emitters/startSpinner'
 import { stopSpinner } from './emitters/stopSpinner'
 import { lintOnlyMode as lintOnlyModeMethod } from './lintOnlyMode.js'
-import { proveMode } from './proveMode.js'
 
 const JEST_BIN = './node_modules/jest/bin/jest.js'
-
-const isProveMode = filePath => filePath.toLowerCase().endsWith('prove.js')
 
 let fileHolder
 let lintFileHolder
@@ -35,8 +32,6 @@ export async function fileSaved({
   const allowLint =
     filePath !== lintFileHolder && lintFileHolder !== undefined
 
-  const proveModeEligible = isProveMode(filePath)
-
   if (allowLint){
     log(`LINT ${ lintFileHolder }`, 'box')
     await whenFileLoseFocus(lintFileHolder, disableLint)
@@ -45,7 +40,7 @@ export async function fileSaved({
     log(`SKIP_LINT ${ lintFileHolder }`, 'box')
   }
   
-  if ((lintOnly || hasWallaby) && !proveModeEligible){
+  if (lintOnly || hasWallaby){
     lintFileHolder = filePath
     return debugLog(filePath, 'saved for lint later')
   } 
@@ -61,20 +56,6 @@ export async function fileSaved({
   const stopLoaders = () => {
     stopSpinner(emit)
     stopLoadingBar()
-  }
-
-  if (proveModeEligible){
-    lintFileHolder = filePath
-
-    return proveMode({
-      stopLoaders,
-      startLoaders,
-      notify,
-      notifyClose,
-      filePath,
-      dir,
-      emit,
-    })
   }
 
   const maybeSpecFile = getSpecFile(filePath)
