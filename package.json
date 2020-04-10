@@ -9,7 +9,7 @@
       "node",
       "vscode"
     ],
-    "workInProgress": "",
+    "workInProgress": "basic tcp",
     "support": [
       "vscode"
     ],
