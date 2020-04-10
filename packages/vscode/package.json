@@ -30,6 +30,10 @@
       {
         "command": "niketa.start",
         "title": "Niketa"
+      },
+      {
+        "command": "niketa.start.demo",
+        "title": "Niketa Demo"
       }
     ],
     "keybindings": [
@@ -40,7 +44,7 @@
       },
       {
         "command": "niketa.start.demo",
-        "key": "alt+5",
+        "key": "ctrl+alt+h",
         "when": "editorTextFocus"
       }
     ],
