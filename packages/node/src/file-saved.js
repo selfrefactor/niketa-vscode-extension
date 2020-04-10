@@ -24,8 +24,6 @@ export async function fileSaved({
   filePath,
   hasWallaby,
   lintOnly,
-  notify,
-  notifyClose,
   lintOnlyMode,
 }){
   if (lintOnlyMode) return lintOnlyModeMethod(filePath)
@@ -39,12 +37,12 @@ export async function fileSaved({
   } else {
     log(`SKIP_LINT ${ lintFileHolder }`, 'box')
   }
-  
+
   if (lintOnly || hasWallaby){
     lintFileHolder = filePath
+
     return debugLog(filePath, 'saved for lint later')
-  } 
-    
+  }
 
   const startLoaders = () => {
     startSpinner(emit)
@@ -125,8 +123,5 @@ export async function fileSaved({
     execResult,
     fileName,
     filePath : fileHolder,
-    maybeSpecFile,
-    notify,
-    notifyClose,
   })
 }

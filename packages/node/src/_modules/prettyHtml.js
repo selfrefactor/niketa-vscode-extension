@@ -5,10 +5,10 @@ import { log } from 'helpers-fn'
 export async function prettyHtml(filePath){
   const input = readFileSync(filePath, 'utf8')
   const { contents } = await prettyHtmlLib(input, {
-    printWidth  : 55, 
-    useTabs     : true,
-    usePrettier : false,
-    sortAttributes: true
+    printWidth     : 55,
+    useTabs        : true,
+    usePrettier    : false,
+    sortAttributes : true,
   })
   writeFileSync(
     filePath, contents, 'utf8'

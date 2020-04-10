@@ -13,12 +13,11 @@
 		"esm": "3.2.25",
 		"fastify": "2.13.0",
 		"helpers-fn": "0.2.0",
-		"lint-fn": "2.7.0",
+		"lint-fn": "2.7.1",
 		"rambdax": "3.7.0",
 		"socket.io": "2.3.0",
 		"socket.io-client": "2.3.0",
-		"string-fn": "2.11.1",
-		"ws": "7.2.3"
+		"string-fn": "2.11.1"
 	},
 	"devDependencies": {
 		"@types/jest": "25.2.1",
@@ -26,7 +25,7 @@
 		"babel-cli": "7.0.0-beta.3",
 		"babel-preset-env": "7.0.0-beta.3",
 		"jest": "25.3.0",
-		"typescript": "3.9.0-dev.20200408"
+		"typescript": "3.9.0-dev.20200410"
 	},
 	"author": "Dejan Toteff <deyan8284@gmail.com>",
 	"license": "MIT",

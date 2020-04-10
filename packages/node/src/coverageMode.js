@@ -1,49 +1,21 @@
-import { allTrue, getter, ok, take } from 'rambdax'
+import { ok, take } from 'rambdax'
 
 import { clean } from './_modules/clean'
 import { parseCoverage } from './_modules/parseCoverage'
-import { shouldNotify } from './_modules/shouldNotify'
-import { takeNotifyWhenError } from './ants/takeNotifyWhenError'
 import { additional } from './emitters/additional'
 import { show } from './emitters/show'
 import { tooltip } from './emitters/tooltip'
 
 export const ERROR_ICON = '❌'
 export const SUCCESS_ICON = '🐬'
-const ERROR_CONDITION = 'LINE === undefined'
+const NO_COVERAGE = 'LINE === undefined'
 
-function cleanStdout(execResult){
-  if (!execResult.stdout.includes('console.log')) return ''
-
-  const [ first ] = execResult.stdout.split('----------')
-
-  return first
-    .split('\n')
-    .filter(x => x && !x.includes('console.log'))
-    .join('\n')
-}
-
-export function coverageMode({
-  emit,
-  execResult,
-  fileName,
-  filePath,
-  maybeSpecFile,
-  notify,
-  notifyClose,
-}){
-  const electronConnected = Boolean(getter('electron.connected'))
-
-  if (
+export function coverageMode({ emit, execResult, fileName, filePath }){
+  const hasError =
     execResult.stderr.startsWith('FAIL') ||
     execResult.stderr.includes('ERROR:')
-  ){
-    const notifyWhenError = takeNotifyWhenError(execResult)
-    if (notifyWhenError && Boolean(notify) && Boolean(notifyClose)){
-      notify(notifyWhenError)
-      notifyClose()
-    }
 
+  if (hasError){
     tooltip(emit, take(800, execResult.stderr))
     additional(emit)
 
@@ -57,12 +29,7 @@ export function coverageMode({
   )
   ok(message)('string')
 
-  if (message === ERROR_CONDITION){
-    const toNotify = cleanStdout(execResult)
-    if (toNotify && electronConnected){
-      notify(toNotify)
-      notifyClose()
-    }
+  if (message === NO_COVERAGE){
     additional(emit)
 
     return show(emit, SUCCESS_ICON)
@@ -75,17 +42,19 @@ export function coverageMode({
 
   if (cleaner.stdout.trim() === '') return
 
-  const okNotify = allTrue(
-    shouldNotify(maybeSpecFile),
-    cleaner.stdout.includes('console.log'),
-    electronConnected
-  )
-
-  if (okNotify){
-    notify(cleaner.stdout)
-    notifyClose()
-  }
-
   tooltip(emit, `${ cleaner.stderr }${ cleaner.stdout }${ cleaner.uncovered }`)
   additional(emit, uncovered)
 }
+
+/*
+  function cleanStdout(execResult){
+  if (!execResult.stdout.includes('console.log')) return ''
+
+  const [ first ] = execResult.stdout.split('----------')
+
+  return first
+    .split('\n')
+    .filter(x => x && !x.includes('console.log'))
+    .join('\n')
+}
+*/
