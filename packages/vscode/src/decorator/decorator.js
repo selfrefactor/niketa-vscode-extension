@@ -1,9 +1,9 @@
 const {workspace, window, Range, Position} = require('vscode')
-const { delay, tryCatch } = require('rambdax')
+const { delay, mapAsync } = require('rambdax')
 
 const color = '#7cc36e'
-const ms = 10
-let decorationsDebounce;
+const ms = 100
+let timeoutHolder;
 const decorations = {}
 const decorationType = window.createTextEditorDecorationType({after: {margin: '0 0 0 1rem'}});
 
@@ -26,33 +26,74 @@ function work(editor, fileName){
 }
 
 function refreshDecorations(fileName) {
-  clearTimeout(decorationsDebounce);
+  clearTimeout(timeoutHolder);
   const [editor] = window.visibleTextEditors
   if(!editor ) return
   
-  decorationsDebounce = setTimeout(
+  timeoutHolder = setTimeout(
     work(editor, fileName),    
     ms
   );
 }
 
-function decorate({text, fileName, line}) {
-  try {
-    // const range = tryCatch(() => {
-    //   return new Range(new Position(4, 10), new Position(4, 12))
-    // }, false)()
-    // if(range === false) return
-    if(
-      decorations[fileName]=== undefined
-    ){
-      decorations[fileName]= {}
+const adjustFileName = '/home/s/repos/rambda/source/adjust.js'
+const specFileName = '/home/s/repos/rambda/source/adjust.spec.js'
+
+const testData = [
+  {
+    fileName: adjustFileName,
+    logData: {
+      1: 'foo',
+      5: 'foo1',
+      6: 'foo1',
+      8: 'foo2',
+      9: 'foo3',
     }
-    
-    const sk = {
-      renderOptions: {after: {contentText: text, color}},
-      range: new Range(new Position(line - 1, 1024), new Position(line - 1, 1024))
-    };
-    decorations[fileName][line] = sk
+  },
+  {
+    fileName: specFileName,
+    logData: {
+      3: 'bat',
+      4: 'foo1',
+      5: 'foo2',
+    }
+  },
+]
+
+let logData = []
+
+function loadLogData(newLogData){
+  logData = newLogData.slice()
+}
+
+function logIsEmpty(){
+  return logData.length === 0
+}
+
+
+function decorateWithLogData(fileName){
+  try {
+    if(logIsEmpty()) return
+
+    const currentLog = logData.find(x => x.fileName === fileName)
+    if(currentLog === undefined){
+      return console.log('no log data for file', fileName)
+    }
+    if(decorations[fileName] === undefined) decorations[fileName] = {}
+
+    const iteratable = (testDataKey => {
+      const line = Number(testDataKey)
+      const toShow = currentLog.logData[testDataKey]
+      const decoration = {
+        renderOptions: {after: {contentText: toShow, color}},
+        range: new Range(new Position(line - 1, 1024), new Position(line - 1, 1024))
+      };
+
+      decorations[fileName][testDataKey] = decoration
+    })
+
+    Object.keys(currentLog.logData).map(iteratable)
+
     refreshDecorations(fileName);
   } catch (error) {
     console.log(error)    
@@ -60,11 +101,10 @@ function decorate({text, fileName, line}) {
 }
 
 function initDecorate(){
+  loadLogData(testData)
   workspace.onDidSaveTextDocument(e => {
-    console.log(99,e.fileName)
-    decorate({text: 'fopo',fileName:e.fileName, line: 5})
+    decorateWithLogData(e.fileName)
   })
 }
 
-exports.decorate = decorate
 exports.initDecorate = initDecorate
