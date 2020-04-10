@@ -4,6 +4,7 @@ const { changeMode } = require('./_modules/changeMode')
 const { init } = require('./steps/init')
 const { initEmitter } = require('./_modules/emitter')
 const { initDecorate } = require('./decorator/decorator.js')
+const { startClient } = require('./client')
 const { MODES, START,START_DEMO, CHANGE_MODE } = require('./constants')
 const { setter, getter, delay, head } = require('rambdax')
 
@@ -28,6 +29,7 @@ function activate(context){
 
   const fn = () => {
     console.log(1)  
+    startClient()
     if (!getter('ACTIVATED')){
       console.log(4)
       setter('ACTIVATED', true)
