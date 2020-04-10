@@ -7,7 +7,7 @@ const {
   startSpinner,
   stopSpinner,
   tooltip,
-} = require('../bar')
+} = require('../status-bar')
 const { niketaConfig } = require('../_modules/niketaConfig')
 const { saved } = require('./saved')
 

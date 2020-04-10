@@ -1,4 +1,4 @@
-const { emitToBar } = require('../bar')
+const { emitToBar } = require('../status-bar')
 const { getter, setter } = require('rambdax')
 const { MODES } = require('../constants')
 
