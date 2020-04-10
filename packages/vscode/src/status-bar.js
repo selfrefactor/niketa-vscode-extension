@@ -81,7 +81,7 @@ const emitToBar = input => {
 }
 
 exports.getBar = getBar
-exports.init = init
+exports.initStatusBar = init
 
 exports.emitToBar = emitToBar
 exports.show = show
