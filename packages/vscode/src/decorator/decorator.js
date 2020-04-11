@@ -1,42 +1,83 @@
 const {workspace, window, Range, Position} = require('vscode')
 const { delay, mapAsync, range, path } = require('rambdax')
 
+const defaultValues = {
+  TOP_MARGIN: 3,
+  color: '#7cc36e',
+  ms: 100
+}
 
-const TOP_MARGIN = 3
-const color = '#7cc36e'
-const ms = 100
-let timeoutHolder;
-const decorations = {}
-const decorationType = window.createTextEditorDecorationType({after: {margin: '0 0 0 1rem'}});
+class Decorator{
+  constructor(userOptions ={}){
+    this.options = {...defaultValues, ...userOptions}
+    this.decorationType = window.createTextEditorDecorationType({after: {margin: '0 0 0 1rem'}});
+    this.timeoutHolder = undefined;
+    this.decorations = {}
+    this.logData = {}
+  }
+  handleSave(fileName){
+    
+  }
+  loadLogData(newLogData){
+    // this.logData = {
+    //   ...this.logData,
+    //   ...newLogData
+    // }
+  }
+  loadUnreliableData(list, fileName){
+    // this.logData = {
+    //   ...this.logData,
+    //   [fileName]: {}
+    // }
+  }
 
-function work(editor, fileName){
-  return () => {
-    try {
-      const newDecorations = Object.keys(decorations[fileName]).map(
-        x => {
-          return decorations[fileName][x]
-        }
-      )
-      editor.setDecorations(
-        decorationType,
-        newDecorations
-      )
-    } catch (error) {
-      console.log(error)
+  findLinesInFocus(){
+  try {
+    const [visibleRange] = this.getEditor().visibleRanges
+    const startLine = path('_start.line', visibleRange)
+    const endLine = path('_end.line', visibleRange)
+    return {startLine, endLine}
+  } catch (error) {
+    this.handleError(error)    
+  }
+}
+  handleError(error, label = ''){
+    console.log('Received error:' , error, label);
+  }
+  partialResetDecorations(fileName){
+  }
+  getEditor(){
+    const [editor] = window.visibleTextEditors
+    if(!editor ) throw new Error('!editor')
+    return editor
+  }
+  refreshDecorations(fileName) {
+    clearTimeout(this.timeoutHolder);
+    
+    this.timeoutHolder = setTimeout(
+      this.work(this.getEditor(), fileName),    
+      this.options.ms
+    );
+  }
+  work(editor, fileName){
+    return () => {
+      try {
+        const newDecorations = Object.keys(this.decorations[fileName]).map(
+          x => {
+            return this.decorations[fileName][x]
+          }
+        )
+        editor.setDecorations(
+          this.decorationType,
+          newDecorations
+        )
+      } catch (error) {
+        this.handleError(error, 'work')
+      }
     }
   }
 }
 
-function refreshDecorations(fileName) {
-  clearTimeout(timeoutHolder);
-  const [editor] = window.visibleTextEditors
-  if(!editor ) return
-  
-  timeoutHolder = setTimeout(
-    work(editor, fileName),    
-    ms
-  );
-}
 
 const adjustFileName = '/home/s/repos/rambda/source/adjust.js'
 const specFileName = '/home/s/repos/rambda/source/adjust.spec.js'
@@ -87,28 +128,28 @@ function unreliableLogIsEmpty(){
 
 function decorateWithLogData(fileName){
   try {
-    if(logIsEmpty()) return
+    // if(logIsEmpty()) return
 
-    const currentLog = logData.find(x => x.fileName === fileName)
-    if(currentLog === undefined){
-      return console.log('no log data for file', fileName)
-    }
-    decorations[fileName] = {}
+    // const currentLog = logData.find(x => x.fileName === fileName)
+    // if(currentLog === undefined){
+    //   return console.log('no log data for file', fileName)
+    // }
+    // decorations[fileName] = {}
 
-    const iteratable = (testDataKey => {
-      const line = Number(testDataKey)
-      const toShow = currentLog.logData[testDataKey]
-      const decoration = {
-        renderOptions: {after: {contentText: toShow, color}},
-        range: new Range(new Position(line - 1, 1024), new Position(line - 1, 1024))
-      };
+    // const iteratable = (testDataKey => {
+    //   const line = Number(testDataKey)
+    //   const toShow = currentLog.logData[testDataKey]
+    //   const decoration = {
+    //     renderOptions: {after: {contentText: toShow, color}},
+    //     range: new Range(new Position(line - 1, 1024), new Position(line - 1, 1024))
+    //   };
 
-      decorations[fileName][testDataKey] = decoration
-    })
+    //   decorations[fileName][testDataKey] = decoration
+    // })
 
-    Object.keys(currentLog.logData).map(iteratable)
+    // Object.keys(currentLog.logData).map(iteratable)
 
-    refreshDecorations(fileName);
+    // refreshDecorations(fileName);
   } catch (error) {
     console.log(error)    
   }
@@ -126,7 +167,8 @@ function findLinesInFocus(){
   console.log(error)    
   }
 }
-
+/*
+  
 async function logUnreliableData(fileName){
   try {
     if(unreliableLogIsEmpty()) return
@@ -155,14 +197,13 @@ async function logUnreliableData(fileName){
     console.log(error)    
   }
 }
+*/
+
+const decorator = new Decorator()
 
 function initDecorate(){
-  // loadLogData(testData)
-  loadUnreliableData(testUnreliableData)
   workspace.onDidSaveTextDocument(e => {
-    logUnreliableData(e.fileName)
-    console.log(1)
-    // decorateWithLogData(e.fileName)
+    decorator.handleSave(e.fileName)
   })
 }
 
