@@ -61,17 +61,29 @@ const testData = [
     }
   },
 ]
+const testUnreliableData = [
+      'foo',
+      'foo1',
+      'foo2',
+      'foo3',
+]
 
 let logData = []
+let unreliableLogData = []
 
 function loadLogData(newLogData){
   logData = newLogData.slice()
+}
+function loadUnreliableData(newLogData){
+  unreliableLogData = newLogData.slice()
 }
 
 function logIsEmpty(){
   return logData.length === 0
 }
-
+function unreliableLogIsEmpty(){
+  return unreliableLogData.length === 0
+}
 
 function decorateWithLogData(fileName){
   try {
@@ -117,20 +129,17 @@ function findLinesInFocus(){
 
 async function logUnreliableData(fileName){
   try {
-    if(logIsEmpty()) return
+    if(unreliableLogIsEmpty()) return
     const {startLine,endLine} = await findLinesInFocus()
-    const currentLog = logData.find(x => x.fileName === fileName)
-    if(currentLog === undefined){
-      return console.log('no log data for file', fileName)
-    }
+    const currentLog = unreliableLogData.slice()
     decorations[fileName] = {}
     const linesToUse = endLine - startLine - TOP_MARGIN
-    const len = currentLog.logUnreliableData.length
+    const len = currentLog.length
 
-    const endPoint = len < linesToUse ? startLine + len : endLine
+    const endPoint = len < linesToUse ? startLine + len + TOP_MARGIN : endLine
 
     const iteratable = ((lineNumber,i) => {
-      const toShow = currentLog.logUnreliableData[i]
+      const toShow = currentLog[i]
       const decoration = {
         renderOptions: {after: {contentText: toShow, color}},
         range: new Range(new Position(lineNumber - 1, 1024), new Position(lineNumber - 1, 1024))
@@ -138,7 +147,8 @@ async function logUnreliableData(fileName){
 
       decorations[fileName][lineNumber] = decoration
     })
-    range(startLine+TOP_MARGIN, endPoint).map(iteratable)
+    const loop = range(startLine+TOP_MARGIN, endPoint)
+    loop.map(iteratable)
 
     refreshDecorations(fileName);
   } catch (error) {
@@ -147,9 +157,10 @@ async function logUnreliableData(fileName){
 }
 
 function initDecorate(){
-  loadLogData(testData)
-  findLinesInFocus()
+  // loadLogData(testData)
+  loadUnreliableData(testUnreliableData)
   workspace.onDidSaveTextDocument(e => {
+    logUnreliableData(e.fileName)
     console.log(1)
     // decorateWithLogData(e.fileName)
   })
