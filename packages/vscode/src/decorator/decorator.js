@@ -1,6 +1,8 @@
 const {workspace, window, Range, Position} = require('vscode')
-const { delay, mapAsync, path } = require('rambdax')
+const { delay, mapAsync, range, path } = require('rambdax')
 
+
+const TOP_MARGIN = 3
 const color = '#7cc36e'
 const ms = 100
 let timeoutHolder;
@@ -79,7 +81,7 @@ function decorateWithLogData(fileName){
     if(currentLog === undefined){
       return console.log('no log data for file', fileName)
     }
-    if(decorations[fileName] === undefined) decorations[fileName] = {}
+    decorations[fileName] = {}
 
     const iteratable = (testDataKey => {
       const line = Number(testDataKey)
@@ -102,14 +104,45 @@ function decorateWithLogData(fileName){
 
 function findLinesInFocus(){
   try {
-    const [editor, secondEditor] = window.visibleTextEditors
+    const [editor] = window.visibleTextEditors
     if(!editor ) return
     const [visibleRange] = editor.visibleRanges
     const startLine = path('_start.line', visibleRange)
     const endLine = path('_end.line', visibleRange)
-    console.log(12)
+    return {startLine, endLine}
   } catch (error) {
   console.log(error)    
+  }
+}
+
+async function logUnreliableData(fileName){
+  try {
+    if(logIsEmpty()) return
+    const {startLine,endLine} = await findLinesInFocus()
+    const currentLog = logData.find(x => x.fileName === fileName)
+    if(currentLog === undefined){
+      return console.log('no log data for file', fileName)
+    }
+    decorations[fileName] = {}
+    const linesToUse = endLine - startLine - TOP_MARGIN
+    const len = currentLog.logUnreliableData.length
+
+    const endPoint = len < linesToUse ? startLine + len : endLine
+
+    const iteratable = ((lineNumber,i) => {
+      const toShow = currentLog.logUnreliableData[i]
+      const decoration = {
+        renderOptions: {after: {contentText: toShow, color}},
+        range: new Range(new Position(lineNumber - 1, 1024), new Position(lineNumber - 1, 1024))
+      };
+
+      decorations[fileName][lineNumber] = decoration
+    })
+    range(startLine+TOP_MARGIN, endPoint).map(iteratable)
+
+    refreshDecorations(fileName);
+  } catch (error) {
+    console.log(error)    
   }
 }
 
