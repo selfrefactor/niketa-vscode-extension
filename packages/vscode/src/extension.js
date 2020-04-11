@@ -20,8 +20,8 @@ function activate(context){
     if (!getter('ACTIVATED')){
       initStatusBar()
       setter('ACTIVATED', true)
-      startSocketClient()
-      // initDecorate()
+      // startSocketClient()
+      initDecorate()
     }
   }
   const startCommand = vscode.commands.registerCommand(START, fn)

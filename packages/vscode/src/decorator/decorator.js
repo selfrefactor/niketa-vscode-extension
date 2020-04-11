@@ -1,5 +1,5 @@
 const {workspace, window, Range, Position} = require('vscode')
-const { delay, mapAsync } = require('rambdax')
+const { delay, mapAsync, path } = require('rambdax')
 
 const color = '#7cc36e'
 const ms = 100
@@ -100,10 +100,25 @@ function decorateWithLogData(fileName){
   }
 }
 
+function findLinesInFocus(){
+  try {
+    const [editor, secondEditor] = window.visibleTextEditors
+    if(!editor ) return
+    const [visibleRange] = editor.visibleRanges
+    const startLine = path('_start.line', visibleRange)
+    const endLine = path('_end.line', visibleRange)
+    console.log(12)
+  } catch (error) {
+  console.log(error)    
+  }
+}
+
 function initDecorate(){
   loadLogData(testData)
+  findLinesInFocus()
   workspace.onDidSaveTextDocument(e => {
-    decorateWithLogData(e.fileName)
+    console.log(1)
+    // decorateWithLogData(e.fileName)
   })
 }
 
