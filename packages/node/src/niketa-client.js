@@ -40,7 +40,7 @@ export class NiketaClient{
         }
       }
     
-    this.emit({newDecorations, firstStatusBar: 'Keep it up'})
+    this.emit({newDecorations:testUnreliableData, firstStatusBar: 'Keep it up'})
   }
   onSocketData(messageFromVSCode){
     console.log({messageFromVS: messageFromVSCode.toString()})
