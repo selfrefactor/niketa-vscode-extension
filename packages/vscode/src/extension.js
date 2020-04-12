@@ -5,7 +5,7 @@ const { init } = require('./steps/init')
 const { initEmitter } = require('./_modules/emitter')
 const { initDecorate } = require('./decorator/decorator.js')
 const { startSocketClient } = require('./socket-client/socket-client.js')
-const { startClient } = require('./client')
+// const { startClient } = require('./client')
 const { MODES, START,START_DEMO, CHANGE_MODE } = require('./constants')
 const { setter, getter, delay, head } = require('rambdax')
 
@@ -20,7 +20,7 @@ function activate(context){
     if (!getter('ACTIVATED')){
       initStatusBar()
       setter('ACTIVATED', true)
-      // startSocketClient()
+      startSocketClient()
       initDecorate()
     }
   }

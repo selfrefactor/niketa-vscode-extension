@@ -1,5 +1,33 @@
 const {workspace, window, Range, Position} = require('vscode')
 const { delay, mapAsync, range, path } = require('rambdax')
+const {Socket, createServer} = require('net');
+
+const CLIENT_PORT = 3020
+
+function sendMessage(messageToSend){
+  return new Promise((resolve, reject) => {
+    try {
+      var client = new Socket();
+      client.connect(CLIENT_PORT, '127.0.0.1', function() {
+        console.log('Connected');
+        client.write(messageToSend);
+      });
+      
+      client.on('data', function(data) {
+        console.log('Received: ' + data);
+        client.destroy(); // kill client after server's response
+        return resolve(data)
+      });
+      
+      client.on('close', function() {
+        console.log('Connection closed');
+        return resolve(false)
+      });
+    } catch (error) {
+      return reject(error);
+    }
+  })
+}
 
 const defaultValues = {
   TOP_MARGIN: 3,
@@ -9,14 +37,39 @@ const defaultValues = {
 
 class Decorator{
   constructor(userOptions ={}){
+    this.lockFlag = false
     this.options = {...defaultValues, ...userOptions}
     this.decorationType = window.createTextEditorDecorationType({after: {margin: '0 0 0 1rem'}});
     this.timeoutHolder = undefined;
     this.decorations = {}
     this.logData = {}
+    this.init()
+    this.emit = (x) => {
+      console.log(x,'emit is not yet initialized')
+    }
   }
-  handleSave(fileName){
-    
+  init(){
+      // var server = createServer(function(socket) {
+      //   this.emit = ({channel, message}) => {
+      //     socket.write(JSON.stringify({channel, message}));
+      //     socket.pipe(socket);
+      //   }
+      // });
+      
+      // server.listen(SERVER_PORT, '127.0.0.1');
+  }
+  lock(){
+    if(this.lockFlag) return
+    this.lockFlag = true
+  }
+  unlock(){
+    if(!this.lockFlag) return
+    this.lockFlag = false
+  }
+
+  messageReceived({fileName, messageFromServer}){
+    console.log(1, fileName, messageFromServer)  
+    this.unlock()
   }
   loadLogData(newLogData){
     // this.logData = {
@@ -203,7 +256,16 @@ const decorator = new Decorator()
 
 function initDecorate(){
   workspace.onDidSaveTextDocument(e => {
-    decorator.handleSave(e.fileName)
+    if(decorator.lockFlag) return
+    decorator.lock()
+
+    sendMessage(e.fileName)
+    .then(messageFromServer => 
+      decorator.messageReceived({messageFromServer,fileName: e.fileName})
+    ).catch(e => {
+      console.log(e, 'initDecorate')
+      decorator.unlock()
+    })
   })
 }
 
