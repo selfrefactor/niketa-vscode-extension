@@ -14,18 +14,23 @@ function isWorkFile(filePath){
 }
 
 
-class NiketaClient{
+export class NiketaClient{
   constructor(port) {
     this.port= port
     this.serverInit = false
     this.emit = (x) => console.log(x, 'emit not yet initialized')
   }
-  onMessage(message){
+  async onMessage(message){
     console.log({message})
-    // await delay(2000)
-    const testData = [
+    await delay(400)
+    const testUnreliableData = {
+      correct: false,
+      logData: [ 'foo', 'foo1', 'foo2', 'foo3' ],
+    }
+
+    const newDecorations = 
       {
-        fileName: message.fileName,
+        correct: true,
         logData: {
           1: 'foo',
           5: 'foo1',
@@ -34,9 +39,8 @@ class NiketaClient{
           9: 'foo3',
         }
       }
-    ]
     
-    // this.emit({decorations})
+    this.emit({newDecorations, firstStatusBar: 'Keep it up'})
   }
   onSocketData(messageFromVSCode){
     console.log({messageFromVS: messageFromVSCode.toString()})
@@ -68,5 +72,5 @@ class NiketaClient{
   }
 }
 
-const niketaClient = new NiketaClient(3020)
-niketaClient.start()
+// const niketaClient = new NiketaClient(3020)
+// niketaClient.start()
