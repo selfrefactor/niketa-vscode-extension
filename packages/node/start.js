@@ -1,3 +1,5 @@
-const { niketaClient } = require('./index.js')
+const { NiketaClient } = require('./index.js')
 
-niketaClient()
+const niketaClient = new NiketaClient(3020)
+
+niketaClient.start()

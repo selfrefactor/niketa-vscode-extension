@@ -1,27 +1,19 @@
-const {initStatusBar} = require('./status-bar')
 const vscode = require('vscode')
 const { changeMode } = require('./_modules/changeMode')
-const { init } = require('./steps/init')
-const { initEmitter } = require('./_modules/emitter')
-const { initDecorate } = require('./decorator/decorator.js')
-const { startSocketClient } = require('./socket-client/socket-client.js')
-// const { startClient } = require('./client')
-const { MODES, START,START_DEMO, CHANGE_MODE } = require('./constants')
-const { setter, getter, delay, head } = require('rambdax')
+const { initExtension } = require('./worker')
+const { MODES, START, START_DEMO, CHANGE_MODE } = require('./constants')
+const { setter, getter, head } = require('rambdax')
 
 setter('ACTIVE_FLAG', false)
 setter('ACTIVATED', false)
 setter('MODE', head(MODES))
 
 function activate(context){
-
-
   const fn = () => {
     if (!getter('ACTIVATED')){
-      initStatusBar()
       setter('ACTIVATED', true)
-      startSocketClient()
-      initDecorate()
+      const worker = initExtension()
+      worker.initStatusBars()
     }
   }
   const startCommand = vscode.commands.registerCommand(START, fn)
@@ -35,7 +27,7 @@ function activate(context){
 
 exports.activate = activate
 
-  /*
+/*
     const startCommand = vscode.commands.registerCommand(START, () => {
     console.log(3)
     if (!getter('ACTIVATED')){
