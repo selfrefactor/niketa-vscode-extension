@@ -13,6 +13,7 @@ function activate(context){
     if (!getter('ACTIVATED')){
       setter('ACTIVATED', true)
       worker.initStatusBars()
+      worker.init()
     }
   }
   const startCommand = vscode.commands.registerCommand(START, fn)
