@@ -30,6 +30,7 @@ const messageSchema = {
 }
 
 function isMessageCorrect(message){
+  console.log({message})
   const isCorrect = pass(message)(messageSchema)
   if(!isCorrect) {
     console.log({message})
@@ -52,16 +53,16 @@ export class NiketaClient{
     const {disableLint, fileName, hasWallaby, dir} = message
     if(!isMessageCorrect(message))return
     if( isLintOnlyMode(fileName))return this.onLintOnlyMode(fileName)
-
     const maybeSpecFile = getSpecFile(fileName)
-    const {canContinue} =this.markFileForLint({maybeSpecFile, disableLint, hasWallaby, fileName})
+    const {canContinue} = this.markFileForLint({maybeSpecFile, disableLint, hasWallaby, fileName})
     
     if(!canContinue) return
-    if(this.stillWaitingForSpec(fileName)) return   
+    if(this.stillWaitingForSpec(fileName, dir)) return  
+    console.log({maybeSpecFile, canContinue})
     
     const [failure, execResult, actualFileName] = await this.execJest( { dir, fileName: this.fileHolder, specFileName: this.specFileHolder })
     if(failure) return
-
+    console.log({execResult})
     this.sendToVSCode({execResult, actualFileName, fileName: this.fileHolder})
   }
   sendToVSCode({execResult, actualFileName, fileName}){
@@ -70,16 +71,22 @@ export class NiketaClient{
     execResult.stderr.includes('ERROR:')
 
     if (hasError){
-      return
-      // return show(emit, ERROR_ICON)
+      return this.emit({firstBarMessage: ERROR_ICON, hasDecorations: false})
     }
+
     const { pass, message, uncovered } = parseCoverage(
       execResult,
       actualFileName,
       fileName,
     )
+    const newDecorations = this.getNewDecorations({execResult, actualFileName, fileName})
     const firstBarMessage = pass ? message : ERROR_ICON
-    this.emit({firstBarMessage, hasDecorations: false})  
+    const secondBarMessage = uncovered ? uncovered : undefined
+
+    this.emit({firstBarMessage, secondBarMessage, hasDecorations: false})  
+  }
+  getNewDecorations({execResult, actualFileName, fileName}){
+
   }
   async execJest({fileName, dir, specFileName}){
     try {
@@ -95,8 +102,10 @@ export class NiketaClient{
         coveragePath,
         testPattern
       ].join(' ')
+      console.log(command, 4)
       this.jestChild = execa.command(command, {cwd: dir});
       const result = await this.jestChild
+      this.jestChild = undefined
       return [false, result, actualFileName]
     }catch(e){
         console.log(this.jestChild.killed); // true
@@ -140,7 +149,7 @@ export class NiketaClient{
       // whenFileLoseFocus(lintFileHolder, disableLint)
       this.lintFileHolder = fileName
     }else {
-      log(`SKIP_LINT ${ this.lintFileHolder }`, 'box')
+      log(`SKIP_LINT ${ this.lintFileHolder ? this.lintFileHolder : 'initial state' }`, 'box')
     }
 
     if (hasWallaby){
@@ -192,29 +201,38 @@ export class NiketaClient{
   }
   onCancelMessage({fileName}){
     console.log('in cancel message', fileName)
+    if(!this.jestChild) return
+    if(!this.jestChild.cancel) return
+
+    this.jestChild.cancel()
+    this.jestChild = undefined
   }
-  onSocketData(messageFromVSCode){
+  async onSocketData(messageFromVSCode){
     console.log({messageFromVS: messageFromVSCode.toString()})
 
     const parsedMessage = tryCatch(() => JSON.parse(messageFromVSCode.toString()), false)()
+    console.log({parsedMessage})
     if(parsedMessage === false){
       return this.onWrongIncomingMessage(messageFromVSCode.toString())
     } 
     if(parsedMessage.requestCancelation){
       return this.onCancelMessage(parsedMessage)
-    } 
-    return this.onJestMessage(parsedMessage)
+    }
+    console.log(1)
+    const result = await this.onJestMessage(parsedMessage)
+    return result
   }
   start(){
     if(this.serverInit) return
     this.server = createServer(socket => {
       log(`Server created`, 'info')
       socket.on('data', data => this.onSocketData(data.toString()))
-  
+      
       this.emit = (message) => {
         socket.write(JSON.stringify(message));
         socket.pipe(socket);
       }
+      this.serverInit = true
     });
 
     log(`Listen at ${ this.port } for vscode`, 'back')
