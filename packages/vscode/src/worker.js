@@ -161,6 +161,7 @@ class Worker{
   messageReceived(messageFromServer, starterFileName){
     const parsedMessage = tryCatch(() => JSON.parse(messageFromServer.toString()), false)()
     if(!parsedMessage) return this.unlock()
+    if(parsedMessage.hasDecorations === false) return this.whenNoDecorations(parsedMessage)
     if(!parsedMessage.newDecorations) return this.unlock()
 
     if(parsedMessage.newDecorations.correct === true){
@@ -172,6 +173,9 @@ class Worker{
       return this.onUnreliableDecorations(parsedMessage.newDecorations)
     } 
     this.unlock()
+  }
+  whenNoDecorations({firstBarMessage}){
+    this.setterStatusBar({newText: firstBarMessage, statusBarIndex:0})  
   }
   setterStatusBar({newText, statusBarIndex}){
     if(![0,1,2].includes(statusBarIndex)) return
