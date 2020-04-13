@@ -1,6 +1,6 @@
 {
 	"scripts": {
-		"dev": "jest -u src/niketa-client.spec.js",
+		"dev": "jest -u src/niketa-client.spec.js --watch",
 		"test": "jest src",
 		"start": "node start"
 	},

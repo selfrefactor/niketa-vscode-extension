@@ -5,11 +5,11 @@ jest.setTimeout(30000)
 const testDir = '/home/s/repos/niketa/packages/node'
 const testFileName = '/home/s/repos/niketa/packages/node/src/_modules/parseBeforeNotify.spec.js'
 const sourceFileName = '/home/s/repos/niketa/packages/node/src/_modules/parseBeforeNotify.js'
+
 test.skip('happy', async () => {
   const cwd = '/home/s/repos/niketa/packages/node'
   const result = await execJest(testFileName, cwd)
   console.log(result)
-  expect(1).toEqual(1)
 })
 
 let niketaClient
@@ -22,10 +22,6 @@ afterEach(() => {
   emit.mockClear()
 })
 
-// test('Get Jest command - when foo.js', () => {
-  
-// })
-
 test('Scenario', async () => {
   try{
     const firstMessage = JSON.stringify({
@@ -36,8 +32,9 @@ test('Scenario', async () => {
       withLockedFile: false
     })
     const execResult = await niketaClient.onSocketData(firstMessage)
-    process.stderr.write(execResult.stderr)
-    process.stderr.write(execResult.stdout)
+    // process.stderr.write(execResult.stderr)
+    // process.stderr.write(execResult.stdout)
+    console.log({execResult})
   }catch(e){
     console.log({e},'catch')
   }
