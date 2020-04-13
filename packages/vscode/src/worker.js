@@ -1,12 +1,14 @@
 const {
   workspace,
   window,
+  env,
   Range,
   Position,
   StatusBarAlignment,
 } = require('vscode')
 const { REQUEST_CANCELATION } = require('./constants')
 const { delay, mapAsync, range, path, getter, tryCatch, ok } = require('rambdax')
+const { existsSync } = require('fs')
 const { Socket } = require('net')
 
 const CLIENT_PORT = 3020
@@ -60,6 +62,8 @@ class Worker{
     this.emit = x => {
       console.log(x, 'emit is not yet initialized')
     }
+    this.dir = env.appRoot
+    this.hasWallaby = undefined
     this.firstStatusBar = undefined
     this.secondStatusBar = undefined
     this.thirdStatusBar = undefined
@@ -75,6 +79,19 @@ class Worker{
   unlock(){
     if (!this.lockFlag) return
     this.lockFlag = false
+  }
+  init(){
+    this.hasWallaby = existsSync(
+      `${this.dir}/wallaby.js`
+    )
+  }
+  getCalculated(){
+    return {
+      hasWallaby: this.hasWallaby,
+      disableLint: false,
+      withLockedFile: false,
+      dir: this.dir
+    }
   }
   onWrongIncomingMessage(message){
     console.error(message,'onWrongIncomingMessage')
@@ -228,7 +245,7 @@ function initExtension(){
     worker.lock()
     const messageToSend = {
       fileName : e.fileName,
-      mode     : getter('MODE'),
+      ...worker.getCalculated()
     }
 
     sendMessage(messageToSend)
