@@ -52,15 +52,15 @@
       "type": "object",
       "title": "Niketa",
       "properties": {
-        "niketa.PORT_0": {
+        "niketa.PORT": {
           "type": "number",
-          "default": 3011,
-          "description": "VSCode in port"
+          "default": 3020,
+          "description": "Port used in communications with `Niketa client`"
         },
-        "niketa.PORT_1": {
-          "type": "number",
-          "default": 3012,
-          "description": "VSCode out port"
+        "niketa.DISABLE_LINT": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable lint on every file blur event"
         }
       }
     }
