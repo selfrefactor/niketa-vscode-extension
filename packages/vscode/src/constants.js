@@ -7,3 +7,4 @@ exports.MODES = MODES
 exports.START = 'niketa.start'
 exports.START_DEMO = 'niketa.start.demo'
 exports.CHANGE_MODE = 'niketa.changeMode'
+exports.REQUEST_CANCELATION = 'niketa.request.cancelation'

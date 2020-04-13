@@ -1,7 +1,6 @@
 const vscode = require('vscode')
-const { changeMode } = require('./_modules/changeMode')
 const { initExtension } = require('./worker')
-const { MODES, START, START_DEMO, CHANGE_MODE } = require('./constants')
+const { MODES, START, START_DEMO, REQUEST_CANCELATION } = require('./constants')
 const { setter, getter, head } = require('rambdax')
 
 setter('ACTIVE_FLAG', false)
@@ -9,20 +8,20 @@ setter('ACTIVATED', false)
 setter('MODE', head(MODES))
 
 function activate(context){
+  const worker = initExtension()
   const fn = () => {
     if (!getter('ACTIVATED')){
       setter('ACTIVATED', true)
-      const worker = initExtension()
       worker.initStatusBars()
     }
   }
   const startCommand = vscode.commands.registerCommand(START, fn)
 
-  const changeModeCommand = vscode.commands.registerCommand(CHANGE_MODE,
-    changeMode)
+  const requestCancelationCommand = vscode.commands.registerCommand(REQUEST_CANCELATION,
+    worker.requestCancelation)
 
   context.subscriptions.push(startCommand)
-  context.subscriptions.push(changeModeCommand)
+  context.subscriptions.push(requestCancelationCommand)
 }
 
 exports.activate = activate
