@@ -1,7 +1,6 @@
 const {
   workspace,
   window,
-  env,
   Range,
   Position,
   StatusBarAlignment,
@@ -44,7 +43,6 @@ class Worker{
     this.sendToServer = undefined
     this.firstStatusBar = undefined
     this.secondStatusBar = undefined
-    this.thirdStatusBar = undefined
   }
 
   isLocked(){
@@ -190,7 +188,7 @@ class Worker{
       endLine,
     })
     await this.paintDecorations(pendingDecorations)
-    
+
     await delay(200)
     this.unlock()
   }
@@ -225,19 +223,6 @@ class Worker{
     }
 
     this.unlock()
-  }
-
-  whenNoDecorations({ firstBarMessage, secondBarMessage }){
-    this.setterStatusBar({
-      newText        : firstBarMessage,
-      statusBarIndex : 0,
-    })
-    if (!secondBarMessage) return
-
-    this.setterStatusBar({
-      newText        : secondBarMessage,
-      statusBarIndex : 1,
-    })
   }
 
   setterStatusBar({ newText, statusBarIndex }){
@@ -282,6 +267,7 @@ class Worker{
 
   requestCancelation(){
     this.sendMessage({requestCancelation: true})
+    this.unlock()
   }
 
   getEditor(){
