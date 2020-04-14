@@ -80,8 +80,14 @@ test('async code that throws', async () => {
     expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
 })
 
-test('real case', async () => {
+test('real case 1', async () => {
     const message = `{"fileName":"/home/s/repos/rambda/source/adjust.js","hasWallaby":false,"withLockedFile":false,"dir":"/home/s/repos/rambda"}`
+    await niketaClient.onSocketData(message)
+    expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
+}) 
+
+test('real case 2', async () => {
+    const message = `{"fileName":"/home/s/repos/rambda/source/delay.spec.js","hasWallaby":false,"withLockedFile":false,"dir":"/home/s/repos/rambda"}`
     await niketaClient.onSocketData(message)
     expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
 }) 
