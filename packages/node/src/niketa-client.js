@@ -82,7 +82,6 @@ function isMessageCorrect(message){
 }
 
 function getUncoveredMessage(message){
-  console.log({message}, typeof message)
   if (typeof message !== 'string' || !message){
     return
   }
@@ -253,7 +252,6 @@ export class NiketaClient{
 
       return [ false, result, actualFileName, extension ]
     } catch (e){
-      console.log(e.isCanceled,88)
       if(e.isCanceled) return [true]
       if(!e.stdout) return [true] 
       if(!e.stderr) return [true]
@@ -362,10 +360,6 @@ export class NiketaClient{
     }
 
     return false
-  }
-
-  onLintOnlyMode(fileName){
-    console.log('onLintOnlyMode', fileName)
   }
 
   markFileForLint({ disableLint, fileName, hasWallaby, maybeSpecFile }){
