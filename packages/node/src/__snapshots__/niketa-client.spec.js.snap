@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`scenario - correct decoration 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "🐰 st: 83.33 br: 50 fn: 100 lns: 100",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "10": "string",
+        "12": "string [ 1, 23, { a: 1 } ]",
+      },
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`scenario - unreliable decorator data 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "🐰 st: 83.33 br: 50 fn: 100 lns: 100",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": false,
+      "logData": Array [
+        "string",
+        "string [ 1, 23, { a: 1 } ]",
+      ],
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
