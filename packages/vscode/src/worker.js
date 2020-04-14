@@ -199,13 +199,12 @@ class Worker{
 
     if (!parsedMessage) return this.unlock()
     const { hasDecorations, newDecorations, firstBarMessage, secondBarMessage } = parsedMessage
-    
     this.setterStatusBar({
       newText        : firstBarMessage,
       statusBarIndex : 0,
     })
 
-    if (!secondBarMessage){
+    if (secondBarMessage){
       this.setterStatusBar({
         newText        : secondBarMessage,
         statusBarIndex : 1,
@@ -239,9 +238,9 @@ class Worker{
 
   initStatusBars(){
     this.firstStatusBar = window.createStatusBarItem(StatusBarAlignment.Right,
-      PRIORITY)
+      PRIORITY+1)
     this.secondStatusBar = window.createStatusBarItem(StatusBarAlignment.Right,
-      PRIORITY + 1)
+      PRIORITY)
 
     this.firstStatusBar.command = REQUEST_CANCELATION
     this.firstStatusBar.show()
