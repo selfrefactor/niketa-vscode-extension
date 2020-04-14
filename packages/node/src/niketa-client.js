@@ -5,6 +5,7 @@ import {
   filter,
   glue,
   pass,
+  repeat,
   remove,
   tryCatch,
 } from 'rambdax'
@@ -19,6 +20,12 @@ import { getSpecFile } from './utils/get-spec-file.js'
 const JEST_BIN = './node_modules/jest/bin/jest.js'
 export const ERROR_ICON = '❌'
 export const SUCCESS_ICON = '🐬'
+const SHORT_SEPARATOR = repeat('🍄', 2).join``
+const SEPARATOR = repeat('🍺', 20).join``
+    
+function isWorkFile(x){
+  return x.startsWith(`${process.env.HOME}/work/`)
+}
 
 function cleanAngularLog(x){
   return {
@@ -49,7 +56,6 @@ function extractNumber(text){
 const defaultEmit = x => console.log(x, 'emit not yet initialized')
 
 const messageSchema = {
-  disableLint    : Boolean,
   withLockedFile : Boolean,
   fileName       : String,
   hasWallaby     : Boolean,
@@ -76,6 +82,8 @@ function getUncoveredMessage(message){
   return message.includes('...') ? `⛱${ uncovered }` : `☔${ uncovered }`
 }
 
+const EXTENDED_LOG = false
+
 export class NiketaClient{
   constructor(port, emit){
     this.port = port
@@ -88,12 +96,14 @@ export class NiketaClient{
   }
 
   async onJestMessage(message){
-    const { disableLint, fileName, hasWallaby, dir } = message
+    const { fileName, hasWallaby, dir } = message
 
     if (!isMessageCorrect(message)) return
     if (isLintOnlyMode(fileName)) return this.onLintOnlyMode(fileName)
 
+    const disableLint = isWorkFile(fileName)
     const maybeSpecFile = getSpecFile(fileName)
+    
     const { canContinue } = this.markFileForLint({
       maybeSpecFile,
       disableLint,
@@ -114,8 +124,8 @@ export class NiketaClient{
       fileName     : this.fileHolder,
       specFileName : this.specFileHolder,
     })
-
-    // if (failure) return 
+    console.log(cleanJestOutput(execResult.stdout))
+    if (failure) return 
     process.stderr.write('\n🐬\n' + execResult.stderr + '\n\n')
     process.stderr.write('\n🐬\n' + execResult.stdout + '\n\n')
 
@@ -229,11 +239,11 @@ export class NiketaClient{
 
       return [ false, result, actualFileName, extension ]
     } catch (e){
-      if(e.isCanceled) return [false]
-      if(!e.stdout) return [false] 
-      if(!e.stderr) return [false]
-       
-      return [ true, {stdout: e.stdout, stderr: e.stderr},  actualFileName, extension ]
+      if(e.isCanceled) return [true]
+      if(!e.stdout) return [true] 
+      if(!e.stderr) return [true]
+
+      return [ false, {stdout: e.stdout, stderr: e.stderr},  actualFileName, extension ]
     }
   }
 
@@ -242,17 +252,20 @@ export class NiketaClient{
     const pass = input.stderr.includes('PASS')
     const jestOutputLines = input.stdout.split('\n')
 
-    const [ line ] = jestOutputLines.filter(x =>
-      x.includes(`${ actualFileName }${ extension }`))
+    let foundCoverage = false
+    const [ lineWithCoverage ] = jestOutputLines.filter(line =>{
+      if(line.includes('% Stmts'))foundCoverage = true
+      return foundCoverage && line.includes(`${ actualFileName }${ extension }`)
+    })
     
-    if (line === undefined){
+    if (lineWithCoverage === undefined){
       return {
         pass,
         message : SUCCESS_ICON,
       }
     }
 
-    const [ , statements, branch, func, lines, uncovered ] = line
+    const [ , statements, branch, func, lines, uncovered ] = lineWithCoverage
       .split('|')
       .map(extractNumber)
 
@@ -326,9 +339,9 @@ export class NiketaClient{
 
       return true
     }
+
     if (!specBelongs){
       // when we have filepath from previous project but not in the current
-
       this.debugLog(dir, 'still waiting for testable file in this project')
 
       return true
@@ -383,7 +396,14 @@ export class NiketaClient{
     return { canContinue : false }
   }
 
-  debugLog(data, label){}
+  debugLog(toLog, label){ 
+    if(!EXTENDED_LOG) return
+
+      console.log(label, SHORT_SEPARATOR)
+      console.log(SEPARATOR)
+      console.log(toLog)
+      console.log(SEPARATOR)
+  }
 
   onCancelMessage({ fileName }){
     console.log('in cancel message', fileName)
@@ -395,6 +415,7 @@ export class NiketaClient{
   }
 
   async onSocketData(messageFromVSCode){
+    console.log({messageFromVSCode: messageFromVSCode.toString()})
     const parsedMessage = tryCatch(() => JSON.parse(messageFromVSCode.toString()),
       false)()
     if (parsedMessage === false){
@@ -429,43 +450,3 @@ export class NiketaClient{
     return log('Error while parsing messageFromVSCode', 'error')
   }
 }
-
-/*
-    async onMessageTest(message){
-    console.log({ message })
-    await delay(4000)
-    const testUnreliableData = {
-      correct : false,
-      logData : [ 'foo', 'foo1', 'foo2', 'foo3' ],
-    }
-
-    const newDecorations = {
-      correct : true,
-      logData : {
-        1 : 'foo',
-        5 : 'foo1',
-        6 : 'foo1',
-        8 : 'foo2',
-        9 : 'foo3',
-      },
-    }
-    console.log('sending message')
-    this.emit({
-      newDecorations : testUnreliableData,
-      firstStatusBar : 'Keep it up',
-    })
-  }
-
-  const SHORT_SEPARATOR = repeat('🍄', 2).join``
-const SEPARATOR = repeat('🍺', 20).join``
-
-export function debugLog(toLog, label = 'debug log'){
-  if (!getter('DEBUG_LOG')) return
-
-  console.log(label, SHORT_SEPARATOR)
-  console.log(SEPARATOR)
-  console.log(toLog)
-  console.log(SEPARATOR)
-}
-
-*/

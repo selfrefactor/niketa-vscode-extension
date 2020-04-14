@@ -38,7 +38,6 @@ afterEach(() => {
 
 function generateMessage(input){
   return JSON.stringify({
-    disableLint    : false,
     hasWallaby     : false,
     dir            : testDir,
     withLockedFile : false,
@@ -80,4 +79,10 @@ test('async code that throws', async () => {
     }))
     expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
 })
+
+test('real case', async () => {
+    const message = `{"fileName":"/home/s/repos/rambda/source/adjust.js","hasWallaby":false,"withLockedFile":false,"dir":"/home/s/repos/rambda"}`
+    await niketaClient.onSocketData(message)
+    expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
+}) 
 
