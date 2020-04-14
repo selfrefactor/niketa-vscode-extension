@@ -17,7 +17,7 @@ function activate(context){
   }
   const startCommand = vscode.commands.registerCommand(START, fn)
   const requestCancelationCommand = vscode.commands.registerCommand(REQUEST_CANCELATION,
-    worker.requestCancelation)
+   () => worker.requestCancelation())
 
   context.subscriptions.push(startCommand)
   context.subscriptions.push(requestCancelationCommand)
