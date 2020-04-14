@@ -56,11 +56,6 @@
           "type": "number",
           "default": 3020,
           "description": "Port used in communications with `Niketa client`"
-        },
-        "niketa.DISABLE_LINT": {
-          "type": "boolean",
-          "default": false,
-          "description": "Disable lint on every file blur event"
         }
       }
     }
@@ -79,10 +74,7 @@
     "url": "https://github.com/selfrefactor/niketa.git"
   },
   "dependencies": {
-    "fastify": "2.13.0",
-    "rambdax": "3.7.0",
-    "socket.io": "2.3.0",
-    "socket.io-client": "2.3.0"
+    "rambdax": "3.7.0"
   },
   "commitMessage": {
     "workInProgress": ""
