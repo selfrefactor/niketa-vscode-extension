@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`happy 1`] = `
-"
-ℹ /home/s/repos/joke-maker/src/app/rough-demo/rough-demo.component.html linted with PrettyHTML
-
---------------|----------|---------|---------|-------------------
-"
-`;

@@ -1,5 +1,5 @@
-import { clean } from '../_helpers/clean'
-import { debugLog } from '../_helpers/debugLog'
+import { clean } from './cleanx'
+import { debugLog } from '../src/_helpers/debugLog'
 
 export function parseBeforeNotify(input){
   if (input === 1) return

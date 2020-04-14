@@ -1,4 +1,4 @@
-import { lintOnlyMode } from './lintOnlyMode'
+import { lintOnlyMode } from './lint-only-mode'
 
 const base = '/home/s/repos/rambda-docs/src/app/whole'
 const scss = `${ base }/whole.component.scss`

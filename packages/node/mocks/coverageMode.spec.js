@@ -1,7 +1,7 @@
 import { setter } from 'rambdax'
 
-import { angularMock } from '../mocks/angular.js'
-import { coverageMode } from './coverageMode'
+import { angularMock } from './angular.js'
+import { coverageMode } from '../src/coverageMode'
 
 const filePathSpec =
   '/home/s/repos/joke-maker-angular/src/app/helpers/foo.spec.ts'

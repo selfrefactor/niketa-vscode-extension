@@ -1,4 +1,4 @@
-import { cleanStdout } from '../_modules/cleanStdout.js'
+import { cleanStdout } from '../cleanStdout.js'
 
 export function takeNotifyWhenError({ stdout, stderr }){
   if (!stdout.includes('console.log'))
