@@ -115,9 +115,9 @@ export class NiketaClient{
       specFileName : this.specFileHolder,
     })
 
-    if (failure) return
-    process.stderr.write(execResult.stderr + '\n\n')
-    process.stderr.write(execResult.stdout + '\n\n')
+    // if (failure) return 
+    process.stderr.write('\n🐬\n' + execResult.stderr + '\n\n')
+    process.stderr.write('\n🐬\n' + execResult.stdout + '\n\n')
 
     this.sendToVSCode({
       execResult,
@@ -148,7 +148,6 @@ export class NiketaClient{
     })
     const { newDecorations, hasDecorations } = this.getNewDecorations({
       execResult,
-      actualFileName,
       fileName,
     })
     const firstBarMessage = pass ? message : ERROR_ICON
@@ -162,7 +161,7 @@ export class NiketaClient{
     })
   }
 
-  getNewDecorations({ execResult, actualFileName, fileName }){
+  getNewDecorations({ execResult, fileName }){
     const input = cleanJestOutput(execResult.stdout)
     const [ consoleLogs ] = input.split('----------------------|')
     const newDecorationsData = extractConsoleLogs(consoleLogs)
@@ -209,9 +208,10 @@ export class NiketaClient{
   }
 
   async execJest({ fileName, dir, specFileName }){
+    const [ coveragePath, actualFileName, extension ] = getCoveragePath(dir,
+      fileName)
+
     try {
-      const [ coveragePath, actualFileName, extension ] = getCoveragePath(dir,
-        fileName)
       const testPattern = `-- ${ specFileName }`
 
       const command = [
@@ -229,11 +229,11 @@ export class NiketaClient{
 
       return [ false, result, actualFileName, extension ]
     } catch (e){
-      console.log(this.jestChild.killed) // true
-      console.log(e.isCanceled)
-      this.logError(e, 'execJest')
-
-      return [ true ]
+      if(e.isCanceled) return [false]
+      if(!e.stdout) return [false] 
+      if(!e.stderr) return [false]
+       
+      return [ true, {stdout: e.stdout, stderr: e.stderr},  actualFileName, extension ]
     }
   }
 

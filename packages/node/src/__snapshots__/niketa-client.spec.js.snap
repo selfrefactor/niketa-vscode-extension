@@ -1,9 +1,92 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`async code that throws 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "❌",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "4": "1",
+      },
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`failed expectation - bothHaveLogsFile 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "❌",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "2": "2",
+        "3": "number",
+      },
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`failed expectation - bothHaveLogsSpec 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "❌",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "7": "{ a: 1, b: 2 }",
+      },
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`failed expectation - fileHasLogsFile 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "❌",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "2": "9",
+        "3": "number",
+      },
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`failed expectation - fileHasLogsSpec 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "❌",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": false,
+      "logData": Array [
+        "9",
+        "number",
+      ],
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
 exports[`failed expectation - specHasLogsFile 1`] = `
 Array [
   Object {
-    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
+    "firstBarMessage": "❌",
     "hasDecorations": true,
     "newDecorations": Object {
       "correct": false,
@@ -11,6 +94,23 @@ Array [
         "[ 1, 2, 3 ] { a: 1, b: 2 }",
         "1",
       ],
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`failed expectation - specHasLogsSpec 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "❌",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "4": "[ 1, 2, 3 ] { a: 1, b: 2 }",
+        "5": "1",
+      },
     },
     "secondBarMessage": undefined,
   },
@@ -111,6 +211,22 @@ Array [
       "logData": Object {
         "4": "[ 1, 2, 3 ] { a: 1, b: 2 }",
         "5": "1",
+      },
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`sync code that throws 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "❌",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "2": "1",
       },
     },
     "secondBarMessage": undefined,
