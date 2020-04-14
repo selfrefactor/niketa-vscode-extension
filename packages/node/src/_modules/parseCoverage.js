@@ -80,7 +80,6 @@ export function parseCoverage(
   {execResult, actualFileName, fileName, extension}
 ){
   const input = cleanAngularLog(execResult)
-  // const input = cleanAngularLog(execResult)
   const pass = input.stderr.includes('PASS')
   const jestOutputLines = input.stdout.split('\n')
 
@@ -97,10 +96,7 @@ export function parseCoverage(
   const [ , statements, branch, func, lines, uncovered ] = line
     .split('|')
     .map(extractNumber)
-    
-  console.log({
-    statements, branch, func, lines, uncovered
-  })
+
   const message = diff([ statements, branch, func, lines ], fileName)
 
   return {
