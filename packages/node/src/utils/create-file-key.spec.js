@@ -1,4 +1,4 @@
-import { createFileKey } from './createFileKey'
+import { createFileKey } from './create-file-key'
 
 test('with .js', () => {
   expect(createFileKey('foo.js')).toBe('foo.spec.js')

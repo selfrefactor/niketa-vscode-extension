@@ -1,33 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`scenario - correct decoration 1`] = `
+exports[`spec has logs - changed source 1`] = `
 Array [
   Object {
-    "firstBarMessage": "🐰 st: 83.33 br: 50 fn: 100 lns: 100",
+    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
     "hasDecorations": true,
     "newDecorations": Object {
-      "correct": true,
-      "logData": Object {
-        "10": "string",
-        "12": "string [ 1, 23, { a: 1 } ]",
-      },
+      "correct": false,
+      "logData": Array [
+        "[ 1, 2, 3 ] { a: 1, b: 2 }",
+        "1",
+      ],
     },
     "secondBarMessage": undefined,
   },
 ]
 `;
 
-exports[`scenario - unreliable decorator data 1`] = `
+exports[`spec has logs - changed spec 1`] = `
 Array [
   Object {
-    "firstBarMessage": "🐰 st: 83.33 br: 50 fn: 100 lns: 100",
+    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
     "hasDecorations": true,
     "newDecorations": Object {
-      "correct": false,
-      "logData": Array [
-        "string",
-        "string [ 1, 23, { a: 1 } ]",
-      ],
+      "correct": true,
+      "logData": Object {
+        "4": "[ 1, 2, 3 ] { a: 1, b: 2 }",
+        "5": "1",
+      },
     },
     "secondBarMessage": undefined,
   },

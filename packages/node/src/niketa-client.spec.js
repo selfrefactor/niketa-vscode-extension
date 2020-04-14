@@ -1,6 +1,10 @@
+import {resolve} from 'path'
 import { NiketaClient } from './niketa-client.js'
 import { execJest } from './utils/exec-jest.js'
 jest.setTimeout(10000)
+
+const specHasLogsFile = resolve(__dirname, '../test-data/success/spec-has-logs.js')
+const specHasLogsSpec = resolve(__dirname, '../test-data/success/spec-has-logs.spec.js')
 
 const testDir = '/home/s/repos/niketa/packages/node'
 const testFileName =
@@ -25,35 +29,35 @@ afterEach(() => {
   emit.mockClear()
 })
 
-test('scenario - unreliable decorator data', async () => {
-  try {
-    const firstMessage = JSON.stringify({
-      fileName       : sourceFileName,
-      disableLint    : false,
-      hasWallaby     : false,
-      dir            : testDir,
-      withLockedFile : false,
-    })
+function generateMessage(input){
+  return JSON.stringify({
+    disableLint    : false,
+    hasWallaby     : false,
+    dir            : testDir,
+    withLockedFile : false,
+    ...input
+  })
+}
 
-    await niketaClient.onSocketData(firstMessage)
+test('spec has logs - changed source', async () => {
+  try {
+    await niketaClient.onSocketData(generateMessage({
+      fileName : specHasLogsFile
+    }))
     expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
   } catch (e){
     console.log({ e }, 'catch')
   }
 })
 
-test('scenario - correct decoration', async () => {
+test('spec has logs - changed spec', async () => {
   try {
-    const firstMessage = JSON.stringify({
-      fileName       : testFileName,
-      disableLint    : false,
-      hasWallaby     : false,
-      dir            : testDir,
-      withLockedFile : false,
-    })
-    await niketaClient.onSocketData(firstMessage)
+    await niketaClient.onSocketData(generateMessage({
+      fileName : specHasLogsSpec
+    }))
     expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
   } catch (e){
     console.log({ e }, 'catch')
   }
 })
+

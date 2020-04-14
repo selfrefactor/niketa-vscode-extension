@@ -6,14 +6,12 @@ import {
   glue,
   pass,
   remove,
-  startsWith,
-  trim,
   tryCatch,
 } from 'rambdax'
 
-import { createFileKey } from './_helpers/createFileKey'
-import { isLintOnlyMode } from './_helpers/isLintOnlyMode'
-import { getCoveragePath } from './_modules/getCoveragePath'
+import { createFileKey } from './utils/create-file-key'
+import { isLintOnlyMode } from './utils/is-lint-only-mode'
+import { getCoveragePath } from './utils/get-coverage-path'
 import { cleanJestOutput } from './utils/clean-jest-output.js'
 import { extractConsoleLogs } from './utils/extract-console.logs'
 import { getSpecFile } from './utils/get-spec-file.js'
@@ -457,4 +455,17 @@ export class NiketaClient{
       firstStatusBar : 'Keep it up',
     })
   }
+
+  const SHORT_SEPARATOR = repeat('🍄', 2).join``
+const SEPARATOR = repeat('🍺', 20).join``
+
+export function debugLog(toLog, label = 'debug log'){
+  if (!getter('DEBUG_LOG')) return
+
+  console.log(label, SHORT_SEPARATOR)
+  console.log(SEPARATOR)
+  console.log(toLog)
+  console.log(SEPARATOR)
+}
+
 */

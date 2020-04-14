@@ -1,7 +1,7 @@
 import { log } from 'helpers-fn'
 import { execPrettier } from 'lint-fn'
 
-import { prettyHtml } from './_modules/prettyHtml'
+import { prettyHtml } from './pretty-html'
 
 async function usePrettier(filePath){
   const printWidth = filePath.endsWith('.html') ? 40 : 35

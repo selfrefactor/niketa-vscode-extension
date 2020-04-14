@@ -1,4 +1,4 @@
-import { getCoveragePath } from './getCoveragePath'
+import { getCoveragePath } from './get-coverage-path'
 
 test('spec.ts', () => {
   const [ result, fileName ] = getCoveragePath('home/sk/',

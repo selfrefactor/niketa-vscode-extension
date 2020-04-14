@@ -1,4 +1,4 @@
-import { conf } from './_modules/conf'
+import { conf } from './conf'
 conf()
 
 import { setter } from 'rambdax'
@@ -10,7 +10,7 @@ import { log } from 'helpers-fn'
 import socketServer from 'socket.io'
 import socketClient from 'socket.io-client'
 
-import { isLintOnlyMode } from './_helpers/isLintOnlyMode'
+import { isLintOnlyMode } from '../src/utils/is-lint-only-mode'
 import { checkExtensionMessage } from './ants/checkExtensionMessage'
 import { fileSaved } from './file-saved'
 
