@@ -1,22 +1,26 @@
 import {resolve} from 'path'
+import { mapAsync } from 'rambdax'
 import { NiketaClient } from './niketa-client.js'
-import { execJest } from './utils/exec-jest.js'
 jest.setTimeout(10000)
 
-const specHasLogsFile = resolve(__dirname, '../test-data/success/spec-has-logs.js')
-const specHasLogsSpec = resolve(__dirname, '../test-data/success/spec-has-logs.spec.js')
+const FAILED_EXPECTATIONS = {
+  specHasLogsFile: resolve(__dirname, '../test-data/failed-expectation/spec-has-logs.js'),
+  // specHasLogsSpec: resolve(__dirname, '../test-data/failed-expectation/spec-has-logs.spec.js'),
+  // fileHasLogsFile: resolve(__dirname, '../test-data/failed-expectation/file-has-logs.js'),
+  // fileHasLogsSpec: resolve(__dirname, '../test-data/failed-expectation/file-has-logs.spec.js'),
+  // bothHaveLogsFile: resolve(__dirname, '../test-data/failed-expectation/both-have-logs.js'),
+  // bothHaveLogsSpec: resolve(__dirname, '../test-data/failed-expectation/both-have-logs.spec.js')
+}
+const SUCCESS = {
+  specHasLogsFile: resolve(__dirname, '../test-data/success/spec-has-logs.js'),
+  specHasLogsSpec: resolve(__dirname, '../test-data/success/spec-has-logs.spec.js'),
+  fileHasLogsFile: resolve(__dirname, '../test-data/success/file-has-logs.js'),
+  fileHasLogsSpec: resolve(__dirname, '../test-data/success/file-has-logs.spec.js'),
+  bothHaveLogsFile: resolve(__dirname, '../test-data/success/both-have-logs.js'),
+  bothHaveLogsSpec: resolve(__dirname, '../test-data/success/both-have-logs.spec.js')
+}
 
 const testDir = '/home/s/repos/niketa/packages/node'
-const testFileName =
-  '/home/s/repos/niketa/packages/node/src/_modules/parseBeforeNotify.spec.js'
-const sourceFileName =
-  '/home/s/repos/niketa/packages/node/src/_modules/parseBeforeNotify.js'
-
-test.skip('happy', async () => {
-  const cwd = '/home/s/repos/niketa/packages/node'
-  const result = await execJest(testFileName, cwd)
-  console.log(result)
-})
 
 let niketaClient
 const emit = jest.fn()
@@ -39,25 +43,31 @@ function generateMessage(input){
   })
 }
 
-test('spec has logs - changed source', async () => {
-  try {
-    await niketaClient.onSocketData(generateMessage({
-      fileName : specHasLogsFile
-    }))
-    expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
-  } catch (e){
-    console.log({ e }, 'catch')
-  }
-})
 
-test('spec has logs - changed spec', async () => {
-  try {
-    await niketaClient.onSocketData(generateMessage({
-      fileName : specHasLogsSpec
-    }))
-    expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
-  } catch (e){
-    console.log({ e }, 'catch')
+Object.keys(SUCCESS).forEach(testKey => {
+    test.skip(`success - ${testKey}`, async () => {
+        await niketaClient.onSocketData(generateMessage({
+          fileName : SUCCESS[testKey]
+        }))
+        expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
+    })
   }
-})
+)
+
+Object.keys(FAILED_EXPECTATIONS).forEach(testKey => {
+    test(`failed expectation - ${testKey}`, async () => {
+        await niketaClient.onSocketData(generateMessage({
+          fileName : SUCCESS[testKey]
+        }))
+        expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
+    })
+  }
+)
+
+// test('spec has logs - changed spec', async () => {
+//     await niketaClient.onSocketData(generateMessage({
+//       fileName : specHasLogsSpec
+//     }))
+//     expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
+// })
 
