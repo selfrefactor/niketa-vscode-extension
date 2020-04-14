@@ -107,10 +107,11 @@ class Worker{
 
     editor.setDecorations(this.decorationType, pendingDecorations)
   }
-  buildCorrectDecorations(logData){
+  buildCorrectDecorations(logData, loc){
     const pendingDecorations = []
     const iteratable = (lineKey => {
       const line = Number(lineKey)
+      if(line + 1 >= loc) return
       const toShow = logData[lineKey]
       const decoration = {
         renderOptions: {after: {contentText: toShow, color: '#7cc36e'}},
@@ -140,10 +141,11 @@ class Worker{
     const loop = range(startLine+TOP_MARGIN, endPoint)
     return loop.map(iteratable)
   }
-  async onCorrectDecorations({correct, logData}){
+  async onCorrectDecorations(newDecorations, loc){
+    const {correct, logData} = newDecorations
     if(!correct) return
     if(Object.keys(logData).length === 0) return
-    const pendingDecorations = this.buildCorrectDecorations(logData)
+    const pendingDecorations = this.buildCorrectDecorations(logData, loc)
 
     await this.paintDecorations(pendingDecorations)
     await delay(200)
@@ -158,7 +160,7 @@ class Worker{
     await delay(200)
     this.unlock()
   }
-  messageReceived(messageFromServer, starterFileName){
+  messageReceived(messageFromServer, loc, starterFileName){
     const parsedMessage = tryCatch(() => JSON.parse(messageFromServer.toString()), false)()
     if(!parsedMessage) return this.unlock()
     if(parsedMessage.hasDecorations === false) return this.whenNoDecorations(parsedMessage)
@@ -166,7 +168,8 @@ class Worker{
 
     if(parsedMessage.newDecorations.correct === true){
       return this.onCorrectDecorations(
-        parsedMessage.newDecorations
+        parsedMessage.newDecorations, 
+        loc
       )
     }
     if(parsedMessage.newDecorations.correct === false){
@@ -174,8 +177,11 @@ class Worker{
     } 
     this.unlock()
   }
-  whenNoDecorations({firstBarMessage}){
+  whenNoDecorations({firstBarMessage, secondBarMessage}){
     this.setterStatusBar({newText: firstBarMessage, statusBarIndex:0})  
+    if(!secondBarMessage) return
+
+    this.setterStatusBar({newText: secondBarMessage, statusBarIndex:1})  
   }
   setterStatusBar({newText, statusBarIndex}){
     if(![0,1,2].includes(statusBarIndex)) return
@@ -256,7 +262,8 @@ function initExtension(){
       .then(messageFromServer =>
         worker.messageReceived(
           messageFromServer,
-          e.fileName
+          e.lineCount,
+          e.fileName,
         ))
       .catch(e => {
         console.log(e, 'initExtension')
