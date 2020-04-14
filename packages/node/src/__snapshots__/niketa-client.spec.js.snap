@@ -24,8 +24,8 @@ Array [
     "newDecorations": Object {
       "correct": true,
       "logData": Object {
-        "2": "2",
-        "3": "number",
+        "2": "0, 1, 2",
+        "3": "number, number, number",
       },
     },
     "secondBarMessage": undefined,
@@ -117,16 +117,32 @@ Array [
 ]
 `;
 
-exports[`success - bothHaveLogsFile 1`] = `
+exports[`real case 1`] = `
 Array [
   Object {
-    "firstBarMessage": "🐰 st: 0 br: 0 fn: 0 lns: 0",
+    "firstBarMessage": "🐰 st: 100 br: 100 fn: 100 lns: 100",
     "hasDecorations": true,
     "newDecorations": Object {
       "correct": true,
       "logData": Object {
-        "2": "2",
-        "3": "number",
+        "6": "1 [ 0, 1, 2 ], 1 [ 0, 1, 2 ], 1 [ 0, 1, 2 ], 1 [ 0, 1, 2 ], ",
+      },
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`success - bothHaveLogsFile 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "🐰 st: 100 br: 100 fn: 100 lns: 100",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "2": "0, 1, 2",
+        "3": "number, number, number",
       },
     },
     "secondBarMessage": undefined,
@@ -137,7 +153,7 @@ Array [
 exports[`success - bothHaveLogsSpec 1`] = `
 Array [
   Object {
-    "firstBarMessage": "🐰 st: 0 br: 0 fn: 0 lns: 0",
+    "firstBarMessage": "🐰 st: 100 br: 100 fn: 100 lns: 100",
     "hasDecorations": true,
     "newDecorations": Object {
       "correct": true,
@@ -153,7 +169,7 @@ Array [
 exports[`success - fileHasLogsFile 1`] = `
 Array [
   Object {
-    "firstBarMessage": "🐰 st: 0 br: 0 fn: 0 lns: 0",
+    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
     "hasDecorations": true,
     "newDecorations": Object {
       "correct": true,
@@ -170,7 +186,7 @@ Array [
 exports[`success - fileHasLogsSpec 1`] = `
 Array [
   Object {
-    "firstBarMessage": "🐰 st: 0 br: 0 fn: 0 lns: 0",
+    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
     "hasDecorations": true,
     "newDecorations": Object {
       "correct": false,
