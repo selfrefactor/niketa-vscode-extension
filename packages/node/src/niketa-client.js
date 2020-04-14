@@ -16,6 +16,7 @@ import { getCoveragePath } from './utils/get-coverage-path'
 import { cleanJestOutput } from './utils/clean-jest-output.js'
 import { extractConsoleLogs } from './utils/extract-console.logs'
 import { getSpecFile } from './utils/get-spec-file.js'
+import { whenFileLoseFocus } from './utils/when-file-lose-focus'
 
 const JEST_BIN = './node_modules/jest/bin/jest.js'
 export const ERROR_ICON = '❌'
@@ -124,7 +125,6 @@ export class NiketaClient{
       fileName     : this.fileHolder,
       specFileName : this.specFileHolder,
     })
-    console.log(cleanJestOutput(execResult.stdout))
     if (failure) return 
     process.stderr.write('\n🐬\n' + execResult.stderr + '\n\n')
     process.stderr.write('\n🐬\n' + execResult.stdout + '\n\n')
@@ -234,7 +234,9 @@ export class NiketaClient{
         testPattern,
       ].join(' ')
       this.jestChild = execa.command(command, { cwd : dir })
+      log('Jest start','info')
       const result = await this.jestChild
+      log('Jest end','info')
       this.jestChild = undefined
 
       return [ false, result, actualFileName, extension ]
@@ -362,7 +364,7 @@ export class NiketaClient{
 
     if (allowLint){
       log(`LINT ${ this.lintFileHolder }`, 'box')
-      // whenFileLoseFocus(lintFileHolder, disableLint)
+      whenFileLoseFocus(this.lintFileHolder)
       this.lintFileHolder = fileName
     } else {
       log(`SKIP_LINT ${
@@ -446,7 +448,8 @@ export class NiketaClient{
     this.server.listen(this.port, '127.0.0.1')
   }
 
-  onWrongIncomingMessage(messageFromVSCode){
+  onWrongIncomingMessage(message){
+    console.log({message:message.toString(), type: typeof message})
     return log('Error while parsing messageFromVSCode', 'error')
   }
 }
