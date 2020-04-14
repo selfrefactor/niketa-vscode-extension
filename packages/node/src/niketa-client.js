@@ -16,7 +16,7 @@ import { getCoveragePath } from './utils/get-coverage-path'
 import { cleanJestOutput } from './utils/clean-jest-output.js'
 import { extractConsoleLogs } from './utils/extract-console.logs'
 import { getSpecFile } from './utils/get-spec-file.js'
-import { whenFileLoseFocus } from './utils/when-file-lose-focus'
+import { whenFileLoseFocus } from './_modules/when-file-lose-focus'
 
 const JEST_BIN = './node_modules/jest/bin/jest.js'
 export const ERROR_ICON = '❌'
