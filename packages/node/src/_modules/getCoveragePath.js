@@ -6,5 +6,5 @@ export function getCoveragePath(dir, filePath){
   const file = remove([ `${ dir }/`, '.spec', extension ], filePath)
   const fileName = last(file.split('/'))
 
-  return [ `--collectCoverageFrom="${ file }${ extension }"`, fileName ]
+  return [ `--collectCoverageFrom="${ file }${ extension }"`, fileName, extension ]
 }

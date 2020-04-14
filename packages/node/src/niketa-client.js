@@ -30,10 +30,8 @@ const messageSchema = {
 }
 
 function isMessageCorrect(message){
-  console.log({message})
   const isCorrect = pass(message)(messageSchema)
   if(!isCorrect) {
-    console.log({message})
     log('isMessageCorrect','error')
     return false
   }
@@ -51,34 +49,39 @@ export class NiketaClient{
   }
   async onJestMessage(message){
     const {disableLint, fileName, hasWallaby, dir} = message
+
     if(!isMessageCorrect(message))return
     if( isLintOnlyMode(fileName))return this.onLintOnlyMode(fileName)
+
     const maybeSpecFile = getSpecFile(fileName)
     const {canContinue} = this.markFileForLint({maybeSpecFile, disableLint, hasWallaby, fileName})
     
     if(!canContinue) return
     if(this.stillWaitingForSpec(fileName, dir)) return  
-    console.log({maybeSpecFile, canContinue})
     
-    const [failure, execResult, actualFileName] = await this.execJest( { dir, fileName: this.fileHolder, specFileName: this.specFileHolder })
+    const [failure, execResult, actualFileName, extension] = await this.execJest( { dir, fileName: this.fileHolder, specFileName: this.specFileHolder })
     if(failure) return
-    console.log({execResult})
-    this.sendToVSCode({execResult, actualFileName, fileName: this.fileHolder})
+    process.stderr.write(execResult.stderr + '\n\n')
+    process.stderr.write(execResult.stdout + '\n\n')
+
+    this.sendToVSCode({execResult, actualFileName, fileName: this.fileHolder, extension})
+    return true
   }
-  sendToVSCode({execResult, actualFileName, fileName}){
+  sendToVSCode({execResult, actualFileName, fileName, extension}) {
     const hasError =
     execResult.stderr.startsWith('FAIL') ||
     execResult.stderr.includes('ERROR:')
-
     if (hasError){
       return this.emit({firstBarMessage: ERROR_ICON, hasDecorations: false})
     }
 
-    const { pass, message, uncovered } = parseCoverage(
+    const { pass, message, uncovered } = parseCoverage({
       execResult,
       actualFileName,
       fileName,
-    )
+      extension
+  })
+    console.log({pass, message, uncovered})
     const newDecorations = this.getNewDecorations({execResult, actualFileName, fileName})
     const firstBarMessage = pass ? message : ERROR_ICON
     const secondBarMessage = uncovered ? uncovered : undefined
@@ -90,7 +93,7 @@ export class NiketaClient{
   }
   async execJest({fileName, dir, specFileName}){
     try {
-      const [ coveragePath,actualFileName ] = getCoveragePath(dir, fileName)
+      const [ coveragePath,actualFileName, extension ] = getCoveragePath(dir, fileName)
       const testPattern = `-- ${ specFileName }`
     
       const command = [
@@ -102,11 +105,10 @@ export class NiketaClient{
         coveragePath,
         testPattern
       ].join(' ')
-      console.log(command, 4)
       this.jestChild = execa.command(command, {cwd: dir});
       const result = await this.jestChild
       this.jestChild = undefined
-      return [false, result, actualFileName]
+      return [false, result, actualFileName, extension]
     }catch(e){
         console.log(this.jestChild.killed); // true
         console.log(e.isCanceled);

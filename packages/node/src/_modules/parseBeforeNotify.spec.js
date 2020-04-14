@@ -7,5 +7,6 @@ test('happy', () => {
 --------------|----------|---------|---------|-------------------
 `
   const result = parseBeforeNotify(demoInput)
+  console.log(typeof result)
   expect(result).toMatchSnapshot()
 })
