@@ -4,6 +4,7 @@ import { createServer } from 'net'
 import {
   filter,
   glue,
+  type,
   pass,
   repeat,
   remove,
@@ -20,8 +21,8 @@ import { whenFileLoseFocus } from './modules/when-file-lose-focus'
 import { lintOnlyMode } from './modules/lint-only-mode'
 
 const JEST_BIN = './node_modules/jest/bin/jest.js'
-export const ERROR_ICON = '❌'
-export const SUCCESS_ICON = '🐬'
+const ERROR_ICON = '❌'
+const SUCCESS_ICON = '🐬'
 const SHORT_SEPARATOR = repeat('🍄', 2).join``
 const SEPARATOR = repeat('🍺', 20).join``
     
@@ -52,7 +53,13 @@ function extractNumber(text){
   const justText = text.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
     '')
 
-  return Number(justText.trim())
+  const asNumber = Number(justText.trim())
+
+  if(type(asNumber) === 'NaN'){
+    return justText.trim()
+  } 
+
+  return asNumber
 }
 
 const defaultEmit = x => console.log(x, 'emit not yet initialized')
@@ -75,6 +82,7 @@ function isMessageCorrect(message){
 }
 
 function getUncoveredMessage(message){
+  console.log({message}, typeof message)
   if (typeof message !== 'string' || !message){
     return
   }
@@ -126,6 +134,9 @@ export class NiketaClient{
       fileName     : this.fileHolder,
       specFileName : this.specFileHolder,
     })
+    this.debugLog(cleanJestOutput(execResult.stderr), 'jest.error.stream')
+    this.debugLog(cleanJestOutput(execResult.stdout), 'jest.result.stream')
+
     if (failure) return 
     process.stderr.write('\n🐬\n' + execResult.stderr + '\n\n')
     process.stderr.write('\n🐬\n' + execResult.stdout + '\n\n')
@@ -242,6 +253,7 @@ export class NiketaClient{
 
       return [ false, result, actualFileName, extension ]
     } catch (e){
+      console.log(e.isCanceled,88)
       if(e.isCanceled) return [true]
       if(!e.stdout) return [true] 
       if(!e.stderr) return [true]
@@ -271,7 +283,6 @@ export class NiketaClient{
     const [ , statements, branch, func, lines, uncovered ] = lineWithCoverage
       .split('|')
       .map(extractNumber)
-
     const message = this.getCoverageDiff([ statements, branch, func, lines ], fileName)
 
     return {
@@ -409,7 +420,6 @@ export class NiketaClient{
   }
 
   onCancelMessage({ fileName }){
-    console.log('in cancel message', fileName)
     if (!this.jestChild) return
     if (!this.jestChild.cancel) return
 
@@ -418,12 +428,14 @@ export class NiketaClient{
   }
 
   async onSocketData(messageFromVSCode){
-    console.log({messageFromVSCode: messageFromVSCode.toString()})
     const parsedMessage = tryCatch(() => JSON.parse(messageFromVSCode.toString()),
       false)()
     if (parsedMessage === false){
       return this.onWrongIncomingMessage(messageFromVSCode.toString())
     }
+
+    log(parsedMessage, 'obj')
+
     if (parsedMessage.requestCancelation){
       return this.onCancelMessage(parsedMessage)
     }
