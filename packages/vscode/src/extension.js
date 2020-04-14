@@ -1,11 +1,10 @@
 const vscode = require('vscode')
 const { initExtension } = require('./worker')
-const { MODES, START, START_DEMO, REQUEST_CANCELATION } = require('./constants')
-const { setter, getter, head } = require('rambdax')
+const { setter, getter } = require('rambdax')
+const { START, REQUEST_CANCELATION } = require('./constants')
 
 setter('ACTIVE_FLAG', false)
 setter('ACTIVATED', false)
-setter('MODE', head(MODES))
 
 function activate(context){
   const worker = initExtension()
@@ -17,7 +16,6 @@ function activate(context){
     }
   }
   const startCommand = vscode.commands.registerCommand(START, fn)
-
   const requestCancelationCommand = vscode.commands.registerCommand(REQUEST_CANCELATION,
     worker.requestCancelation)
 
@@ -26,19 +24,3 @@ function activate(context){
 }
 
 exports.activate = activate
-
-/*
-    const startCommand = vscode.commands.registerCommand(START, () => {
-    console.log(3)
-    if (!getter('ACTIVATED')){
-      setter('ACTIVATED', true)
-
-      bar.init()
-      initEmitter()
-
-      delay(1000).then(() => init())
-    }
-
-    setter('ACTIVE_FLAG', !getter('ACTIVE_FLAG'))
-  })
-  */

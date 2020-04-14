@@ -85,6 +85,6 @@
     "socket.io-client": "2.3.0"
   },
   "commitMessage": {
-    "workInProgress": "use class for decorator"
+    "workInProgress": ""
   }
 }
