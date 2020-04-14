@@ -8,6 +8,6 @@ test('css', () => {
   expect(isLintOnlyMode(`${ process.env.HOME }/s/foo.css`)).toBeTruthy()
 })
 
-test('css', () => {
+test('html', () => {
   expect(isLintOnlyMode(`${ process.env.HOME }/s/foo.html`)).toBeTruthy()
 })

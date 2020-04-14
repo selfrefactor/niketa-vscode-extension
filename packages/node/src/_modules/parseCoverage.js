@@ -69,23 +69,25 @@ function diff(inputs, filePath){
   return message.trim() === '' ? '⛹' : message
 }
 
-function extractNumber(text) {
-  var justText = text.replace(
-    /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
+function extractNumber(text){
+  const justText = text.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+    '')
 
-  return Number(justText.trim())  
+  return Number(justText.trim())
 }
 
-export function parseCoverage(
-  {execResult, actualFileName, fileName, extension}
-){
+export function parseCoverage({
+  execResult,
+  actualFileName,
+  fileName,
+  extension,
+}){
   const input = cleanAngularLog(execResult)
   const pass = input.stderr.includes('PASS')
   const jestOutputLines = input.stdout.split('\n')
 
-  const [ line ] = jestOutputLines.filter(
-    x => x.includes(`${actualFileName}${extension}`)
-  )
+  const [ line ] = jestOutputLines.filter(x =>
+    x.includes(`${ actualFileName }${ extension }`))
   if (line === undefined){
     return {
       pass,

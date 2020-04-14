@@ -4,12 +4,12 @@ exports[`happy 1`] = `
 Object {
   "src/_modules/parseBeforeNotify.spec.js": Array [
     Object {
+      "decoration": "string",
       "line": "10",
-      "logged": "string",
     },
     Object {
+      "decoration": "string [ 1, 23, { a: 1 } ]",
       "line": "12",
-      "logged": "string [ 1, 23, { a: 1 } ]",
     },
   ],
 }

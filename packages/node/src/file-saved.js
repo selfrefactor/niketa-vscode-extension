@@ -4,12 +4,12 @@ import { glue } from 'rambdax'
 import { debugLog } from './_helpers/debugLog'
 import { execJest } from './_modules/execJest'
 import { getCoveragePath } from './_modules/getCoveragePath'
-import { getSpecFile } from './utils/get-spec-file'
 import { whenFileLoseFocus } from './_modules/whenFileLoseFocus'
 import { coverageMode } from './coverageMode'
 import { startSpinner } from './emitters/startSpinner'
 import { stopSpinner } from './emitters/stopSpinner'
 import { lintOnlyMode as lintOnlyModeMethod } from './lintOnlyMode.js'
+import { getSpecFile } from './utils/get-spec-file'
 
 const JEST_BIN = './node_modules/jest/bin/jest.js'
 

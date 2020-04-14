@@ -8,30 +8,32 @@ export async function execJest(fileName, cwd){
     // '-u',
     // '--maxWorkers=1',
     '--env=node',
-  testPattern
-]
-console.log('before')
-const command = `node ${JEST_BIN} ${commandInputs.join(' ')}`
-const subprocess = execa.command(command, {cwd});
-// const subprocess = execa('node', commandInputs, {cwd});
-console.log('after')
+    testPattern,
+  ]
+  console.log('before')
+  const command = `node ${ JEST_BIN } ${ commandInputs.join(' ') }`
+  const subprocess = execa.command(command, { cwd })
+  // const subprocess = execa('node', commandInputs, {cwd});
+  console.log('after')
 
-	setTimeout(() => {
+  setTimeout(() => {
     // subprocess.kill('SIGTERM', {
     //   forceKillAfterTimeout: 2000
     // })
-		subprocess.cancel();
-	}, 10);
+    subprocess.cancel()
+  }, 10)
 
-	try {
+  try {
     console.log('before await')
-    const result = await subprocess;
+    const result = await subprocess
     console.log(123)
+
     return result
-	} catch (error) {
+  } catch (error){
     console.log(12)
-		console.log(subprocess.killed); // true
-    console.log(error.isCanceled);
-    return error;
+    console.log(subprocess.killed) // true
+    console.log(error.isCanceled)
+
+    return error
   }
 }
