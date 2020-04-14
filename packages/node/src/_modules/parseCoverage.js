@@ -1,6 +1,7 @@
 import { glue, remove, startsWith, trim } from 'rambdax'
 
 import { createFileKey } from '../_helpers/createFileKey'
+const SUCCESS_ICON = '🐬'
 
 function cleanAngularLog(x){
   return {
@@ -68,28 +69,39 @@ function diff(inputs, filePath){
   return message.trim() === '' ? '⛹' : message
 }
 
+function extractNumber(text) {
+  var justText = text.replace(
+    /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
+
+  return Number(justText.trim())  
+}
+
 export function parseCoverage(
-  execResultInput, fileName, filePath
+  {execResult, actualFileName, fileName, extension}
 ){
-  const execResult = cleanAngularLog(execResultInput)
-  const pass = execResult.stderr.startsWith('PASS')
+  const input = cleanAngularLog(execResult)
+  // const input = cleanAngularLog(execResult)
+  const pass = input.stderr.includes('PASS')
+  const jestOutputLines = input.stdout.split('\n')
 
-  const [ line ] = execResult.stdout
-    .split('\n')
-    .filter(startsWith(` ${ fileName }`))
-
+  const [ line ] = jestOutputLines.filter(
+    x => x.includes(`${actualFileName}${extension}`)
+  )
   if (line === undefined){
     return {
       pass,
-      message : 'LINE === undefined',
+      message : SUCCESS_ICON,
     }
   }
 
   const [ , statements, branch, func, lines, uncovered ] = line
     .split('|')
-    .map(trim)
-
-  const message = diff([ statements, branch, func, lines ], filePath)
+    .map(extractNumber)
+    
+  console.log({
+    statements, branch, func, lines, uncovered
+  })
+  const message = diff([ statements, branch, func, lines ], fileName)
 
   return {
     pass,
