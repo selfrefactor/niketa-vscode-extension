@@ -1,9 +1,10 @@
-import {pass,tryCatch, getter, setter, delay } from 'rambdax'
+import {pass,tryCatch, getter, setter, delay, remove } from 'rambdax'
 import { log } from 'helpers-fn'
 import {createServer} from 'net'
 import { isLintOnlyMode } from './_helpers/isLintOnlyMode'
 import { checkExtensionMessage } from './ants/checkExtensionMessage'
 import { getSpecFile } from './utils/get-spec-file.js'
+import { cleanJestOutput } from './utils/clean-jest-output.js'
 import execa from 'execa'
 import { getCoveragePath } from './_modules/getCoveragePath'
 import { parseCoverage } from './_modules/parseCoverage'
@@ -37,6 +38,18 @@ function isMessageCorrect(message){
   }
   return true
 }
+
+function getUncoveredMessage(message){
+  if (typeof message !== 'string' || !message){
+    return 
+  }
+
+  const uncovered = remove('...', message)
+  return message.includes('...') ?
+    `⛱${ uncovered }` :
+    `☔${ uncovered }`
+}
+
 
 export class NiketaClient{
   constructor(port, emit) {
@@ -81,15 +94,16 @@ export class NiketaClient{
       fileName,
       extension
   })
-    console.log({pass, message, uncovered})
     const newDecorations = this.getNewDecorations({execResult, actualFileName, fileName})
     const firstBarMessage = pass ? message : ERROR_ICON
-    const secondBarMessage = uncovered ? uncovered : undefined
+    const secondBarMessage = getUncoveredMessage(uncovered)
 
     this.emit({firstBarMessage, secondBarMessage, hasDecorations: false})  
   }
   getNewDecorations({execResult, actualFileName, fileName}){
-
+    const input = cleanJestOutput(execResult.stdout)
+    const [consoleLogsRaw] = input.split('----------------------|')
+    console.log({consoleLogsRaw})
   }
   async execJest({fileName, dir, specFileName}){
     try {
