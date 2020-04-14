@@ -16,7 +16,8 @@ import { getCoveragePath } from './utils/get-coverage-path'
 import { cleanJestOutput } from './utils/clean-jest-output.js'
 import { extractConsoleLogs } from './utils/extract-console.logs'
 import { getSpecFile } from './utils/get-spec-file.js'
-import { whenFileLoseFocus } from './_modules/when-file-lose-focus'
+import { whenFileLoseFocus } from './modules/when-file-lose-focus'
+import { lintOnlyMode } from './modules/lint-only-mode'
 
 const JEST_BIN = './node_modules/jest/bin/jest.js'
 export const ERROR_ICON = '❌'
@@ -100,7 +101,7 @@ export class NiketaClient{
     const { fileName, hasWallaby, dir } = message
 
     if (!isMessageCorrect(message)) return
-    if (isLintOnlyMode(fileName)) return this.onLintOnlyMode(fileName)
+    if (isLintOnlyMode(fileName)) return lintOnlyMode(fileName)
 
     const disableLint = isWorkFile(fileName)
     const maybeSpecFile = getSpecFile(fileName)
