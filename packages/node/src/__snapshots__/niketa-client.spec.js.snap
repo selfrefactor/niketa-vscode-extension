@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`spec has logs - changed source 1`] = `
+exports[`failed expectation - specHasLogsFile 1`] = `
 Array [
   Object {
     "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
@@ -17,7 +17,91 @@ Array [
 ]
 `;
 
-exports[`spec has logs - changed spec 1`] = `
+exports[`success - bothHaveLogsFile 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "🐰 st: 0 br: 0 fn: 0 lns: 0",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "2": "2",
+        "3": "number",
+      },
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`success - bothHaveLogsSpec 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "🐰 st: 0 br: 0 fn: 0 lns: 0",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "7": "{ a: 1, b: 2 }",
+      },
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`success - fileHasLogsFile 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "🐰 st: 0 br: 0 fn: 0 lns: 0",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "2": "9",
+        "3": "number",
+      },
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`success - fileHasLogsSpec 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "🐰 st: 0 br: 0 fn: 0 lns: 0",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": false,
+      "logData": Array [
+        "9",
+        "number",
+      ],
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`success - specHasLogsFile 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": false,
+      "logData": Array [
+        "[ 1, 2, 3 ] { a: 1, b: 2 }",
+        "1",
+      ],
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`success - specHasLogsSpec 1`] = `
 Array [
   Object {
     "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
