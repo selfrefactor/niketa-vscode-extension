@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typescipt scenario 1`] = `
+Object {
+  "emited": Array [
+    Array [
+      Object {
+        "firstBarMessage": "🐰 st: 59.26 br: 45 fn: 75 lns: 57.69",
+        "hasDecorations": true,
+        "newDecorations": Object {
+          "correct": false,
+          "logData": Array [
+            "{ currentTag: '1.2.3', tagType: 'minor' }",
+            "{ result: '1.3.0' }",
+          ],
+        },
+        "secondBarMessage": "☔24,31,32,34-36,38-40,48,49",
+      },
+    ],
+    Array [
+      Object {
+        "firstBarMessage": "⛹",
+        "hasDecorations": true,
+        "newDecorations": Object {
+          "correct": false,
+          "logData": Array [
+            "{ currentTag: '1.2.3', tagType: 'minor' }",
+            "{ result: '1.3.0' }",
+          ],
+        },
+        "secondBarMessage": "☔25,33,34,36-38,40-42,50,51",
+      },
+    ],
+    Array [
+      Object {
+        "firstBarMessage": "⛹",
+        "hasDecorations": true,
+        "newDecorations": Object {
+          "correct": false,
+          "logData": Array [
+            "{ currentTag: '1.2.3', tagType: 'minor' }",
+            "{ result: '1.3.0' }",
+          ],
+        },
+        "secondBarMessage": "☔25,33,34,36-38,40-42,50,51",
+      },
+    ],
+  ],
+  "lintFile": "/home/s/repos/services/packages/tag-fn/src/modules/getNextTag.ts",
+  "lintOnlyFile": undefined,
+  "linted": Array [
+    "/home/s/repos/services/packages/tag-fn/src/modules/getNextTag.ts",
+    "/home/s/repos/services/packages/tag-fn/src/modules/getNextTag.spec.ts",
+  ],
+}
+`;

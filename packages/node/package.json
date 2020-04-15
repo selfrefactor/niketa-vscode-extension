@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "ts": "jest -u src/typescript.spec.js",
     "ng": "jest -u src/angular.spec.js",
     "dev": "jest -u src/niketa-client.spec.js --watch",
     "test": "jest src",
@@ -29,7 +30,7 @@
   "author": "Dejan Toteff <deyan8284@gmail.com>",
   "license": "MIT",
   "commitMessage": {
-    "workInProgress": "split tests",
+    "workInProgress": "",
     "feature": [
       "dep"
     ],
