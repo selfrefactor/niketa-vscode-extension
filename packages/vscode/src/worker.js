@@ -28,10 +28,8 @@ class Worker{
       ...userOptions,
     }
     this.decorationType = window.createTextEditorDecorationType({ after : { margin : '0 0 0 1rem' } })
-    this.timeoutHolder = undefined
     this.decorations = {}
     this.filesWithDecorations = []
-    this.logData = {}
     this.emit = x => {
       console.log(x, 'emit is not yet initialized')
     }
@@ -53,6 +51,7 @@ class Worker{
     if (this.lockFlag) return
     this.lockFlag = true
     this.loc = loc
+    this.startLoading()
   }
 
   unlock(){
@@ -87,6 +86,22 @@ class Worker{
   sendMessage(messageToSend){
     if (!this.socketClientConnected) return this.unlock()
     this.socketClient.write(JSON.stringify(messageToSend))
+  }
+
+  async startLoading(){
+    await delay(50)
+    this.setterStatusBar({
+      newText: 'Loading ...',
+      statusBarIndex: 0
+    })
+    
+    if(this.secondStatusBar.text){
+      await delay(50)
+      this.setterStatusBar({
+        newText: '',
+        statusBarIndex: 1
+      })
+    }
   }
 
   getCalculated(){
@@ -196,8 +211,8 @@ class Worker{
   messageReceived(messageFromServer){
     const parse = () => JSON.parse(messageFromServer.toString())
     const parsedMessage = tryCatch(parse, false)()
-
     if (!parsedMessage) return this.unlock()
+    
     const { hasDecorations, newDecorations, firstBarMessage, secondBarMessage } = parsedMessage
     this.setterStatusBar({
       newText        : firstBarMessage,
@@ -211,7 +226,7 @@ class Worker{
       })
     }
 
-    if (hasDecorations === false) return
+    if (hasDecorations === false) return this.unlock()
 
     if (newDecorations.correct === true){
       return this.onCorrectDecorations(newDecorations, this.loc)
@@ -283,7 +298,7 @@ function initExtension(){
   workspace.onDidSaveTextDocument(e => {
     worker.reconnectSocket()
 
-    if (worker.isLocked()) return
+    if (worker.isLocked()) return console.log('LOCKED')
     worker.lock(e.lineCount)
 
     const messageToSend = {

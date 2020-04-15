@@ -1,5 +1,14 @@
 const { NiketaClient } = require('./index.js')
 
-const niketaClient = new NiketaClient(3020)
+function startClient(){
+  try {
+    const niketaClient = new NiketaClient(3020)
+    
+    niketaClient.start()
+  } catch (e) { 
+    console.log(e, 'start.niketa.client')
+    startClient()  
+  }
+}
 
-niketaClient.start()
+startClient()
