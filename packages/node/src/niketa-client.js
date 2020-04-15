@@ -443,7 +443,11 @@ export class NiketaClient{
     this.server = createServer(socket => {
       log('Server created', 'info')
       socket.on('data', data => this.onSocketData(data.toString()))
-
+      socket.on('error', (err) => {
+        console.log(err, 'socket.error')
+        this.serverInit = false
+        this.start()
+      });
       this.emit = message => {
         socket.write(JSON.stringify(message))
         socket.pipe(socket)
