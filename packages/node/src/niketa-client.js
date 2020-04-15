@@ -1,12 +1,13 @@
 import execa from 'execa'
 import { log } from 'helpers-fn'
+import { existsSync } from 'fs'
+import { lintFn } from 'lint-fn'
 import { createServer } from 'net'
 import {
   filter,
   glue,
   tryCatch,
 } from 'rambdax'
-
 import { 
   JEST_BIN,
   ERROR_ICON,
@@ -30,16 +31,17 @@ import { getUncoveredMessage } from './utils/get-uncovered-message'
 import { cleanJestOutput } from './utils/clean-jest-output.js'
 import { extractConsoleLogs } from './utils/extract-console.logs'
 import { getSpecFile } from './utils/get-spec-file.js'
-import { whenFileLoseFocus } from './modules/when-file-lose-focus'
 import { lintOnlyMode } from './modules/lint-only-mode'
 
-const EXTENDED_LOG = true
+const EXTENDED_LOG = false
 
 export class NiketaClient{
-  constructor(port, emit){
+  constructor({port, emit, testing}){
     this.port = port
+    this.testing = testing
     this.serverInit = false
     this.coverageHolder = {}
+    this.lastLintedFiles = []
     this.emit = emit === undefined ? defaultEmit : emit
     this.lintFileHolder = undefined
     this.lintOnlyFileHolder = undefined
@@ -60,10 +62,11 @@ export class NiketaClient{
 
       if(this.lintOnlyFileHolder){
         await lintOnlyMode(this.lintOnlyFileHolder)
+        this.markLint(this.lintOnlyFileHolder)
         this.lintOnlyFileHolder = undefined
       }
       if(this.lintFileHolder){
-        await whenFileLoseFocus(this.lintFileHolder)
+        await this.whenFileLoseFocus(this.lintFileHolder)
         this.lintFileHolder = undefined
       }
       
@@ -74,12 +77,13 @@ export class NiketaClient{
 
     if(this.lintOnlyFileHolder){
       lintOnlyMode(this.lintOnlyFileHolder)
+      this.markLint(this.lintOnlyFileHolder)
       this.lintOnlyFileHolder = undefined
     }
 
     const maybeSpecFile = getSpecFile(fileName)
     
-    const { canContinue } = await this.markFileForLint({
+    const { canContinue } = this.evaluateLint({
       maybeSpecFile,
       forceLint,
       disableLint,
@@ -87,8 +91,8 @@ export class NiketaClient{
       fileName,
     })
 
-    if (!canContinue) return
-    if (this.stillWaitingForSpec(fileName, dir)) return
+    if (!canContinue) return this.emtpyAnswer()
+    if (this.stillWaitingForSpec(fileName, dir)) return this.emtpyAnswer()
 
     const [
       failure,
@@ -103,9 +107,8 @@ export class NiketaClient{
     this.debugLog(cleanJestOutput(execResult.stderr), 'jest.error.stream')
     this.debugLog(cleanJestOutput(execResult.stdout), 'jest.result.stream')
 
-    if (failure) return 
-    process.stderr.write('\n🐬\n' + execResult.stderr + '\n\n')
-    process.stderr.write('\n🐬\n' + execResult.stdout + '\n\n')
+    if (failure) return this.emtpyAnswer()
+    this.logJest(execResult)
 
     this.sendToVSCode({
       execResult,
@@ -114,8 +117,6 @@ export class NiketaClient{
       extension,
       hasTypescript
     })
-
-    return true
   }
 
   emtpyAnswer(){
@@ -126,6 +127,27 @@ export class NiketaClient{
     })
   }
 
+  logJest(execResult){
+    if(EXTENDED_LOG) return
+    process.stderr.write('\n🐬\n' + execResult.stderr + '\n\n')
+    process.stderr.write('\n🐬\n' + execResult.stdout + '\n\n')
+  }
+  
+  markLint(fileName){
+    if(!this.testing) return
+
+    this.lastLintedFiles.push(fileName)
+  }
+
+  async whenFileLoseFocus(fileName){
+    if (!existsSync(fileName)) return
+    log('sep')
+    log(`willLint ${fileName}`, 'info')
+    log('sep')
+      
+    await lintFn(fileName)
+    this.markLint(fileName)
+  }
   sendToVSCode({ execResult, actualFileName, fileName, extension, hasTypescript }){
     const hasError =
       execResult.stderr.startsWith('FAIL') ||
@@ -341,20 +363,20 @@ export class NiketaClient{
     return false
   }
 
-  async markFileForLint({ disableLint, fileName, hasWallaby, maybeSpecFile, forceLint }){
+  evaluateLint({ disableLint, fileName, hasWallaby, maybeSpecFile, forceLint }){
     if (disableLint) return { canContinue : true }
+
     const allowLint =
       fileName !== this.lintFileHolder && this.lintFileHolder !== undefined
 
     if (allowLint){
 
-      whenFileLoseFocus(this.lintFileHolder)
+      this.whenFileLoseFocus(this.lintFileHolder)
       this.lintFileHolder = fileName
     } else {
 
       if(forceLint){
-
-        await whenFileLoseFocus(fileName)
+        this.whenFileLoseFocus(fileName)
       }else{
 
         log(`SKIP_LINT ${

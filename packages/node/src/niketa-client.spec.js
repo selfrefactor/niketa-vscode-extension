@@ -1,4 +1,5 @@
 import {resolve} from 'path'
+import { delay } from 'rambdax'
 import { NiketaClient } from './niketa-client.js'
 jest.setTimeout(20000)
 
@@ -38,7 +39,7 @@ let niketaClient
 const emit = jest.fn()
 
 beforeEach(() => {
-  niketaClient = new NiketaClient(9999, emit)
+  niketaClient = new NiketaClient({port:9999, emit, testing: true})
 })
 afterEach(() => {
   niketaClient = undefined
@@ -102,7 +103,7 @@ test('real case 2', async () => {
     expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
 }) 
 
-test('with angular source - force lint', async () => {
+test.only('with angular source - force lint', async () => {
   const currentFile = angularFile
   await niketaClient.onSocketData(generateMessage({
     fileName : currentFile,
@@ -110,11 +111,13 @@ test('with angular source - force lint', async () => {
     hasTypescript: true,
     dir:angularDir
   }))
+  expect(niketaClient.lastLintedFiles[0]).toBe(undefined)
+  await delay(3000)
   expect(niketaClient.lastLintedFiles[0]).toBe(currentFile)
   expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
 }) 
 
-test.only('angular spec', async () => {
+test('angular spec', async () => {
   await niketaClient.onSocketData(generateMessage({
     fileName : angularSpec,
     hasTypescript: true,

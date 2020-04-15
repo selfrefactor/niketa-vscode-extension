@@ -1,6 +1,5 @@
 import { log } from 'helpers-fn'
 import { execPrettier } from 'lint-fn'
-
 import { prettyHtml } from './pretty-html'
 
 async function usePrettier(filePath){

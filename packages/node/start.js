@@ -13,5 +13,5 @@ const { NiketaClient } = require('./index.js')
 
 // startClient()
 
-const niketaClient = new NiketaClient(3020)
+const niketaClient = new NiketaClient({port:3020})
 niketaClient.start()
