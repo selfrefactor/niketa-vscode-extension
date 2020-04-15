@@ -61,7 +61,7 @@ export class NiketaClient{
       if(disableLint) return this.emtpyAnswer()
 
       if(this.lintOnlyFileHolder){
-        await lintOnlyMode(this.lintOnlyFileHolder, this.markLint)
+        await lintOnlyMode(this.lintOnlyFileHolder, this.markLint.bind(this))
         this.lintOnlyFileHolder = undefined
       }
       if(this.lintFileHolder){
@@ -75,7 +75,7 @@ export class NiketaClient{
     }
 
     if(this.lintOnlyFileHolder){
-      lintOnlyMode(this.lintOnlyFileHolder, this.markLint)
+      lintOnlyMode(this.lintOnlyFileHolder, this.markLint.bind(this))
       this.lintOnlyFileHolder = undefined
     }
 

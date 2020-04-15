@@ -1,7 +1,8 @@
 import {resolve} from 'path'
 import { delay } from 'rambdax'
+import { ms } from 'string-fn'
 import { NiketaClient } from './niketa-client.js'
-jest.setTimeout(20000)
+jest.setTimeout(ms('4 minutes'))
 
 const throwingSyncTest = resolve(__dirname, '../test-data/failed-code/sync.js')
 const throwingAsyncTest = resolve(__dirname, '../test-data/failed-code/async.js')
@@ -56,6 +57,14 @@ function generateMessage(input){
   })
 }
 
+function getFullSnap(){
+  return {
+    lintOnlyFile: niketaClient.lintOnlyFileHolder,
+    lintFile: niketaClient.lintFileHolder,
+    emited: emit.mock.calls, 
+    linted: niketaClient.lastLintedFiles, 
+  }
+}
 
 Object.keys(SUCCESS).forEach(testKey => {
     test(`success - ${testKey}`, async () => {
@@ -103,7 +112,7 @@ test('real case 2', async () => {
     expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
 }) 
 
-test.only('with angular source - force lint', async () => {
+test('with angular source - force lint', async () => {
   const currentFile = angularFile
   await niketaClient.onSocketData(generateMessage({
     fileName : currentFile,
@@ -117,12 +126,21 @@ test.only('with angular source - force lint', async () => {
   expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
 }) 
 
-test('angular spec', async () => {
-  await niketaClient.onSocketData(generateMessage({
-    fileName : angularSpec,
-    hasTypescript: true,
-    dir:angularDir
-  }))
-  expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
+test.only('angular scenario', async () => {
+  const step = async fileName => {
+    await niketaClient.onSocketData(generateMessage({
+      fileName,
+      hasTypescript: true,
+      dir:angularDir
+    }))
+  }
+  
+  await step(htmlFile)
+  await step(angularSpec)
+  await step(scssFile)
+  await step(angularFile)
+  await step(scssFile)
+
+  expect(getFullSnap()).toMatchSnapshot()
 }) 
 

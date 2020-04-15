@@ -1,33 +1,63 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`angular spec 1`] = `
-Array [
-  Object {
-    "firstBarMessage": "🐰 st: 100 br: 100 fn: 100 lns: 100",
-    "hasDecorations": true,
-    "newDecorations": Object {
-      "correct": false,
-      "logData": Array [
-        "3",
-      ],
-    },
-    "secondBarMessage": undefined,
-  },
-]
-`;
-
-exports[`with angular source - force lint 1`] = `
-Array [
-  Object {
-    "firstBarMessage": "🐰 st: 100 br: 100 fn: 100 lns: 100",
-    "hasDecorations": true,
-    "newDecorations": Object {
-      "correct": false,
-      "logData": Array [
-        "3",
-      ],
-    },
-    "secondBarMessage": undefined,
-  },
-]
+exports[`angular scenario 1`] = `
+Object {
+  "emited": Array [
+    Array [
+      Object {
+        "firstBarMessage": "",
+        "hasDecorations": false,
+        "secondBarMessage": undefined,
+      },
+    ],
+    Array [
+      Object {
+        "firstBarMessage": "🐰 st: 100 br: 100 fn: 100 lns: 100",
+        "hasDecorations": true,
+        "newDecorations": Object {
+          "correct": false,
+          "logData": Array [
+            "3",
+          ],
+        },
+        "secondBarMessage": undefined,
+      },
+    ],
+    Array [
+      Object {
+        "firstBarMessage": "",
+        "hasDecorations": false,
+        "secondBarMessage": undefined,
+      },
+    ],
+    Array [
+      Object {
+        "firstBarMessage": "⛹",
+        "hasDecorations": true,
+        "newDecorations": Object {
+          "correct": false,
+          "logData": Array [
+            "3",
+          ],
+        },
+        "secondBarMessage": undefined,
+      },
+    ],
+    Array [
+      Object {
+        "firstBarMessage": "",
+        "hasDecorations": false,
+        "secondBarMessage": undefined,
+      },
+    ],
+  ],
+  "lintFile": undefined,
+  "lintOnlyFile": "/home/s/repos/rambda-docs/src/styles.scss",
+  "linted": Array [
+    "/home/s/repos/rambda-docs/src/app/whole/whole.component.html",
+    "/home/s/repos/rambda-docs/src/app/helpers/foo.spec.ts",
+    "/home/s/repos/rambda-docs/src/styles.scss",
+    "/home/s/repos/rambda-docs/src/app/helpers/foo.ts",
+  ],
+}
 `;
