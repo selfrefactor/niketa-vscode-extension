@@ -48,7 +48,8 @@ afterEach(() => {
 function generateMessage(input){
   return JSON.stringify({
     hasWallaby     : false,
-    hasAngular     : false,
+    forceLint   : false,
+    hasTypescript     : false,
     dir            : testDir,
     ...input
   })
@@ -101,10 +102,21 @@ test('real case 2', async () => {
     expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
 }) 
 
-test.only('with angular', async () => {
+test('with angular source - force lint', async () => {
+  const currentFile = angularFile
   await niketaClient.onSocketData(generateMessage({
-    fileName : angularFile,
+    fileName : currentFile,
     forceLint: true,
+    hasTypescript: true,
+    dir:angularDir
+  }))
+  expect(niketaClient.lastLintedFiles[0]).toBe(currentFile)
+  expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
+}) 
+
+test.only('angular spec', async () => {
+  await niketaClient.onSocketData(generateMessage({
+    fileName : angularSpec,
     hasTypescript: true,
     dir:angularDir
   }))

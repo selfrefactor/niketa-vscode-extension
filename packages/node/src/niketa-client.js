@@ -17,6 +17,7 @@ import {
   cleanAngularLog,
   toNumber,
   parse,
+  isJestable,
   maybeWarn,
   extractNumber,
   defaultEmit,
@@ -41,24 +42,41 @@ export class NiketaClient{
     this.coverageHolder = {}
     this.emit = emit === undefined ? defaultEmit : emit
     this.lintFileHolder = undefined
+    this.lintOnlyFileHolder = undefined
     this.fileHolder = undefined
     this.specFileHolder = undefined
   }
-
+  
   async onJestMessage(message){
     const { fileName, hasWallaby, dir, forceLint, hasTypescript } = message
+    if (!isMessageCorrect(message)) return this.emtpyAnswer()
+    
+    const disableLint = isWorkFile(fileName)
+    const lintOnly = isLintOnlyMode(fileName) 
+    const jestable = isJestable(fileName) 
 
-    if (!isMessageCorrect(message)) return
-    if (isLintOnlyMode(fileName)){
+    if (lintOnly || !jestable){
+      if(disableLint) return this.emtpyAnswer()
+
+      if(this.lintOnlyFileHolder){
+        await lintOnlyMode(this.lintOnlyFileHolder)
+        this.lintOnlyFileHolder = undefined
+      }
       if(this.lintFileHolder){
-        whenFileLoseFocus(this.lintFileHolder)
+        await whenFileLoseFocus(this.lintFileHolder)
         this.lintFileHolder = undefined
       }
       
-      return lintOnlyMode(fileName)
+      if(lintOnly) this.lintOnlyFileHolder = fileName
+
+      return this.emtpyAnswer()
     }
 
-    const disableLint = isWorkFile(fileName)
+    if(this.lintOnlyFileHolder){
+      lintOnlyMode(this.lintOnlyFileHolder)
+      this.lintOnlyFileHolder = undefined
+    }
+
     const maybeSpecFile = getSpecFile(fileName)
     
     const { canContinue } = await this.markFileForLint({
@@ -98,6 +116,14 @@ export class NiketaClient{
     })
 
     return true
+  }
+
+  emtpyAnswer(){
+    this.emit({
+      firstBarMessage: '',
+      secondBarMessage: undefined,
+      hasDecorations: false,
+    })
   }
 
   sendToVSCode({ execResult, actualFileName, fileName, extension, hasTypescript }){
@@ -322,12 +348,12 @@ export class NiketaClient{
 
     if (allowLint){
 
-      log(`LINT ${ this.lintFileHolder }`, 'box')
       whenFileLoseFocus(this.lintFileHolder)
       this.lintFileHolder = fileName
     } else {
 
       if(forceLint){
+
         await whenFileLoseFocus(fileName)
       }else{
 

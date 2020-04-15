@@ -16,5 +16,6 @@ async function usePrettier(filePath){
 export async function lintOnlyMode(filePath){
   const lintMethod = filePath.endsWith('.html') ? prettyHtml : usePrettier
 
-  return lintMethod(filePath)
+  const lintResult = await lintMethod(filePath)
+  return lintResult
 }
