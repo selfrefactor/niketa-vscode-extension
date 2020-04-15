@@ -61,6 +61,7 @@ class Worker{
 
   init(){
     this.hasWallaby = existsSync(`${ this.dir }/wallaby.js`)
+    this.hasTypescript = existsSync(`${ this.dir }/tsconfig.json`)
     this.reconnectSocket()
   }
 
@@ -107,7 +108,7 @@ class Worker{
   getCalculated(){
     return {
       hasWallaby     : this.hasWallaby,
-      withLockedFile : false,
+      hasTypescript     : this.hasTypescript,
       dir            : this.dir,
     }
   }
