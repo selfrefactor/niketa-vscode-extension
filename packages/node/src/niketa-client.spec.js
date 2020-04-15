@@ -1,9 +1,12 @@
 import {resolve} from 'path'
 import { NiketaClient } from './niketa-client.js'
-jest.setTimeout(10000)
+jest.setTimeout(20000)
 
 const throwingSyncTest = resolve(__dirname, '../test-data/failed-code/sync.js')
 const throwingAsyncTest = resolve(__dirname, '../test-data/failed-code/async.js')
+const htmlFile = resolve(__dirname, '../../../../rambda-docs/src/app/whole/whole.component.html')
+const angularFile = resolve(__dirname, '../../../../rambda-docs/src/app/whole/whole.component.js')
+const scssFile = resolve(__dirname, '../../../../rambda-docs/src/styles.scss')
 
 const FAILED_EXPECTATIONS = {
   specHasLogsFile: resolve(__dirname, '../test-data/failed-expectation/spec-has-logs.js'),
@@ -29,7 +32,7 @@ let niketaClient
 const emit = jest.fn()
 
 beforeEach(() => {
-  niketaClient = new NiketaClient(3939, emit)
+  niketaClient = new NiketaClient(9999, emit)
 })
 afterEach(() => {
   niketaClient = undefined
@@ -89,6 +92,14 @@ test('real case 1', async () => {
 test('real case 2', async () => {
     const message = `{"fileName":"/home/s/repos/rambda/source/delay.spec.js","hasWallaby":false,"withLockedFile":false,"dir":"/home/s/repos/rambda"}`
     await niketaClient.onSocketData(message)
+    expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
+}) 
+
+test.only('with angular', async () => {
+  await niketaClient.onSocketData(generateMessage({
+    fileName : angularFile,
+    lintNow: true
+  }))
     expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
 }) 
 

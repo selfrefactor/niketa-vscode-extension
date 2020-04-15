@@ -260,3 +260,5 @@ Array [
   },
 ]
 `;
+
+exports[`with angular 1`] = `undefined`;

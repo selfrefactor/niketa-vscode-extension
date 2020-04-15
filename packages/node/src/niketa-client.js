@@ -4,92 +4,33 @@ import { createServer } from 'net'
 import {
   filter,
   glue,
-  type,
-  pass,
-  repeat,
-  remove,
   tryCatch,
 } from 'rambdax'
 
+import { 
+  JEST_BIN,
+  ERROR_ICON,
+  SUCCESS_ICON,
+  SHORT_SEPARATOR,
+  SEPARATOR,
+  isWorkFile,
+  cleanAngularLog,
+  toNumber,
+  parse,
+  maybeWarn,
+  extractNumber,
+  defaultEmit,
+  isMessageCorrect
+ } from './utils/common'
 import { createFileKey } from './utils/create-file-key'
 import { isLintOnlyMode } from './utils/is-lint-only-mode'
 import { getCoveragePath } from './utils/get-coverage-path'
+import { getUncoveredMessage } from './utils/get-uncovered-message'
 import { cleanJestOutput } from './utils/clean-jest-output.js'
 import { extractConsoleLogs } from './utils/extract-console.logs'
 import { getSpecFile } from './utils/get-spec-file.js'
 import { whenFileLoseFocus } from './modules/when-file-lose-focus'
 import { lintOnlyMode } from './modules/lint-only-mode'
-
-const JEST_BIN = './node_modules/jest/bin/jest.js'
-const ERROR_ICON = '❌'
-const SUCCESS_ICON = '🐬'
-const SHORT_SEPARATOR = repeat('🍄', 2).join``
-const SEPARATOR = repeat('🍺', 20).join``
-    
-function isWorkFile(x){
-  return x.startsWith(`${process.env.HOME}/work/`)
-}
-
-function cleanAngularLog(x){
-  return {
-    ...x,
-    stderr : remove(/ts-jest\[.+/, x.stderr),
-  }
-}
-
-function toNumber(x){
-  return x === undefined || Number.isNaN(Number(x)) ? 0 : Number(x)
-}
-
-function parse(x){
-  const result = Math.round(x * 100) / 100
-
-  return parseFloat(`${ result }`)
-}
-
-const maybeWarn = x => x < 0 ? `❗${ x }` : x
-
-function extractNumber(text){
-  const justText = text.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
-    '')
-
-  const asNumber = Number(justText.trim())
-
-  if(type(asNumber) === 'NaN'){
-    return justText.trim()
-  } 
-
-  return asNumber
-}
-
-const defaultEmit = x => console.log(x, 'emit not yet initialized')
-
-const messageSchema = {
-  withLockedFile : Boolean,
-  fileName       : String,
-  hasWallaby     : Boolean,
-}
-
-function isMessageCorrect(message){
-  const isCorrect = pass(message)(messageSchema)
-  if (!isCorrect){
-    log('isMessageCorrect', 'error')
-
-    return false
-  }
-
-  return true
-}
-
-function getUncoveredMessage(message){
-  if (typeof message !== 'string' || !message){
-    return
-  }
-
-  const uncovered = remove('...', message)
-
-  return message.includes('...') ? `⛱${ uncovered }` : `☔${ uncovered }`
-}
 
 const EXTENDED_LOG = false
 
@@ -105,7 +46,7 @@ export class NiketaClient{
   }
 
   async onJestMessage(message){
-    const { fileName, hasWallaby, dir } = message
+    const { fileName, hasWallaby, dir, forceLint } = message
 
     if (!isMessageCorrect(message)) return
     if (isLintOnlyMode(fileName)) return lintOnlyMode(fileName)
@@ -113,8 +54,9 @@ export class NiketaClient{
     const disableLint = isWorkFile(fileName)
     const maybeSpecFile = getSpecFile(fileName)
     
-    const { canContinue } = this.markFileForLint({
+    const { canContinue } = await this.markFileForLint({
       maybeSpecFile,
+      forceLint,
       disableLint,
       hasWallaby,
       fileName,
@@ -267,7 +209,7 @@ export class NiketaClient{
 
     let foundCoverage = false
     const [ lineWithCoverage ] = jestOutputLines.filter(line =>{
-      if(line.includes('% Stmts'))foundCoverage = true
+      if(line.includes('% Stmts')) foundCoverage = true
       return foundCoverage && line.includes(`${ actualFileName }${ extension }`)
     })
     
@@ -362,32 +304,41 @@ export class NiketaClient{
     return false
   }
 
-  markFileForLint({ disableLint, fileName, hasWallaby, maybeSpecFile }){
+  async markFileForLint({ disableLint, fileName, hasWallaby, maybeSpecFile, forceLint }){
     if (disableLint) return { canContinue : true }
-
     const allowLint =
       fileName !== this.lintFileHolder && this.lintFileHolder !== undefined
 
     if (allowLint){
+
       log(`LINT ${ this.lintFileHolder }`, 'box')
       whenFileLoseFocus(this.lintFileHolder)
       this.lintFileHolder = fileName
     } else {
-      log(`SKIP_LINT ${
-        this.lintFileHolder ? this.lintFileHolder : 'initial state'
-      }`,
-      'box')
+
+      if(forceLint){
+
+        await whenFileLoseFocus(fileName)
+        return { canContinue : true }
+      }else{
+
+        log(`SKIP_LINT ${
+          this.lintFileHolder ? this.lintFileHolder : 'initial state'
+        }`,
+        'box')
+      }
     }
 
     if (hasWallaby){
-      this.lintFileHolder = fileName
 
+      this.lintFileHolder = fileName
       this.debugLog(fileName, 'saved for lint later')
 
       return { canContinue : false }
     }
 
     if (maybeSpecFile){
+
       this.fileHolder = fileName
       this.lintFileHolder = fileName
       this.specFileHolder = maybeSpecFile
@@ -395,6 +346,7 @@ export class NiketaClient{
 
       return { canContinue : true }
     }
+
     this.debugLog(fileName, 'saved for lint later even without spec')
 
     // Even if the file has no corresponding spec file
