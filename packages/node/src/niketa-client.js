@@ -46,7 +46,7 @@ export class NiketaClient{
   }
 
   async onJestMessage(message){
-    const { fileName, hasWallaby, dir, forceLint } = message
+    const { fileName, hasWallaby, dir, forceLint, hasTypescript } = message
 
     if (!isMessageCorrect(message)) return
     if (isLintOnlyMode(fileName)) return lintOnlyMode(fileName)
@@ -87,12 +87,13 @@ export class NiketaClient{
       actualFileName,
       fileName : this.fileHolder,
       extension,
+      hasTypescript
     })
 
     return true
   }
 
-  sendToVSCode({ execResult, actualFileName, fileName, extension }){
+  sendToVSCode({ execResult, actualFileName, fileName, extension, hasTypescript }){
     const hasError =
       execResult.stderr.startsWith('FAIL') ||
       execResult.stderr.includes('ERROR:')
@@ -112,6 +113,7 @@ export class NiketaClient{
     const { newDecorations, hasDecorations } = this.getNewDecorations({
       execResult,
       fileName,
+      hasTypescript
     })
     const firstBarMessage = pass ? message : ERROR_ICON
     const secondBarMessage = getUncoveredMessage(uncovered)
@@ -124,7 +126,7 @@ export class NiketaClient{
     })
   }
 
-  getNewDecorations({ execResult, fileName }){
+  getNewDecorations({ execResult, fileName, hasTypescript }){
     const input = cleanJestOutput(execResult.stdout)
     const [ consoleLogs ] = input.split('----------------------|')
     const newDecorationsData = extractConsoleLogs(consoleLogs)
@@ -136,6 +138,7 @@ export class NiketaClient{
     const newDecorations = this.evaluateDecorations({
       newDecorationsData,
       fileName,
+      hasTypescript,
     })
 
     return {
@@ -144,7 +147,7 @@ export class NiketaClient{
     }
   }
 
-  evaluateDecorations({ newDecorationsData, fileName }){
+  evaluateDecorations({ newDecorationsData, fileName, hasTypescript }){
     const unreliableLogData = []
     const reliableLogData = {}
 
@@ -161,7 +164,7 @@ export class NiketaClient{
       return okLogData
     })(newDecorationsData)
 
-    const correct = Object.keys(triggerFileHasDecoration).length === 1
+    const correct = !hasTypescript && Object.keys(triggerFileHasDecoration).length === 1
     const logData = correct ? reliableLogData : unreliableLogData
 
     return {

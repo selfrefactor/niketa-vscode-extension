@@ -5,6 +5,10 @@ jest.setTimeout(20000)
 const throwingSyncTest = resolve(__dirname, '../test-data/failed-code/sync.js')
 const throwingAsyncTest = resolve(__dirname, '../test-data/failed-code/async.js')
 const angularDir = resolve(__dirname, '../../../../rambda-docs')
+const typescriptDir = resolve(__dirname, '../../../../services/packages/tag-fn')
+const typescriptSpec = resolve(__dirname, '../../../../services/packages/tag-fn/src/modules/getNextTag.spec.ts')
+const typescriptFile = resolve(__dirname, '../../../../services/packages/tag-fn/src/modules/getNextTag.ts')
+
 const htmlFile = resolve(__dirname, '../../../../rambda-docs/src/app/whole/whole.component.html')
 const angularFile = resolve(__dirname, '../../../../rambda-docs/src/app/helpers/foo.ts')
 const angularSpec = resolve(__dirname, '../../../../rambda-docs/src/app/helpers/foo.spec.ts')
@@ -44,6 +48,7 @@ afterEach(() => {
 function generateMessage(input){
   return JSON.stringify({
     hasWallaby     : false,
+    hasAngular     : false,
     dir            : testDir,
     withLockedFile : false,
     ...input
@@ -101,8 +106,9 @@ test.only('with angular', async () => {
   await niketaClient.onSocketData(generateMessage({
     fileName : angularFile,
     forceLint: true,
+    hasTypescript: true,
     dir:angularDir
   }))
-    expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
+  expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
 }) 
 
