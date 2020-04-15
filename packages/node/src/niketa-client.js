@@ -127,6 +127,7 @@ export class NiketaClient{
 
   logJest(execResult){
     if(EXTENDED_LOG) return
+    if(this.testing) return
     process.stderr.write('\n🐬\n' + execResult.stderr + '\n\n')
     process.stderr.write('\n🐬\n' + execResult.stdout + '\n\n')
   }

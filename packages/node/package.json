@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "x": "jest -u src/utils/extract-console.logs.spec.js --watch",
+    "ng": "jest -u src/angular.spec.js",
     "dev": "jest -u src/niketa-client.spec.js --watch",
     "test": "jest src",
     "start": "node start"

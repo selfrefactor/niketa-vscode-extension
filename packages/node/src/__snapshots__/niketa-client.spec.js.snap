@@ -1,63 +1,257 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`angular scenario 1`] = `
-Object {
-  "emited": Array [
-    Array [
-      Object {
-        "firstBarMessage": "",
-        "hasDecorations": false,
-        "secondBarMessage": undefined,
+exports[`async code that throws 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "❌",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "4": "1",
       },
-    ],
-    Array [
-      Object {
-        "firstBarMessage": "🐰 st: 100 br: 100 fn: 100 lns: 100",
-        "hasDecorations": true,
-        "newDecorations": Object {
-          "correct": false,
-          "logData": Array [
-            "3",
-          ],
-        },
-        "secondBarMessage": undefined,
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`failed expectation - bothHaveLogsFile 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "❌",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "2": "0, 1, 2",
+        "3": "number, number, number",
       },
-    ],
-    Array [
-      Object {
-        "firstBarMessage": "",
-        "hasDecorations": false,
-        "secondBarMessage": undefined,
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`failed expectation - bothHaveLogsSpec 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "❌",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "7": "{ a: 1, b: 2 }",
       },
-    ],
-    Array [
-      Object {
-        "firstBarMessage": "⛹",
-        "hasDecorations": true,
-        "newDecorations": Object {
-          "correct": false,
-          "logData": Array [
-            "3",
-          ],
-        },
-        "secondBarMessage": undefined,
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`failed expectation - fileHasLogsFile 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "❌",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "2": "9",
+        "3": "number",
       },
-    ],
-    Array [
-      Object {
-        "firstBarMessage": "",
-        "hasDecorations": false,
-        "secondBarMessage": undefined,
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`failed expectation - fileHasLogsSpec 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "❌",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": false,
+      "logData": Array [
+        "9",
+        "number",
+      ],
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`failed expectation - specHasLogsFile 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "❌",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": false,
+      "logData": Array [
+        "[ 1, 2, 3 ] { a: 1, b: 2 }",
+        "1",
+      ],
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`failed expectation - specHasLogsSpec 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "❌",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "4": "[ 1, 2, 3 ] { a: 1, b: 2 }",
+        "5": "1",
       },
-    ],
-  ],
-  "lintFile": undefined,
-  "lintOnlyFile": "/home/s/repos/rambda-docs/src/styles.scss",
-  "linted": Array [
-    "/home/s/repos/rambda-docs/src/app/whole/whole.component.html",
-    "/home/s/repos/rambda-docs/src/app/helpers/foo.spec.ts",
-    "/home/s/repos/rambda-docs/src/styles.scss",
-    "/home/s/repos/rambda-docs/src/app/helpers/foo.ts",
-  ],
-}
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`rambda 1 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "🐰 st: 100 br: 100 fn: 100 lns: 100",
+    "hasDecorations": false,
+    "newDecorations": undefined,
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`rambda 2 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "❌",
+    "hasDecorations": false,
+    "newDecorations": undefined,
+    "secondBarMessage": "☔2-4",
+  },
+]
+`;
+
+exports[`success - bothHaveLogsFile 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "🐰 st: 100 br: 100 fn: 100 lns: 100",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "2": "0, 1, 2",
+        "3": "number, number, number",
+      },
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`success - bothHaveLogsSpec 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "🐰 st: 100 br: 100 fn: 100 lns: 100",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "7": "{ a: 1, b: 2 }",
+      },
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`success - fileHasLogsFile 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "2": "9",
+        "3": "number",
+      },
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`success - fileHasLogsSpec 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": false,
+      "logData": Array [
+        "9",
+        "number",
+      ],
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`success - specHasLogsFile 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": false,
+      "logData": Array [
+        "[ 1, 2, 3 ] { a: 1, b: 2 }",
+        "1",
+      ],
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`success - specHasLogsSpec 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "4": "[ 1, 2, 3 ] { a: 1, b: 2 }",
+        "5": "1",
+      },
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
+
+exports[`sync code that throws 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "❌",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": true,
+      "logData": Object {
+        "2": "1",
+      },
+    },
+    "secondBarMessage": undefined,
+  },
+]
 `;
