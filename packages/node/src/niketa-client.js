@@ -49,7 +49,14 @@ export class NiketaClient{
     const { fileName, hasWallaby, dir, forceLint, hasTypescript } = message
 
     if (!isMessageCorrect(message)) return
-    if (isLintOnlyMode(fileName)) return lintOnlyMode(fileName)
+    if (isLintOnlyMode(fileName)){
+      if(this.lintFileHolder){
+        whenFileLoseFocus(this.lintFileHolder)
+        this.lintFileHolder = undefined
+      }
+      
+      return lintOnlyMode(fileName)
+    }
 
     const disableLint = isWorkFile(fileName)
     const maybeSpecFile = getSpecFile(fileName)
