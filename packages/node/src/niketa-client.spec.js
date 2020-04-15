@@ -4,8 +4,10 @@ jest.setTimeout(20000)
 
 const throwingSyncTest = resolve(__dirname, '../test-data/failed-code/sync.js')
 const throwingAsyncTest = resolve(__dirname, '../test-data/failed-code/async.js')
+const angularDir = resolve(__dirname, '../../../../rambda-docs')
 const htmlFile = resolve(__dirname, '../../../../rambda-docs/src/app/whole/whole.component.html')
-const angularFile = resolve(__dirname, '../../../../rambda-docs/src/app/whole/whole.component.js')
+const angularFile = resolve(__dirname, '../../../../rambda-docs/src/app/helpers/foo.ts')
+const angularSpec = resolve(__dirname, '../../../../rambda-docs/src/app/helpers/foo.spec.ts')
 const scssFile = resolve(__dirname, '../../../../rambda-docs/src/styles.scss')
 
 const FAILED_EXPECTATIONS = {
@@ -98,7 +100,8 @@ test('real case 2', async () => {
 test.only('with angular', async () => {
   await niketaClient.onSocketData(generateMessage({
     fileName : angularFile,
-    lintNow: true
+    forceLint: true,
+    dir:angularDir
   }))
     expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
 }) 

@@ -32,7 +32,7 @@ import { getSpecFile } from './utils/get-spec-file.js'
 import { whenFileLoseFocus } from './modules/when-file-lose-focus'
 import { lintOnlyMode } from './modules/lint-only-mode'
 
-const EXTENDED_LOG = false
+const EXTENDED_LOG = true
 
 export class NiketaClient{
   constructor(port, emit){
@@ -286,13 +286,14 @@ export class NiketaClient{
 
   stillWaitingForSpec(fileName, dir){
     const stillWating = !(this.fileHolder && this.specFileHolder)
-    const specBelongs = this.fileHolder.startsWith(dir)
     if (stillWating){
       // This happens only until the script receives a correct filepath
       this.debugLog('no specfile', fileName)
 
       return true
     }
+
+    const specBelongs = this.fileHolder.startsWith(dir)
 
     if (!specBelongs){
       // when we have filepath from previous project but not in the current
@@ -317,9 +318,7 @@ export class NiketaClient{
     } else {
 
       if(forceLint){
-
         await whenFileLoseFocus(fileName)
-        return { canContinue : true }
       }else{
 
         log(`SKIP_LINT ${

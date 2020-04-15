@@ -261,4 +261,18 @@ Array [
 ]
 `;
 
-exports[`with angular 1`] = `undefined`;
+exports[`with angular 1`] = `
+Array [
+  Object {
+    "firstBarMessage": "🐰 st: 100 br: 100 fn: 100 lns: 100",
+    "hasDecorations": true,
+    "newDecorations": Object {
+      "correct": false,
+      "logData": Array [
+        "3",
+      ],
+    },
+    "secondBarMessage": undefined,
+  },
+]
+`;
