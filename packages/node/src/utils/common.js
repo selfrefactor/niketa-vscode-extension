@@ -51,7 +51,7 @@ export function extractNumber(text){
 export const defaultEmit = x => console.log(x, 'emit not yet initialized')
 
 const messageSchema = {
-  withLockedFile : Boolean,
+  hasTypescript : Boolean,
   fileName       : String,
   hasWallaby     : Boolean,
 }
