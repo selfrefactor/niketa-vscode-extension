@@ -1,3 +1,4 @@
+import { delay } from 'rambdax'
 import { ms } from 'string-fn'
 import { NiketaClient } from './niketa-client.js'
 import { generateMessage,   SUCCESS,
@@ -15,7 +16,7 @@ afterEach(() => {
   emit.mockClear()
 })
 
-test('scenario 1', async () => {
+test('happy scenario', async () => {
   const step = async fileName => {
     await niketaClient.onSocketData(generateMessage({
       fileName
@@ -26,6 +27,22 @@ test('scenario 1', async () => {
   await step(FAILED_EXPECTATIONS.fileHasLogsSpec)
   await step(SUCCESS.bothHaveLogsSpec)
   await step(SUCCESS.fileHasLogsFile)
+  await delay(5000)
 
+  expect(getFullSnap({niketaClient, emit})).toMatchSnapshot()
+}) 
+
+test('parallel scenario', async () => {
+  const step = async fileName => {
+    await niketaClient.onSocketData(generateMessage({
+      fileName
+    }))
+  }
+  
+  await Promise.all([ step(SUCCESS.bothHaveLogsFile), step(FAILED_EXPECTATIONS.specHasLogsFile)])
+  await step(FAILED_EXPECTATIONS.fileHasLogsSpec)
+  await step(SUCCESS.fileHasLogsFile)
+  await step(FAILED_EXPECTATIONS.specHasLogsSpec)
+  await delay(5000)
   expect(getFullSnap({niketaClient, emit})).toMatchSnapshot()
 }) 

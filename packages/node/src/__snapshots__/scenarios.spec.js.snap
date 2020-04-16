@@ -1,18 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`scenario 1 1`] = `
+exports[`parallel scenario 1`] = `
 Object {
   "emited": Array [
+    Array [
+      Object {
+        "firstBarMessage": "❌",
+        "hasDecorations": true,
+        "newDecorations": Object {
+          "correct": false,
+          "logData": Array [
+            "[ 1, 2, 3 ] { a: 1, b: 2 }",
+            "1",
+          ],
+        },
+        "secondBarMessage": undefined,
+      },
+    ],
     Array [
       Object {
         "firstBarMessage": "🐰 st: 100 br: 100 fn: 100 lns: 100",
         "hasDecorations": true,
         "newDecorations": Object {
-          "correct": true,
-          "logData": Object {
-            "2": "0, 1, 2",
-            "3": "number, number, number",
-          },
+          "correct": false,
+          "logData": Array [
+            "0, 1, 2",
+            "number, number, number",
+            "{ a: 1, b: 2 }",
+          ],
         },
         "secondBarMessage": undefined,
       },
@@ -33,19 +48,6 @@ Object {
     ],
     Array [
       Object {
-        "firstBarMessage": "⛹",
-        "hasDecorations": true,
-        "newDecorations": Object {
-          "correct": true,
-          "logData": Object {
-            "7": "{ a: 1, b: 2 }",
-          },
-        },
-        "secondBarMessage": undefined,
-      },
-    ],
-    Array [
-      Object {
         "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
         "hasDecorations": true,
         "newDecorations": Object {
@@ -58,13 +60,28 @@ Object {
         "secondBarMessage": undefined,
       },
     ],
+    Array [
+      Object {
+        "firstBarMessage": "❌",
+        "hasDecorations": true,
+        "newDecorations": Object {
+          "correct": true,
+          "logData": Object {
+            "4": "[ 1, 2, 3 ] { a: 1, b: 2 }",
+            "5": "1",
+          },
+        },
+        "secondBarMessage": undefined,
+      },
+    ],
   ],
-  "lintFile": "/home/s/repos/niketa/packages/node/test-data/success/file-has-logs.js",
+  "lintFile": "/home/s/repos/niketa/packages/node/test-data/failed-expectation/spec-has-logs.spec.js",
   "lintOnlyFile": undefined,
   "linted": Array [
     "/home/s/repos/niketa/packages/node/test-data/success/both-have-logs.js",
+    "/home/s/repos/niketa/packages/node/test-data/failed-expectation/spec-has-logs.js",
     "/home/s/repos/niketa/packages/node/test-data/failed-expectation/file-has-logs.spec.js",
-    "/home/s/repos/niketa/packages/node/test-data/success/both-have-logs.spec.js",
+    "/home/s/repos/niketa/packages/node/test-data/success/file-has-logs.js",
   ],
 }
 `;
