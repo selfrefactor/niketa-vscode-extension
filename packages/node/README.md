@@ -19,3 +19,7 @@ This library does the heavy work, while `Niketa` VSCode extension provides the c
 6. Open with VSCode project which already has `Jest` in `package.json` and also has its dependecies installed.
 
 That is everything. Now every time you change one of `foo.js` or `foo.spec.js` files, `Jest` will be executed and its coverage result will be displayed in `VSCode`
+
+## TODO
+
+Unexpected errors must be written in local file

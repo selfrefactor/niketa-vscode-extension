@@ -117,28 +117,6 @@ Array [
 ]
 `;
 
-exports[`rambda 1 1`] = `
-Array [
-  Object {
-    "firstBarMessage": "🐰 st: 100 br: 100 fn: 100 lns: 100",
-    "hasDecorations": false,
-    "newDecorations": undefined,
-    "secondBarMessage": undefined,
-  },
-]
-`;
-
-exports[`rambda 2 1`] = `
-Array [
-  Object {
-    "firstBarMessage": "❌",
-    "hasDecorations": false,
-    "newDecorations": undefined,
-    "secondBarMessage": "☔2-4",
-  },
-]
-`;
-
 exports[`success - bothHaveLogsFile 1`] = `
 Array [
   Object {

@@ -17,6 +17,6 @@ export async function lintOnlyMode(filePath, callback) {
   const lintMethod = filePath.endsWith('.html') ? prettyHtml : usePrettier
 
   const lintResult = await lintMethod(filePath)
-  callback(filePath)
+  if(callback) callback(filePath)
   return lintResult
 }

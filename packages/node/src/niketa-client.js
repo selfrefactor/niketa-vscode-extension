@@ -61,7 +61,8 @@ export class NiketaClient{
       if(disableLint) return this.emtpyAnswer()
 
       if(this.lintOnlyFileHolder){
-        await lintOnlyMode(this.lintOnlyFileHolder, this.markLint.bind(this))
+        await lintOnlyMode(this.lintOnlyFileHolder)
+        this.markLint(this.lintOnlyFileHolder)
         this.lintOnlyFileHolder = undefined
       }
       if(this.lintFileHolder){
@@ -75,17 +76,21 @@ export class NiketaClient{
     }
 
     if(this.lintOnlyFileHolder){
-      lintOnlyMode(this.lintOnlyFileHolder, this.markLint.bind(this))
-      this.lintOnlyFileHolder = undefined
+      lintOnlyMode(this.lintOnlyFileHolder, lintedFile => {
+        this.markLint(lintedFile)
+      })
     }
 
-    const maybeSpecFile = getSpecFile(fileName)
+    // Check that if project `hasTypescript` is false
+    // then we can check only for `.js` file
+    const maybeSpecFile = getSpecFile(fileName, hasTypescript ? '.ts' : '.js')
     
     const { canContinue } = this.evaluateLint({
       maybeSpecFile,
       forceLint,
       disableLint,
       hasWallaby,
+      hasTypescript,
       fileName,
     })
 
@@ -151,15 +156,10 @@ export class NiketaClient{
     const hasError =
       execResult.stderr.startsWith('FAIL') ||
       execResult.stderr.includes('ERROR:')
-    if (hasError){
-      return this.emit({
-        firstBarMessage : ERROR_ICON,
-        hasDecorations  : false,
-      })
-    }
-
+      
     const { pass, message, uncovered } = this.parseCoverage({
       execResult,
+      hasError,
       actualFileName,
       fileName,
       extension,
@@ -184,7 +184,7 @@ export class NiketaClient{
     const input = cleanJestOutput(execResult.stdout)
     const [ consoleLogs ] = input.split('----------------------|')
     const newDecorationsData = extractConsoleLogs(consoleLogs)
-
+    console.log({newDecorationsData})
     if (Object.keys(newDecorationsData).length === 0){
       return { hasDecorations : false }
     }
@@ -218,6 +218,7 @@ export class NiketaClient{
       return okLogData
     })(newDecorationsData)
 
+    console.log({unreliableLogData, reliableLogData, hasTypescript})
     const correct = !hasTypescript && Object.keys(triggerFileHasDecoration).length === 1
     const logData = correct ? reliableLogData : unreliableLogData
 
@@ -259,7 +260,8 @@ export class NiketaClient{
     }
   }
 
-  parseCoverage({ execResult, actualFileName, fileName, extension }){
+  parseCoverage({ execResult, actualFileName, fileName, extension, hasError }) {
+    if(hasError) return {}
     const input = cleanAngularLog(execResult)
     const pass = input.stderr.includes('PASS')
     const jestOutputLines = input.stdout.split('\n')
@@ -362,8 +364,11 @@ export class NiketaClient{
     return false
   }
 
-  evaluateLint({ disableLint, fileName, hasWallaby, maybeSpecFile, forceLint }){
+  evaluateLint({ disableLint, fileName, hasWallaby, hasTypescript,maybeSpecFile, forceLint }){
     if (disableLint) return { canContinue : true }
+
+    // If project is not Typescript, then there is no need to run lint on TS files
+    if (!hasTypescript && fileName.endsWith('.ts')) return { canContinue : true }
 
     const allowLint =
       fileName !== this.lintFileHolder && this.lintFileHolder !== undefined
@@ -395,9 +400,9 @@ export class NiketaClient{
 
     if (maybeSpecFile){
 
+      this.specFileHolder = maybeSpecFile
       this.fileHolder = fileName
       this.lintFileHolder = fileName
-      this.specFileHolder = maybeSpecFile
       this.debugLog(fileName, 'saved for lint later')
 
       return { canContinue : true }
@@ -409,7 +414,11 @@ export class NiketaClient{
     // we keep it for further linting
     this.lintFileHolder = fileName
 
-    return { canContinue : false }
+    // This defines if editing JS/TS file with no corresponding spec
+    // we still want the last test to run again
+    // Initially the return value is `false`
+    // ============================================
+    return { canContinue : true }
   }
 
   debugLog(toLog, label){ 

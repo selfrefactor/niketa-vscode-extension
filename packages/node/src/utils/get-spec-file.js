@@ -1,19 +1,16 @@
 const { existsSync } = require('fs')
-const { last, replace } = require('rambdax')
+const { replace } = require('rambdax')
 
-function getSpecFile(filePath){
-  const filtered = [ '.js', '.ts' ].filter(x => filePath.includes(x))
-  if (filtered.length === 0) return false
+function getSpecFile(filePath, extension){
+  if (!filePath.endsWith(extension)) return false
 
-  const extension = last(filtered)
-  if (filePath.includes('.spec.')) return filePath
+  if (filePath.includes(`.spec${extension}`)) return filePath
 
   const maybeSpecFile = replace(
     extension, `.spec${ extension }`, filePath
   )
 
-  const ok = existsSync(maybeSpecFile)
-  if (!ok) return false
+  if (!existsSync(maybeSpecFile)) return false
 
   return maybeSpecFile
 }

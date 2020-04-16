@@ -19,7 +19,7 @@ exports[`multiple logs on same line 1`] = `
 Object {
   "source/adjust.js": Array [
     Object {
-      "decoration": "1 [ 0, 1, 2 ], 1 [ 0, 1, 2 ], 1 [ 0, 1, 2 ], 1 [ 0, 1, 2 ], -2 [ 0, 1, 2 ], 4 [ 0, 1, 2, 3 ], -5 [ 0, 1, 2, 3 ]",
+      "decoration": "1 [ 0, 1, 2 ], 1 [ 0, 1, 2 ], 1 [ 0, 1, 2 ], 1 [ 0, 1, 2 ], ",
       "line": "6",
     },
   ],

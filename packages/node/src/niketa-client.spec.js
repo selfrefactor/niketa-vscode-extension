@@ -55,23 +55,3 @@ test('async code that throws', async () => {
     }))
     expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
 })
-
-const rambdaDir = '/home/s/repos/rambda'
-
-test('rambda 1', async () => {
-    const fileName = '/home/s/repos/rambda/source/adjust.js'
-    await niketaClient.onSocketData(generateMessage({
-      fileName,
-      dir: rambdaDir
-    }))
-    expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
-}) 
-
-test('rambda 2', async () => {
-    const fileName = '/home/s/repos/rambda/source/delay.spec.js'
-    await niketaClient.onSocketData(generateMessage({
-      fileName,
-      dir: rambdaDir
-    }))
-    expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
-}) 

@@ -2,8 +2,9 @@
   "scripts": {
     "ts": "jest -u src/typescript.spec.js",
     "ng": "jest -u src/angular.spec.js",
+    "test": "jest -u src/niketa-client.spec.js",
     "dev": "jest -u src/niketa-client.spec.js --watch",
-    "test": "jest src",
+    "test:all": "jest src -u",
     "start": "node start"
   },
   "name": "niketa-client",
