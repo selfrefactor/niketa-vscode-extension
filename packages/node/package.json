@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "js": "jest -u src/scenarios.spec.js",
     "ts": "jest -u src/typescript.spec.js",
     "ng": "jest -u src/angular.spec.js",
     "test": "jest -u src/niketa-client.spec.js",
