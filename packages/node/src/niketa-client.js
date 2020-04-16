@@ -107,8 +107,6 @@ export class NiketaClient{
       fileName     : this.fileHolder,
       specFileName : this.specFileHolder,
     })
-    this.debugLog(cleanJestOutput(execResult.stderr), 'jest.error.stream')
-    this.debugLog(cleanJestOutput(execResult.stdout), 'jest.result.stream')
 
     if (failure) return this.emtpyAnswer()
     this.logJest(execResult)
