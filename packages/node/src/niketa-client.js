@@ -172,6 +172,13 @@ export class NiketaClient{
     const firstBarMessage = pass ? message : ERROR_ICON
     const secondBarMessage = getUncoveredMessage(uncovered)
 
+    this.debugLog({
+      pass,
+      message,
+      hasError,
+      hasDecorations
+    }, 'vscode.message')
+
     this.emit({
       firstBarMessage,
       secondBarMessage,
