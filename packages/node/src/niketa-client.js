@@ -193,7 +193,6 @@ export class NiketaClient{
     const input = cleanJestOutput(execResult.stdout)
     const [ consoleLogs ] = input.split('----------------------|')
     const newDecorationsData = extractConsoleLogs(consoleLogs)
-    console.log({newDecorationsData})
     if (Object.keys(newDecorationsData).length === 0){
       return { hasDecorations : false }
     }
@@ -227,7 +226,6 @@ export class NiketaClient{
       return okLogData
     })(newDecorationsData)
 
-    console.log({unreliableLogData, reliableLogData, hasTypescript})
     const correct = !hasTypescript && Object.keys(triggerFileHasDecoration).length === 1
     const logData = correct ? reliableLogData : unreliableLogData
 
@@ -470,7 +468,7 @@ export class NiketaClient{
       log('Server created', 'info')
       socket.on('data', data => this.onSocketData(data.toString()))
       socket.on('error', (err) => {
-        console.log(err, 'socket.error')
+        console.log(err, 'socket.error.niketa.client')
         this.serverInit = false
         this.start()
       });
