@@ -20,6 +20,36 @@ const defaultValues = {
 }
 const PRIORITY = 200
 
+function sendMessage(messageToSend){
+  return new Promise((resolve, reject) => {
+    try {
+      const client = new Socket()
+      client.connect(
+        CLIENT_PORT, '127.0.0.1', () => {
+          console.log('Connected')
+          client.write(JSON.stringify(messageToSend))
+        }
+      )
+
+      client.on('data', data => {
+        console.log('Received: ' + data)
+        client.destroy() // kill client after server's response
+
+        return resolve(data)
+      })
+
+      client.on('close', () => {
+        console.log('Connection closed')
+
+        return resolve(false)
+      })
+    } catch (error){
+      return reject(error)
+    }
+  })
+}
+
+
 class Worker{
   constructor(userOptions = {}){
     this.lockFlag = false
@@ -36,9 +66,6 @@ class Worker{
     this.dir = workspace.workspaceFolders[0].uri.path
     this.loc = undefined
     this.hasWallaby = undefined
-    this.socketClient = undefined
-    this.socketClientConnected = false
-    this.sendToServer = undefined
     this.firstStatusBar = undefined
     this.secondStatusBar = undefined
   }
@@ -62,31 +89,6 @@ class Worker{
   init(){
     this.hasWallaby = existsSync(`${ this.dir }/wallaby.js`)
     this.hasTypescript = existsSync(`${ this.dir }/tsconfig.json`)
-    this.reconnectSocket()
-  }
-
-  reconnectSocket(){
-    if (this.socketClientConnected) return
-    this.socketClient = new Socket()
-    this.socketClient.connect(
-      CLIENT_PORT, '127.0.0.1', () => {
-        console.log('Connected')
-        this.socketClientConnected = true
-      }
-    )
-
-    this.socketClient.on('data', data => {
-      this.messageReceived(data)
-    })
-
-    this.socketClient.on('close', () => {
-      this.socketClientConnected = false
-    })
-  }
-
-  sendMessage(messageToSend){
-    if (!this.socketClientConnected) return this.unlock()
-    this.socketClient.write(JSON.stringify(messageToSend))
   }
 
   async startLoading(){
@@ -281,7 +283,7 @@ class Worker{
   }
 
   requestCancelation(){
-    this.sendMessage({requestCancelation: true})
+    sendMessage({requestCancelation: true})
     this.unlock()
   }
 
@@ -291,14 +293,20 @@ class Worker{
 
     return editor
   }
+
+  resetOnError(){
+    this.unlock()
+    this.setterStatusBar({
+      newText: '',
+      statusBarIndex: 1
+    })
+  }
 }
 
 const worker = new Worker()
 
 function initExtension(){
   workspace.onDidSaveTextDocument(e => {
-    worker.reconnectSocket()
-
     if (worker.isLocked()) return console.log('LOCKED')
     worker.lock(e.lineCount)
 
@@ -307,7 +315,11 @@ function initExtension(){
       ...worker.getCalculated(),
     }
 
-    worker.sendMessage(messageToSend)
+    sendMessage(messageToSend).then(messageFromServer => {
+      worker.messageReceived(messageFromServer)
+    }).catch(() => {
+      worker.resetOnError()
+    })
   })
 }
 
