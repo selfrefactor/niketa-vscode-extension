@@ -7,6 +7,7 @@ import {
   filter,
   glue,
   tryCatch,
+  delay,
 } from 'rambdax'
 import { 
   JEST_BIN,
@@ -58,6 +59,9 @@ export class NiketaClient{
     const jestable = isJestable(fileName) 
 
     if (lintOnly || !jestable){
+      // As response to VSCode could be too  fast
+      // ============================================
+      await delay(500)
       if(disableLint) return this.emtpyAnswer()
 
       if(this.lintOnlyFileHolder){
