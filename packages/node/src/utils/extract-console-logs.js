@@ -38,11 +38,6 @@ function mergeLogs(logData){
 
 export function extractConsoleLogs(input){
   const lines = input.split('\n')
-  console.log(1)
-  console.log({
-    lines,
-    len : lines.length,
-  }) 
   const toReturn = {}
 
   lines.forEach((line, i) => {

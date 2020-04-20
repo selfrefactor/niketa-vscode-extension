@@ -32,7 +32,7 @@
   "author": "Dejan Toteff <deyan8284@gmail.com>",
   "license": "MIT",
   "commitMessage": {
-    "workInProgress": "",
+    "workInProgress": "improve extract logs",
     "feature": [
       "dep"
     ],
