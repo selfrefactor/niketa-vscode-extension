@@ -30,7 +30,7 @@ import { isLintOnlyMode } from './utils/is-lint-only-mode'
 import { getCoveragePath } from './utils/get-coverage-path'
 import { getUncoveredMessage } from './utils/get-uncovered-message'
 import { cleanJestOutput } from './utils/clean-jest-output.js'
-import { extractConsoleLogs } from './utils/extract-console.logs'
+import { extractConsoleLogs } from './utils/extract-console-logs'
 import { getSpecFile } from './utils/get-spec-file.js'
 import { lintOnlyMode } from './modules/lint-only-mode'
 
@@ -178,6 +178,7 @@ export class NiketaClient{
       hasTypescript,
       message,
       hasError,
+      newDecorations,
       hasDecorations
     }, 'vscode.message')
 

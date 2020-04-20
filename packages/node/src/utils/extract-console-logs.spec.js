@@ -1,4 +1,4 @@
-import { extractConsoleLogs } from './extract-console.logs'
+import { extractConsoleLogs } from './extract-console-logs'
 
 const testInput =
   'console.log src/_modules/parseBeforeNotify.spec.js:10\n' +
@@ -38,12 +38,33 @@ adjust.js |     100 |      100 |     100 |     100 |
 -----------|---------|----------|---------|---------|-------------------
 `.trim()
 
+const testInputThird = `
+console.log
+object
+
+  at Object.<anonymous> (libs/sort-package-json/sort-package-json.spec.js:5:11)
+
+----------------------|---------|----------|---------|---------|-------------------
+File                  | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+----------------------|---------|----------|---------|---------|-------------------
+All files             |   93.75 |       60 |     100 |   93.33 |                   
+sort-package-json.js |   93.75 |       60 |     100 |   93.33 | 29                
+----------------------|---------|----------|---------|---------|-------------------
+
+`.trim()
+
 test('happy', () => {
   const result = extractConsoleLogs(testInput)
   expect(result).toMatchSnapshot()
 })
 
-test.only('multiple logs on same line', () => {
+test('multiple logs on same line', () => {
   const result = extractConsoleLogs(testInputSecond)
+  expect(result).toMatchSnapshot()
+})
+
+test.only('bug', () => {
+  const result = extractConsoleLogs(testInputThird)
+  console.log(1) 
   expect(result).toMatchSnapshot()
 })
