@@ -45,6 +45,11 @@ console.log
 
   at Object.<anonymous> (libs/sort-package-json/sort-package-json.spec.js:9:11)
 
+console.log
+  { type: 'boolean' }
+  
+  at Object.<anonymous> (libs/sort-package-json/sort-package-json.spec.js:6:11)
+
 ----------------------|---------|----------|---------|---------|-------------------
 File                  | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
 ----------------------|---------|----------|---------|---------|-------------------
