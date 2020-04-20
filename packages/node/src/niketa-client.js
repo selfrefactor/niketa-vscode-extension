@@ -34,7 +34,7 @@ import { extractConsoleLogs } from './utils/extract-console.logs'
 import { getSpecFile } from './utils/get-spec-file.js'
 import { lintOnlyMode } from './modules/lint-only-mode'
 
-const EXTENDED_LOG = false
+const EXTENDED_LOG = true
 
 export class NiketaClient{
   constructor({port, emit, testing}){
@@ -133,10 +133,9 @@ export class NiketaClient{
   }
 
   logJest(execResult){
-    if(EXTENDED_LOG) return
     if(this.testing) return
-    process.stderr.write('\n🐬\n' + execResult.stderr + '\n\n')
-    process.stderr.write('\n🐬\n' + execResult.stdout + '\n\n')
+    process.stderr.write('\n🐬\n' + execResult.stderr + '\n🐬\n')
+    process.stderr.write('\n🍵\n' + execResult.stdout + '\n🍵\n')
   }
   
   markLint(fileName){
@@ -176,6 +175,7 @@ export class NiketaClient{
 
     this.debugLog({
       pass,
+      hasTypescript,
       message,
       hasError,
       hasDecorations
