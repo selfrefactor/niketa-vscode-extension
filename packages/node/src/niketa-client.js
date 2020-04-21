@@ -34,7 +34,7 @@ import { extractConsoleLogs } from './modules/extract-console-logs'
 import { getSpecFile } from './utils/get-spec-file.js'
 import { lintOnlyMode } from './modules/lint-only-mode'
 
-const EXTENDED_LOG = true
+const EXTENDED_LOG = false
 
 export class NiketaClient{
   constructor({port, emit, testing}){
