@@ -4,11 +4,10 @@ import {
   testInputThird,
 } from '../../test-data/extract-logs/data'
 import { newJest } from '../../test-data/extract-logs/new-jest'
-import { oldJest } from '../../test-data/extract-logs/old-jest'
-import { extractConsoleLogs, withNewJest } from './extract-console-logs'
+import { extractConsoleLogs } from './extract-console-logs'
 
-test.only('new jest', () => {
-  const result = withNewJest(newJest)
+test('new jest', () => {
+  const result = extractConsoleLogs(newJest)
   expect(result).toMatchSnapshot()
 })
 

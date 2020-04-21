@@ -1,4 +1,4 @@
-import { anyFalse, remove, take , trim , map } from 'rambdax'
+import { anyFalse, map, remove, take, trim } from 'rambdax'
 const LIMIT = 115
 const MARK = 'NIKETA_MARKER'
 
@@ -67,18 +67,21 @@ export function withOldJest(input){
 
 // it is always array and at end if length > 1 then join
 // if length == 1 then return list[0]
-// move to new jest 
+// move to new jest
 
 function mergeLogs(hash){
-    const iterable = (x) => {
-      const lineDecoration = []
-      
-      map((xx, lineNumber) => {
-        const decoration = xx.length === 1 ? xx[0] : xx.join(' ')
-        lineDecoration.push({decoration,lineNumber})
-      })(x)
+  const iterable = x => {
+    const lineDecoration = []
 
-      return lineDecoration
+    map((xx, lineNumber) => {
+      const decoration = xx.length === 1 ? xx[ 0 ] : xx.join(' ')
+      lineDecoration.push({
+        decoration,
+        line : lineNumber,
+      })
+    })(x)
+
+    return lineDecoration
   }
 
   return map(iterable)(hash)
@@ -135,6 +138,8 @@ export function withNewJest(input){
 
 export function extractConsoleLogs(input){
   const oldJestLogs = withOldJest(input)
+  const newJestLogs =
+    Object.keys(oldJestLogs).length === 0 ? withNewJest(input) : false
 
-  return oldJestLogs
+  return newJestLogs ? newJestLogs : oldJestLogs
 }

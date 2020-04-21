@@ -1,23 +1,60 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`bug 1`] = `
+Object {
+  "libs/sort-package-json/sort-package-json.spec.js": Array [
+    Object {
+      "decoration": "object",
+      "line": "5",
+    },
+  ],
+}
+`;
+
+exports[`happy 1`] = `
+Object {
+  "src/_modules/parseBeforeNotify.spec.js": Array [
+    Object {
+      "decoration": "string",
+      "line": "10",
+    },
+    Object {
+      "decoration": "string [ 1, 23, { a: 1 } ]",
+      "line": "12",
+    },
+  ],
+}
+`;
+
+exports[`multiple logs on same line 1`] = `
+Object {
+  "source/adjust.js": Array [
+    Object {
+      "decoration": "1 [ 0, 1, 2 ], 1 [ 0, 1, 2 ], 1 [ 0, 1, 2 ], 1 [ 0, 1, 2 ], -2 [ 0, 1, 2 ], 4 [ 0, 1, 2, 3 ], -5 [ 0, 1, 2, 3 ]",
+      "line": "6",
+    },
+  ],
+}
+`;
+
 exports[`new jest 1`] = `
 Object {
   "libs/sort-package-json/sort-package-json.spec.js": Array [
     Object {
       "decoration": "{ type: 'object' } { type: 'boolean' } ",
-      "lineNumber": "6",
+      "line": "6",
     },
     Object {
       "decoration": "{ array: 'not array' }",
-      "lineNumber": "7",
+      "line": "7",
     },
     Object {
       "decoration": "{ keys: [ 'unsortedKeys', 'sortedKeys' ] }",
-      "lineNumber": "8",
+      "line": "8",
     },
     Object {
       "decoration": "{ unsortedKeys: [ 'name', 'version', 'description', 'author', 'license', 'scripts', 'dependencies', 'devDependencie",
-      "lineNumber": "9",
+      "line": "9",
     },
   ],
 }
