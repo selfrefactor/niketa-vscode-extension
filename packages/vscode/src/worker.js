@@ -119,11 +119,6 @@ class Worker{
     console.error(message, 'onWrongIncomingMessage')
   }
 
-  clearDecorations(){
-    window.visibleTextEditors.forEach(textEditor =>
-      textEditor.setDecorations(this.decorationType, []))
-  }
-
   async paintDecorations(pendingDecorations){
     await delay(50)
     const editor = this.getEditor()
@@ -229,7 +224,7 @@ class Worker{
       })
     }
 
-    if (hasDecorations === false) return this.unlock()
+    if (hasDecorations === false) return this.clearDecorations()
 
     if (newDecorations.correct === true){
       return this.onCorrectDecorations(newDecorations, this.loc)
@@ -240,6 +235,13 @@ class Worker{
     }
 
     this.unlock()
+  }
+
+  clearDecorations(){
+    this.unlock()
+
+    window.visibleTextEditors.forEach(textEditor =>
+      textEditor.setDecorations(this.decorationType, []))
   }
 
   setterStatusBar({ newText, statusBarIndex }){
