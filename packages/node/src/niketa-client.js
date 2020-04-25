@@ -30,7 +30,7 @@ import { getSpecFile } from './utils/get-spec-file.js'
 import { getUncoveredMessage } from './utils/get-uncovered-message'
 import { isLintOnlyMode } from './utils/is-lint-only-mode'
 
-const EXTENDED_LOG = false
+const EXTENDED_LOG = true
 
 export class NiketaClient{
   constructor({ port, emit, testing }){
@@ -498,8 +498,12 @@ export class NiketaClient{
       socket.on('data', data => this.onSocketData(data.toString()))
       socket.on('error', err => {
         console.log(err, 'socket.error.niketa.client')
-        this.serverInit = false
-        this.start()
+        this.server.close(() => {
+          this.serverInit = false
+          delay(2000).then(() => {
+            this.start()
+          })
+        })
       })
       this.emit = message => {
         socket.write(JSON.stringify(message))
