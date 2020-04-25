@@ -6,17 +6,17 @@ import {
 import { newJest } from '../../test-data/extract-logs/new-jest'
 import { extractConsoleLogs } from './extract-console-logs'
 
-test('new jest', () => {
+test('happy only with new jest', () => {
   const result = extractConsoleLogs(newJest)
   expect(result).toMatchSnapshot()
 })
 
-test('happy', () => {
+test('old jest 1', () => {
   const result = extractConsoleLogs(testInput)
   expect(result).toMatchSnapshot()
 })
 
-test('multiple logs on same line', () => {
+test('old jest 2', () => {
   const result = extractConsoleLogs(testInputSecond)
   expect(result).toMatchSnapshot()
 })

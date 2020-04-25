@@ -2,7 +2,75 @@ import { anyFalse, map, remove, take, trim } from 'rambdax'
 const LIMIT = 115
 const MARK = 'NIKETA_MARKER'
 
-function mergeLogsFn(logData){
+function mergeLogs(hash){
+  const iterable = x => {
+    const lineDecoration = []
+
+    map((xx, lineNumber) => {
+      const decoration = xx.length === 1 ? xx[ 0 ] : xx.join(' ')
+      lineDecoration.push({
+        decoration,
+        line : lineNumber,
+      })
+    })(x)
+
+    return lineDecoration
+  }
+
+  return map(iterable)(hash)
+}
+
+export function extractConsoleLogs(input){
+  const withMarker = input.replace(/console\.log/g, `${ MARK } console.log`)
+
+  const parts = withMarker.split('console.log')
+  const hash = {}
+
+  const extractor = (part, i) => {
+    const partialLines = part
+      .split('\n')
+      .filter(Boolean)
+      .filter(x => !x.includes(MARK))
+      .map(trim)
+
+    if (partialLines.length === 0) return
+
+    const logLines = []
+    let found = false
+    let fileName = ''
+    let lineNumber = 0
+
+    partialLines.forEach(partialLine => {
+      if (found) return
+      const matched = partialLine.match(/\([a-zA-Z\-\.\/]+:[0-9]+:[0-9]+\)$/)
+
+      if (!matched && !found) return logLines.push(partialLine)
+      found = true
+
+      const [ fileNameRaw, lineNumberRaw ] = matched[ 0 ].split(':')
+
+      lineNumber = Number(lineNumberRaw)
+      fileName = remove([ '(', ')' ])(fileNameRaw)
+    })
+    if (anyFalse(
+      found, lineNumber, fileName
+    )) return
+
+    if (hash[ fileName ] === undefined) hash[ fileName ] = {}
+    if (hash[ fileName ][ lineNumber ] === undefined)
+      hash[ fileName ][ lineNumber ] = []
+
+    const decoration = take(LIMIT)(logLines.join(' '))
+    hash[ fileName ][ lineNumber ].push(decoration)
+  }
+
+  parts.forEach(extractor)
+
+  return mergeLogs(hash)
+}
+
+/*
+  function mergeLogsFn(logData){
   const toReturn = {}
 
   Object.keys(logData).forEach(key => {
@@ -65,81 +133,4 @@ export function withOldJest(input){
   return mergeLogsFn(toReturn)
 }
 
-// it is always array and at end if length > 1 then join
-// if length == 1 then return list[0]
-// move to new jest
-
-function mergeLogs(hash){
-  const iterable = x => {
-    const lineDecoration = []
-
-    map((xx, lineNumber) => {
-      const decoration = xx.length === 1 ? xx[ 0 ] : xx.join(' ')
-      lineDecoration.push({
-        decoration,
-        line : lineNumber,
-      })
-    })(x)
-
-    return lineDecoration
-  }
-
-  return map(iterable)(hash)
-}
-
-export function withNewJest(input){
-  const withMarker = input.replace(/console\.log/g, `${ MARK } console.log`)
-
-  const parts = withMarker.split('console.log')
-  const hash = {}
-
-  const extractor = (part, i) => {
-    const partialLines = part
-      .split('\n')
-      .filter(Boolean)
-      .filter(x => !x.includes(MARK))
-      .map(trim)
-
-    if (partialLines.length === 0) return
-
-    const logLines = []
-    let found = false
-    let fileName = ''
-    let lineNumber = 0
-
-    partialLines.forEach(partialLine => {
-      if (found) return
-      const matched = partialLine.match(/\([a-zA-Z\-\.\/]+:[0-9]+:[0-9]+\)$/)
-
-      if (!matched && !found) return logLines.push(partialLine)
-      found = true
-
-      const [ fileNameRaw, lineNumberRaw ] = matched[ 0 ].split(':')
-
-      lineNumber = Number(lineNumberRaw)
-      fileName = remove([ '(', ')' ])(fileNameRaw)
-    })
-    if (anyFalse(
-      found, lineNumber, fileName
-    )) return
-
-    if (hash[ fileName ] === undefined) hash[ fileName ] = {}
-    if (hash[ fileName ][ lineNumber ] === undefined)
-      hash[ fileName ][ lineNumber ] = []
-
-    const decoration = take(LIMIT)(logLines.join(' '))
-    hash[ fileName ][ lineNumber ].push(decoration)
-  }
-
-  parts.forEach(extractor)
-
-  return mergeLogs(hash)
-}
-
-export function extractConsoleLogs(input){
-  const oldJestLogs = withOldJest(input)
-  const newJestLogs =
-    Object.keys(oldJestLogs).length === 0 ? withNewJest(input) : false
-
-  return newJestLogs ? newJestLogs : oldJestLogs
-}
+*/

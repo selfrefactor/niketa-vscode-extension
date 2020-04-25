@@ -11,33 +11,7 @@ Object {
 }
 `;
 
-exports[`happy 1`] = `
-Object {
-  "src/_modules/parseBeforeNotify.spec.js": Array [
-    Object {
-      "decoration": "string",
-      "line": "10",
-    },
-    Object {
-      "decoration": "string [ 1, 23, { a: 1 } ]",
-      "line": "12",
-    },
-  ],
-}
-`;
-
-exports[`multiple logs on same line 1`] = `
-Object {
-  "source/adjust.js": Array [
-    Object {
-      "decoration": "1 [ 0, 1, 2 ], 1 [ 0, 1, 2 ], 1 [ 0, 1, 2 ], 1 [ 0, 1, 2 ], -2 [ 0, 1, 2 ], 4 [ 0, 1, 2, 3 ], -5 [ 0, 1, 2, 3 ]",
-      "line": "6",
-    },
-  ],
-}
-`;
-
-exports[`new jest 1`] = `
+exports[`happy only with new jest 1`] = `
 Object {
   "libs/sort-package-json/sort-package-json.spec.js": Array [
     Object {
@@ -59,3 +33,7 @@ Object {
   ],
 }
 `;
+
+exports[`old jest 1 1`] = `Object {}`;
+
+exports[`old jest 2 1`] = `Object {}`;

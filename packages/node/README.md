@@ -20,6 +20,10 @@ This library does the heavy work, while `Niketa` VSCode extension provides the c
 
 That is everything. Now every time you change one of `foo.js` or `foo.spec.js` files, `Jest` will be executed and its coverage result will be displayed in `VSCode`
 
+## Jest version
+
+Work with `25.4.0` onwards
+
 ## TODO
 
 Unexpected errors must be written in local file
