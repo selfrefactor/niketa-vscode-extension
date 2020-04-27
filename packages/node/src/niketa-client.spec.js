@@ -10,7 +10,6 @@ import {
   FAILED_EXPECTATIONS
 } from './test-data'
 
-
 let niketaClient
 const emit = jest.fn()
 
@@ -23,24 +22,23 @@ afterEach(() => {
 })
 
 Object.keys(SUCCESS).forEach(testKey => {
-    test(`success - ${testKey}`, async () => {
-        await niketaClient.onSocketData(generateMessage({
-          fileName : SUCCESS[testKey]
-        }))
-        expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
-    })
-  }
-)
+  // if(testKey !== 'bothHaveLogsFile') return
+  test(`success - ${testKey}`, async () => {
+      await niketaClient.onSocketData(generateMessage({
+        fileName : SUCCESS[testKey]
+      }))
+      expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
+  })
+})
 
 Object.keys(FAILED_EXPECTATIONS).forEach(testKey => {
-    test(`failed expectation - ${testKey}`, async () => {
-        await niketaClient.onSocketData(generateMessage({
-          fileName : FAILED_EXPECTATIONS[testKey]
-        }))
-        expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
-    })
-  }
-)
+  test(`failed expectation - ${testKey}`, async () => {
+      await niketaClient.onSocketData(generateMessage({
+        fileName : FAILED_EXPECTATIONS[testKey]
+      }))
+      expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
+  })
+})
 
 test('sync code that throws', async () => {
     await niketaClient.onSocketData(generateMessage({

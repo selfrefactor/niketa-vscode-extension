@@ -24,8 +24,8 @@ Array [
     "newDecorations": Object {
       "correct": true,
       "logData": Object {
-        "2": "0, 1, 2",
-        "3": "number, number, number",
+        "2": "0 1 2",
+        "3": "number number number",
       },
     },
     "secondBarMessage": undefined,
@@ -120,16 +120,16 @@ Array [
 exports[`success - bothHaveLogsFile 1`] = `
 Array [
   Object {
-    "firstBarMessage": "🐰 st: 100 br: 100 fn: 100 lns: 100",
+    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
     "hasDecorations": true,
     "newDecorations": Object {
       "correct": true,
       "logData": Object {
-        "2": "0, 1, 2",
-        "3": "number, number, number",
+        "2": "2",
+        "3": "number",
       },
     },
-    "secondBarMessage": undefined,
+    "secondBarMessage": "☔5",
   },
 ]
 `;
@@ -137,15 +137,15 @@ Array [
 exports[`success - bothHaveLogsSpec 1`] = `
 Array [
   Object {
-    "firstBarMessage": "🐰 st: 100 br: 100 fn: 100 lns: 100",
+    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
     "hasDecorations": true,
     "newDecorations": Object {
       "correct": true,
       "logData": Object {
-        "7": "{ a: 1, b: 2 }",
+        "5": "{ a: 1, b: 2 }",
       },
     },
-    "secondBarMessage": undefined,
+    "secondBarMessage": "☔5",
   },
 ]
 `;
@@ -162,7 +162,7 @@ Array [
         "3": "number",
       },
     },
-    "secondBarMessage": undefined,
+    "secondBarMessage": "☔5",
   },
 ]
 `;
@@ -179,7 +179,7 @@ Array [
         "number",
       ],
     },
-    "secondBarMessage": undefined,
+    "secondBarMessage": "☔5",
   },
 ]
 `;
@@ -196,7 +196,7 @@ Array [
         "1",
       ],
     },
-    "secondBarMessage": undefined,
+    "secondBarMessage": "☔2",
   },
 ]
 `;
@@ -213,7 +213,7 @@ Array [
         "5": "1",
       },
     },
-    "secondBarMessage": undefined,
+    "secondBarMessage": "☔2",
   },
 ]
 `;

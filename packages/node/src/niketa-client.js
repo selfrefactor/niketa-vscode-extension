@@ -30,7 +30,7 @@ import { getSpecFile } from './utils/get-spec-file.js'
 import { getUncoveredMessage } from './utils/get-uncovered-message'
 import { isLintOnlyMode } from './utils/is-lint-only-mode'
 
-const EXTENDED_LOG = true
+const EXTENDED_LOG = false
 
 export class NiketaClient{
   constructor({ port, emit, testing }){
@@ -169,6 +169,7 @@ export class NiketaClient{
       fileName,
       extension,
     })
+    console.log({uncovered})
     const { newDecorations, hasDecorations } = this.getNewDecorations({
       execResult,
       fileName,
