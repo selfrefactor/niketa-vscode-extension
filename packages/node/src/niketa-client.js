@@ -338,14 +338,13 @@ export class NiketaClient{
     }
 
     const coverageInfo = glue(`
-    🐰
-    st:
+    statements ✍:
     ${ statements }
-    br:
+    branches 🎋:
     ${ branch }
-    fn:
+    functions ☈:
     ${ func }
-    lns:
+    lines 📜:
     ${ lines }
   `)
 
@@ -369,7 +368,7 @@ export class NiketaClient{
       ${ linesDiff === 0 ? '' : `📜:${ maybeWarn(linesDiff) }` }
     `)
 
-    return message.trim() === '' ? coverageInfo : message
+    return message.trim() === '' ? coverageInfo : `change: ${message}`
   }
 
   logError(e, label){
