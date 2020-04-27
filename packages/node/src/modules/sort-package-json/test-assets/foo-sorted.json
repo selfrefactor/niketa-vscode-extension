@@ -1,9 +1,36 @@
 {
-  "depFn": [
-    "typeorm",
-    "typescript",
-    "jest"
-  ],
+  "name": "on",
+  "scripts": {
+    "update": "nest update",
+    "middleware": "nest g middleware",
+    "library": "nest g library",
+    "controller": "nest g controller --no-spec",
+    "service": "nest g service --no-spec",
+    "module": "nest g module --no-spec",
+    "preout": "rimraf dist",
+    "predev": "rimraf dist",
+    "prein": "rimraf dist",
+    "prelight": "yarn out",
+    "preon": "yarn out",
+    "preondark": "yarn out",
+    "predark": "yarn out",
+    "out": "nest build",
+    "niketa": "maided niketa",
+    "on": "maided on",
+    "ondark": "maided on:dark",
+    "light": "maided server:light",
+    "dark": "maided server:dark",
+    "prod": "node dist/main.js",
+    "in": "DEV_MODE=ON MONGO=ON PORT=8080 nest start --watch",
+    "dev": "DEV_MODE=ON PORT=8070 nest start --debug --watch",
+    "debug": "DEV_MODE=ON PORT=8080 nest start --debug --watch",
+    "test": "jest",
+    "test:ts": "typescript-coverage-report --threshold=40",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "e2e": "jest --config ./test/jest-e2e.json"
+  },
+  "version": "1.0.0",
   "jest": {
     "moduleFileExtensions": [
       "js",
@@ -38,53 +65,6 @@
       "lib/utils": "<rootDir>/libs/utils/"
     }
   },
-  "commitMessage": {
-    "workInProgress": "",
-    "support": [
-      "maid",
-      "codesignal"
-    ],
-    "feature": [
-      "lib",
-      "route",
-      "util"
-    ]
-  },
-  "name": "on",
-  "scripts": {
-    "update": "nest update",
-    "middleware": "nest g middleware",
-    "library": "nest g library",
-    "controller": "nest g controller --no-spec",
-    "service": "nest g service --no-spec",
-    "module": "nest g module --no-spec",
-    "preout": "rimraf dist",
-    "predev": "rimraf dist",
-    "prein": "rimraf dist",
-    "prelight": "yarn out",
-    "preon": "yarn out",
-    "preondark": "yarn out",
-    "predark": "yarn out",
-    "out": "nest build",
-    "niketa": "maided niketa",
-    "on": "maided on",
-    "ondark": "maided on:dark",
-    "light": "maided server:light",
-    "dark": "maided server:dark",
-    "prod": "node dist/main.js",
-    "in": "DEV_MODE=ON MONGO=ON PORT=8080 nest start --watch",
-    "dev": "DEV_MODE=ON PORT=8070 nest start --debug --watch",
-    "debug": "DEV_MODE=ON PORT=8080 nest start --debug --watch",
-    "test": "jest",
-    "test:ts": "typescript-coverage-report --threshold=40",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-    "e2e": "jest --config ./test/jest-e2e.json"
-  },
-  "author": "selfrefactor",
-  "version": "1.0.0",
-  "description": "Turn server ON",
-  "license": "MIT",
   "dependencies": {
     "@nestjs/common": "^7.0.5",
     "@nestjs/config": "^0.4.0",
@@ -133,5 +113,25 @@
     "type-coverage": "^2.4.2",
     "typescript": "^3.8.3",
     "typescript-coverage-report": "^0.1.3"
-  }
+  },
+  "license": "MIT",
+  "author": "selfrefactor",
+  "depFn": [
+    "typeorm",
+    "typescript",
+    "jest"
+  ],
+  "commitMessage": {
+    "workInProgress": "",
+    "support": [
+      "maid",
+      "codesignal"
+    ],
+    "feature": [
+      "lib",
+      "route",
+      "util"
+    ]
+  },
+  "description": "Turn server ON"
 }

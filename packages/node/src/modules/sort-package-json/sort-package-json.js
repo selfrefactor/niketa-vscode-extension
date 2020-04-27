@@ -1,13 +1,27 @@
 import { outputJson, readJson } from 'fs-extra'
-import { omit } from 'rambdax'
+import { omit, replace } from 'rambdax'
 
-const ORDER = [ 'name', 'scripts', 'git', 'author' ]
+const ORDER = [
+  'name',
+  'scripts',
+  'typings',
+  'main',
+  'version',
+  'dependencies',
+  'devDependencies',
+  'jest',
+  'files',
+  'repository',
+  'license',
+  'git',
+  'author',
+  'depFn',
+]
 
 export async function sortPackageJson(location, options = {}){
-  console.log({ location })
   const { testing } = options
   const unsorted = await readJson(location)
-  const other = omit(ORDER, unsorted)
+  const ignored = omit(ORDER, unsorted)
 
   const sorted = {}
 
@@ -19,15 +33,15 @@ export async function sortPackageJson(location, options = {}){
 
   const toSave = {
     ...sorted,
-    ...other,
+    ...ignored,
   }
-  if (testing)
-    return {
-      unsortedKeys : Object.keys(unsorted),
-      sortedKeys   : Object.keys(toSave),
-    }
+  const output = testing ?
+    replace(
+      '.json', '-sorted.json', location
+    ) :
+    location
 
   await outputJson(
-    location, toSave, { spaces : 2 }
+    output, toSave, { spaces : 2 }
   )
 }
