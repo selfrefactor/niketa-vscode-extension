@@ -1,19 +1,14 @@
-import {
-  type,
-  pass,
-  repeat,
-  remove,
-} from 'rambdax'
 import { log } from 'helpers-fn'
+import { pass, remove, repeat, type } from 'rambdax'
 
 export const JEST_BIN = './node_modules/jest/bin/jest.js'
 export const ERROR_ICON = '❌'
 export const SUCCESS_ICON = '🐬'
 export const SHORT_SEPARATOR = repeat('🍄', 2).join('')
 export const SEPARATOR = repeat('🍺', 20).join('')
-    
+
 export function isWorkFile(x){
-  return x.startsWith(`${process.env.HOME}/work/`)
+  return x.startsWith(`${ process.env.HOME }/work/`)
 }
 
 export function cleanAngularLog(x){
@@ -41,9 +36,9 @@ export function extractNumber(text){
 
   const asNumber = Number(justText.trim())
 
-  if(type(asNumber) === 'NaN'){
+  if (type(asNumber) === 'NaN'){
     return justText.trim()
-  } 
+  }
 
   return asNumber
 }
@@ -52,15 +47,16 @@ export const defaultEmit = x => console.log(x, 'emit not yet initialized')
 
 const messageSchema = {
   hasTypescript : Boolean,
-  fileName       : String,
-  hasWallaby     : Boolean,
+  fileName      : String,
+  hasWallaby    : Boolean,
 }
 
 export function isMessageCorrect(message){
   const isCorrect = pass(message)(messageSchema)
   if (!isCorrect){
     log('isMessageCorrect', 'error')
-    log(message,'obj')
+    log(message, 'obj')
+
     return false
   }
 

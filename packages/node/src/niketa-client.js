@@ -169,7 +169,6 @@ export class NiketaClient{
       fileName,
       extension,
     })
-    console.log({uncovered})
     const { newDecorations, hasDecorations } = this.getNewDecorations({
       execResult,
       fileName,

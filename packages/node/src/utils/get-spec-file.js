@@ -4,7 +4,7 @@ const { replace } = require('rambdax')
 function getSpecFile(filePath, extension){
   if (!filePath.endsWith(extension)) return false
 
-  if (filePath.includes(`.spec${extension}`)) return filePath
+  if (filePath.includes(`.spec${ extension }`)) return filePath
 
   const maybeSpecFile = replace(
     extension, `.spec${ extension }`, filePath
