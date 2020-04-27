@@ -6,7 +6,7 @@ import { createServer } from 'net'
 import { delay, filter, glue, tryCatch } from 'rambdax'
 
 import { extractConsoleLogs } from './modules/extract-console-logs'
-import { lintOnlyMode } from './modules/lint-only-mode'
+import { isLintOnlyMode, lintOnlyMode } from './modules/lint-only-mode'
 import { cleanJestOutput } from './utils/clean-jest-output.js'
 import {
   cleanAngularLog,
@@ -28,7 +28,6 @@ import { createFileKey } from './utils/create-file-key'
 import { getCoveragePath } from './utils/get-coverage-path'
 import { getSpecFile } from './utils/get-spec-file.js'
 import { getUncoveredMessage } from './utils/get-uncovered-message'
-import { isLintOnlyMode } from './utils/is-lint-only-mode'
 
 const EXTENDED_LOG = false
 
