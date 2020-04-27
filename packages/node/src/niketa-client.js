@@ -337,20 +337,22 @@ export class NiketaClient{
       statements,
     }
 
+    const coverageInfo = glue(`
+    🐰
+    st:
+    ${ statements }
+    br:
+    ${ branch }
+    fn:
+    ${ func }
+    lns:
+    ${ lines }
+  `)
+
     if (firstTime){
       this.coverageHolder[ fileKey ] = hash
 
-      return glue(`
-        🐰
-        st:
-        ${ statements }
-        br:
-        ${ branch }
-        fn:
-        ${ func }
-        lns:
-        ${ lines }
-      `)
+      return coverageInfo
     }
 
     const statementsDiff = parse(statements - this.coverageHolder[ fileKey ].statements)
@@ -367,7 +369,7 @@ export class NiketaClient{
       ${ linesDiff === 0 ? '' : `📜:${ maybeWarn(linesDiff) }` }
     `)
 
-    return message.trim() === '' ? '⛹' : message
+    return message.trim() === '' ? coverageInfo : message
   }
 
   logError(e, label){
