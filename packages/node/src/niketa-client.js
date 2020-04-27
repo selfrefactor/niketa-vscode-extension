@@ -467,7 +467,7 @@ export class NiketaClient{
     console.log(SEPARATOR)
   }
 
-  onCancelMessage({ fileName }){
+  onCancelMessage(){
     if (!this.jestChild) return
     if (!this.jestChild.cancel) return
 
@@ -485,7 +485,7 @@ export class NiketaClient{
     log(parsedMessage, 'obj')
 
     if (parsedMessage.requestCancelation){
-      return this.onCancelMessage(parsedMessage)
+      return this.onCancelMessage()
     }
     const result = await this.onJestMessage(parsedMessage)
 
