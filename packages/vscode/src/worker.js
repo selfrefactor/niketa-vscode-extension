@@ -286,6 +286,10 @@ class Worker{
 
   requestCancelation(){
     sendMessage({requestCancelation: true})
+    this.setterStatusBar({
+      newText: '',
+      statusBarIndex: 1
+    })
     this.unlock()
   }
 
