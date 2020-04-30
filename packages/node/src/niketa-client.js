@@ -59,19 +59,25 @@ export class NiketaClient{
       await delay(500)
       if (disableLint) return this.emtpyAnswer()
 
+      let lintMessage = ''
+
       if (this.lintOnlyFileHolder){
         await lintOnlyMode(this.lintOnlyFileHolder)
         this.markLint(this.lintOnlyFileHolder)
+        lintMessage += `Lint ${this.fileInfo(this.lintOnlyFileHolder)}`
         this.lintOnlyFileHolder = undefined
       }
+      
       if (this.lintFileHolder){
         await this.whenFileLoseFocus(this.lintFileHolder)
+        this.markLint(this.lintFileHolder)
+        lintMessage += `| ${this.fileInfo(this.lintFileHolder)}`
         this.lintFileHolder = undefined
       }
 
       if (lintOnly) this.lintOnlyFileHolder = fileName
 
-      return this.emtpyAnswer()
+      return this.lintAnswer(lintMessage)
     }
 
     if (this.lintOnlyFileHolder){
@@ -112,7 +118,7 @@ export class NiketaClient{
     this.logJest(execResult)
 
     this.sendToVSCode({
-      specFile: this.specFileInfo(),
+      specFile: this.fileInfo(this.specFileHolder),
       execResult,
       actualFileName,
       fileName : this.fileHolder,
@@ -121,10 +127,10 @@ export class NiketaClient{
     })
   }
 
-  specFileInfo(){
-    const [firstFolder, secondFolder, fileName] = takeLast(3, this.specFileHolder.split('/'))
+  fileInfo(x){
+    const [firstFolder, fileName] = takeLast(2, x.split('/'))
 
-    return `${firstFolder}/${secondFolder}/${fileName}`
+    return `${firstFolder}/${fileName}`
   } 
 
   emtpyAnswer(){
@@ -132,6 +138,15 @@ export class NiketaClient{
       firstBarMessage  : '',
       secondBarMessage : undefined,
       thirdBarMessage : undefined,
+      hasDecorations   : false,
+    })
+  }
+
+  lintAnswer(lintMessage){
+    this.emit({
+      firstBarMessage  : '',
+      secondBarMessage : undefined,
+      thirdBarMessage : lintMessage,
       hasDecorations   : false,
     })
   }
