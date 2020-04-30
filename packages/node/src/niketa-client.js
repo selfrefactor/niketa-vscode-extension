@@ -3,7 +3,7 @@ import { existsSync } from 'fs'
 import { log } from 'helpers-fn'
 import { lintFn } from 'lint-fn'
 import { createServer } from 'net'
-import { delay, filter, glue, tryCatch } from 'rambdax'
+import { delay, filter, glue, tryCatch , takeLast } from 'rambdax'
 
 import { extractConsoleLogs } from './modules/extract-console-logs'
 import { isLintOnlyMode, lintOnlyMode } from './modules/lint-only-mode'
@@ -112,6 +112,7 @@ export class NiketaClient{
     this.logJest(execResult)
 
     this.sendToVSCode({
+      specFile: this.specFileInfo(),
       execResult,
       actualFileName,
       fileName : this.fileHolder,
@@ -120,10 +121,17 @@ export class NiketaClient{
     })
   }
 
+  specFileInfo(){
+    const [firstFolder, secondFolder, fileName] = takeLast(3, this.specFileHolder.split('/'))
+
+    return `${firstFolder}/${secondFolder}/${fileName}`
+  } 
+
   emtpyAnswer(){
     this.emit({
       firstBarMessage  : '',
       secondBarMessage : undefined,
+      thirdBarMessage : undefined,
       hasDecorations   : false,
     })
   }
@@ -152,6 +160,7 @@ export class NiketaClient{
 
   sendToVSCode({
     execResult,
+    specFile,
     actualFileName,
     fileName,
     extension,
@@ -189,6 +198,7 @@ export class NiketaClient{
     this.emit({
       firstBarMessage,
       secondBarMessage,
+      thirdBarMessage: specFile,
       hasDecorations,
       newDecorations,
     })
