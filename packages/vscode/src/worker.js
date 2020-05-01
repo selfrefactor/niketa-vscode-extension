@@ -104,6 +104,10 @@ class Worker{
         newText: '',
         statusBarIndex: 1
       })
+      this.setterStatusBar({
+        newText: '',
+        statusBarIndex: 2
+      })
     }
   }
 
@@ -211,7 +215,7 @@ class Worker{
     const parsedMessage = tryCatch(parse, false)()
     if (!parsedMessage) return this.unlock()
     
-    const { hasDecorations, newDecorations, firstBarMessage, secondBarMessage } = parsedMessage
+    const { hasDecorations, newDecorations, firstBarMessage, secondBarMessage, thirdBarMessage } = parsedMessage
     this.setterStatusBar({
       newText        : firstBarMessage,
       statusBarIndex : 0,
@@ -221,6 +225,12 @@ class Worker{
       this.setterStatusBar({
         newText        : secondBarMessage,
         statusBarIndex : 1,
+      })
+    }
+    if (thirdBarMessage){
+      this.setterStatusBar({
+        newText        : thirdBarMessage,
+        statusBarIndex : 2,
       })
     }
 
@@ -245,10 +255,11 @@ class Worker{
   }
 
   setterStatusBar({ newText, statusBarIndex }){
-    if (![ 0, 1 ].includes(statusBarIndex)) return
+    if (![ 0, 1, 2 ].includes(statusBarIndex)) return
     const indexToProperty = [
       'firstStatusBar',
       'secondStatusBar',
+      'thirdStatusBar',
     ]
     const selectedStatusBar = this[ indexToProperty[ statusBarIndex ] ]
     if (!selectedStatusBar) return
@@ -261,15 +272,20 @@ class Worker{
       PRIORITY+1)
     this.secondStatusBar = window.createStatusBarItem(StatusBarAlignment.Right,
       PRIORITY)
+    this.thirdStatusBar = window.createStatusBarItem(StatusBarAlignment.Right,
+      PRIORITY-1)
 
     this.firstStatusBar.command = REQUEST_CANCELATION
     this.firstStatusBar.show()
     this.firstStatusBar.text = 'NIKETA'
     this.secondStatusBar.show()
+    this.secondStatusBar.text = 'APP'
+    this.thirdStatusBar.show()
     this.secondStatusBar.text = 'INIT'
 
     delay(3200).then(() => {
       this.secondStatusBar.text = ''
+      this.thirdStatusBar.text = ''
     })
   }
 
@@ -305,6 +321,10 @@ class Worker{
     this.setterStatusBar({
       newText: '',
       statusBarIndex: 1
+    })
+    this.setterStatusBar({
+      newText: 'wtih error',
+      statusBarIndex: 2
     })
   }
 }
