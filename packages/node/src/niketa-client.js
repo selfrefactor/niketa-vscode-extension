@@ -59,19 +59,19 @@ export class NiketaClient{
       await delay(500)
       if (disableLint) return this.emtpyAnswer()
 
-      let lintMessage = ''
+      let lintMessage = 'Lint'
 
       if (this.lintOnlyFileHolder){
         await lintOnlyMode(this.lintOnlyFileHolder)
         this.markLint(this.lintOnlyFileHolder)
-        lintMessage += `Lint ${this.fileInfo(this.lintOnlyFileHolder)}`
+        lintMessage += ` ${this.fileInfo(this.lintOnlyFileHolder)}`
         this.lintOnlyFileHolder = undefined
       }
       
       if (this.lintFileHolder){
         await this.whenFileLoseFocus(this.lintFileHolder)
         this.markLint(this.lintFileHolder)
-        lintMessage += `| ${this.fileInfo(this.lintFileHolder)}`
+        lintMessage += ` ${this.fileInfo(this.lintFileHolder)}`
         this.lintFileHolder = undefined
       }
 
