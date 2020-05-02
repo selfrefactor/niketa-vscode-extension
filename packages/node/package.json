@@ -1,43 +1,44 @@
 {
-	"scripts": {
-		"js": "jest -u src/scenarios.spec.js",
-		"ts": "jest -u src/typescript.spec.js",
-		"ng": "jest -u src/angular.spec.js",
-		"test": "jest -u src/niketa-client.spec.js",
-		"dev": "jest -u src/niketa-client.spec.js --watch",
-		"test:all": "jest src -u",
-		"start": "node start"
-	},
-	"name": "niketa-client",
-	"version": "1.0.0",
-	"main": "./index.js",
-	"typings": "./index.d.ts",
-	"dependencies": {
-		"@starptech/prettyhtml": "0.10.0",
-		"esm": "3.2.25",
-		"execa": "4.0.0",
-		"helpers-fn": "0.2.0",
-		"lint-fn": "2.7.1",
-		"rambdax": "3.7.0",
-		"string-fn": "2.11.1"
-	},
-	"devDependencies": {
-		"@types/jest": "25.2.1",
-		"@types/node": "13.13.1",
-		"babel-cli": "7.0.0-beta.3",
-		"babel-preset-env": "7.0.0-beta.3",
-		"jest": "25.4.0",
-		"typescript": "3.9.0-dev.20200421"
-	},
-	"author": "Dejan Toteff <deyan8284@gmail.com>",
-	"license": "MIT",
-	"commitMessage": {
-		"workInProgress": "",
-		"feature": [
-			"dep"
-		],
-		"support": [
-			"lint"
-		]
-	}
+  "scripts": {
+    "js": "jest -u src/scenarios.spec.js",
+    "ts": "jest -u src/typescript.spec.js",
+    "ng": "jest -u src/angular.spec.js",
+    "test": "jest -u src/niketa-client.spec.js",
+    "dev": "jest -u src/niketa-client.spec.js --watch",
+    "test:all": "jest src -u",
+    "start": "node start"
+  },
+  "name": "niketa-client",
+  "version": "1.0.0",
+  "main": "./index.js",
+  "typings": "./index.d.ts",
+  "dependencies": {
+    "@starptech/prettyhtml": "0.10.0",
+    "esm": "3.2.25",
+    "execa": "4.0.0",
+    "helpers-fn": "0.2.0",
+    "lint-fn": "2.7.1",
+    "rambdax": "3.7.0",
+    "string-fn": "2.11.1"
+  },
+  "devDependencies": {
+    "@types/jest": "25.2.1",
+    "@types/node": "13.13.1",
+    "babel-cli": "7.0.0-beta.3",
+    "babel-preset-env": "7.0.0-beta.3",
+    "jest": "25.4.0",
+    "typescript": "3.9.0-dev.20200421"
+  },
+  "author": "Dejan Toteff <deyan8284@gmail.com>",
+  "license": "MIT",
+  "commitMessage": {
+    "workInProgress": "",
+    "feature": [
+      "dep"
+    ],
+    "support": [
+      "lint",
+      "refactor"
+    ]
+  }
 }

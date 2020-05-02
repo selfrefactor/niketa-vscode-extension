@@ -46,7 +46,7 @@ export class NiketaClient{
   }
 
   async onJestMessage(message){
-    const { fileName, hasWallaby, dir, forceLint, hasTypescript } = message
+    const { fileName, hasWallaby, dir, hasTypescript } = message
     if (!isMessageCorrect(message)) return this.emtpyAnswer()
 
     const disableLint = isWorkFile(fileName)
@@ -83,6 +83,7 @@ export class NiketaClient{
     if (this.lintOnlyFileHolder){
       lintOnlyMode(this.lintOnlyFileHolder, lintedFile => {
         this.markLint(lintedFile)
+        this.lintOnlyFileHolder = undefined
       })
     }
 
@@ -93,7 +94,6 @@ export class NiketaClient{
 
     const { canContinue } = this.evaluateLint({
       maybeSpecFile,
-      forceLint,
       disableLint,
       hasWallaby,
       hasTypescript,
@@ -430,55 +430,46 @@ export class NiketaClient{
     hasWallaby,
     hasTypescript,
     maybeSpecFile,
-    forceLint,
   }){
     if (disableLint) return { canContinue : true }
 
     // If project is not Typescript, then there is no need to run lint on TS files
-    if (!hasTypescript && fileName.endsWith('.ts'))
+    if (!hasTypescript && fileName.endsWith('.ts')){
       return { canContinue : true }
+    }
 
     const allowLint =
       fileName !== this.lintFileHolder && this.lintFileHolder !== undefined
 
     if (allowLint){
       this.whenFileLoseFocus(this.lintFileHolder)
-      this.lintFileHolder = fileName
-    } else if (forceLint){
-      this.whenFileLoseFocus(fileName)
     } else {
       log(`SKIP_LINT ${
         this.lintFileHolder ? this.lintFileHolder : 'initial state'
       }`,
       'box')
     }
+    
+    this.lintFileHolder = fileName
 
     if (hasWallaby){
-      this.lintFileHolder = fileName
-      this.debugLog(fileName, 'saved for lint later')
+      this.debugLog(fileName, 'wallaby - saved for lint later')
 
       return { canContinue : false }
     }
 
     if (maybeSpecFile){
+      // Happy case
+      // ============================================
       this.specFileHolder = maybeSpecFile
       this.fileHolder = fileName
-      this.lintFileHolder = fileName
-      this.debugLog(fileName, 'saved for lint later')
 
-      return { canContinue : true }
+      // The missing return here also defines 
+      // if editing JS/TS file with no corresponding spec
+      // we still want the last test to run again
+      // ============================================
     }
 
-    this.debugLog(fileName, 'saved for lint later even without spec')
-
-    // Even if the file has no corresponding spec file
-    // we keep it for further linting
-    this.lintFileHolder = fileName
-
-    // This defines if editing JS/TS file with no corresponding spec
-    // we still want the last test to run again
-    // Initially the return value is `false`
-    // ============================================
     return { canContinue : true }
   }
 

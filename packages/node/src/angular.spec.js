@@ -44,7 +44,6 @@ test('with angular source - force lint', async () => {
   const currentFile = ANGULAR.angularFile
   await niketaClient.onSocketData(generateMessage({
     fileName      : currentFile,
-    forceLint     : true,
     hasTypescript : true,
     dir           : ANGULAR.dir,
   }))
