@@ -68,6 +68,7 @@ class Worker{
     this.hasWallaby = undefined
     this.firstStatusBar = undefined
     this.secondStatusBar = undefined
+    this.thirdStatusBar = undefined
   }
 
   isLocked(){
@@ -98,8 +99,8 @@ class Worker{
       statusBarIndex: 0
     })
     
-    if(this.secondStatusBar.text){
-      await delay(50)
+    if(this.thirdStatusBar.text){
+      await delay(80)
       this.setterStatusBar({
         newText: '',
         statusBarIndex: 1
@@ -281,7 +282,7 @@ class Worker{
     this.secondStatusBar.show()
     this.secondStatusBar.text = 'APP'
     this.thirdStatusBar.show()
-    this.secondStatusBar.text = 'INIT'
+    this.thirdStatusBar.text = 'INIT'
 
     delay(3200).then(() => {
       this.secondStatusBar.text = ''
@@ -332,6 +333,9 @@ class Worker{
 const worker = new Worker()
 
 function initExtension(){
+  workspace.onDidOpenTextDocument(e => {
+    console.log(e)
+  })
   workspace.onDidSaveTextDocument(e => {
     if (worker.isLocked()) return console.log('LOCKED')
     worker.lock(e.lineCount)
