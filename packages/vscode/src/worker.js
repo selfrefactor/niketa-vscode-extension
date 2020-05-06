@@ -33,7 +33,7 @@ function sendMessage(messageToSend){
 
       client.on('data', data => {
         console.log('Received: ' + data)
-        client.destroy() // kill client after server's response
+        client.destroy()
 
         return resolve(data)
       })
@@ -49,7 +49,6 @@ function sendMessage(messageToSend){
   })
 }
 
-
 class Worker{
   constructor(userOptions = {}){
     this.lockFlag = false
@@ -63,7 +62,7 @@ class Worker{
     this.emit = x => {
       console.log(x, 'emit is not yet initialized')
     }
-    this.dir = workspace.workspaceFolders[0].uri.path
+    this.dir = workspace.workspaceFolders[ 0 ].uri.path
     this.loc = undefined
     this.hasWallaby = undefined
     this.firstStatusBar = undefined
@@ -92,31 +91,29 @@ class Worker{
     this.hasTypescript = existsSync(`${ this.dir }/tsconfig.json`)
   }
 
-  async startLoading(){
-    await delay(50)
+  startLoading(){
     this.setterStatusBar({
-      newText: 'Loading ...',
-      statusBarIndex: 0
+      newText        : 'Loading ...',
+      statusBarIndex : 0,
     })
-    
-    if(this.thirdStatusBar.text){
-      await delay(80)
+
+    if (this.thirdStatusBar.text){
       this.setterStatusBar({
-        newText: '',
-        statusBarIndex: 1
+        newText        : '',
+        statusBarIndex : 1,
       })
       this.setterStatusBar({
-        newText: '',
-        statusBarIndex: 2
+        newText        : '',
+        statusBarIndex : 2,
       })
     }
   }
 
   getCalculated(){
     return {
-      hasWallaby     : this.hasWallaby,
-      hasTypescript     : this.hasTypescript,
-      dir            : this.dir,
+      hasWallaby    : this.hasWallaby,
+      hasTypescript : this.hasTypescript,
+      dir           : this.dir,
     }
   }
 
@@ -187,10 +184,10 @@ class Worker{
     const { correct, logData } = newDecorations
     if (!correct) return
     if (Object.keys(logData).length === 0) return
-    
+
     const pendingDecorations = this.buildCorrectDecorations(logData, loc)
     await this.paintDecorations(pendingDecorations)
-    
+
     await delay(200)
     this.unlock()
   }
@@ -211,30 +208,55 @@ class Worker{
     this.unlock()
   }
 
+  async updateStatusBars({
+    firstBarMessage,
+    secondBarMessage,
+    thirdBarMessage,
+  }){
+    const messages = firstBarMessage === '' ?
+      [' ', ' ', ' '] :
+      [firstBarMessage, secondBarMessage, thirdBarMessage]  
+
+    await delay(40)
+    this.setterStatusBar({
+      newText        : messages[0],
+      statusBarIndex : 0,
+    })
+
+    await delay(40)
+    if (messages[1]){
+      this.setterStatusBar({
+        newText        : messages[1],
+        statusBarIndex : 1,
+      })
+    }
+    await delay(40)
+    if (messages[2]){
+      this.setterStatusBar({
+        newText        : messages[2],
+        statusBarIndex : 2,
+      })
+    }
+  }
+
   messageReceived(messageFromServer){
     const parse = () => JSON.parse(messageFromServer.toString())
     const parsedMessage = tryCatch(parse, false)()
     if (!parsedMessage) return this.unlock()
-    
-    const { hasDecorations, newDecorations, firstBarMessage, secondBarMessage, thirdBarMessage } = parsedMessage
-    this.setterStatusBar({
-      newText        : firstBarMessage,
-      statusBarIndex : 0,
+
+    const {
+      hasDecorations,
+      newDecorations,
+      firstBarMessage,
+      secondBarMessage,
+      thirdBarMessage,
+    } = parsedMessage
+
+    this.updateStatusBars({
+      firstBarMessage,
+      secondBarMessage,
+      thirdBarMessage,
     })
-
-    if (secondBarMessage){
-      this.setterStatusBar({
-        newText        : secondBarMessage,
-        statusBarIndex : 1,
-      })
-    }
-    if (thirdBarMessage){
-      this.setterStatusBar({
-        newText        : thirdBarMessage,
-        statusBarIndex : 2,
-      })
-    }
-
     if (hasDecorations === false) return this.clearDecorations()
 
     if (newDecorations.correct === true){
@@ -270,11 +292,11 @@ class Worker{
 
   initStatusBars(){
     this.firstStatusBar = window.createStatusBarItem(StatusBarAlignment.Right,
-      PRIORITY+1)
+      PRIORITY + 1)
     this.secondStatusBar = window.createStatusBarItem(StatusBarAlignment.Right,
       PRIORITY)
     this.thirdStatusBar = window.createStatusBarItem(StatusBarAlignment.Right,
-      PRIORITY-1)
+      PRIORITY - 1)
 
     this.firstStatusBar.command = REQUEST_CANCELATION
     this.firstStatusBar.show()
@@ -302,10 +324,10 @@ class Worker{
   }
 
   requestCancelation(){
-    sendMessage({requestCancelation: true})
+    sendMessage({ requestCancelation : true })
     this.setterStatusBar({
-      newText: '',
-      statusBarIndex: 1
+      newText        : '',
+      statusBarIndex : 1,
     })
     this.unlock()
   }
@@ -317,15 +339,21 @@ class Worker{
     return editor
   }
 
-  resetOnError(){
+  async resetOnError(){
     this.unlock()
     this.setterStatusBar({
-      newText: '',
-      statusBarIndex: 1
+      newText        : '',
+      statusBarIndex : 0,
     })
+    await delay(40)
     this.setterStatusBar({
-      newText: 'wtih error',
-      statusBarIndex: 2
+      newText        : '',
+      statusBarIndex : 1,
+    })
+    await delay(40)
+    this.setterStatusBar({
+      newText        : 'with error',
+      statusBarIndex : 2,
     })
   }
 }
@@ -345,11 +373,13 @@ function initExtension(){
       ...worker.getCalculated(),
     }
 
-    sendMessage(messageToSend).then(messageFromServer => {
-      worker.messageReceived(messageFromServer)
-    }).catch(() => {
-      worker.resetOnError()
-    })
+    sendMessage(messageToSend)
+      .then(messageFromServer => {
+        worker.messageReceived(messageFromServer)
+      })
+      .catch(() => {
+        worker.resetOnError()
+      })
   })
 }
 
