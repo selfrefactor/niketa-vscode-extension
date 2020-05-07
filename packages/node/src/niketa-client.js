@@ -364,13 +364,13 @@ export class NiketaClient{
 
     const coverageInfo = glue(`
     statements ✍:
-    ${ statements }
+    ${ statements } % 🌰
     branches 🎋:
-    ${ branch }
+    ${ branch } % 🌰
     functions ☈:
-    ${ func }
+    ${ func } % 🌰
     lines 📜:
-    ${ lines }
+    ${ lines } %
   `)
 
     if (firstTime){
