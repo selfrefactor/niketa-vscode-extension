@@ -324,7 +324,7 @@ class Worker{
     }
   }
 
-  await requestCancelation(){
+  async requestCancelation(){
     sendMessage({ requestCancelation : true })
     await delay(SMALL_DELAY)
     this.resetOnError()
