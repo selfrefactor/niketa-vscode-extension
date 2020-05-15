@@ -12,6 +12,7 @@ const { REQUEST_CANCELATION } = require('./constants')
 const { Socket } = require('net')
 
 const CLIENT_PORT = niketaConfig('PORT')
+const SMALL_DELAY = 15
 
 const defaultValues = {
   TOP_MARGIN : 3,
@@ -217,20 +218,20 @@ class Worker{
       [' ', ' ', ' '] :
       [firstBarMessage, secondBarMessage, thirdBarMessage]  
 
-    await delay(40)
+    await delay(SMALL_DELAY)
     this.setterStatusBar({
       newText        : messages[0],
       statusBarIndex : 0,
     })
 
-    await delay(40)
+    await delay(SMALL_DELAY)
     if (messages[1]){
       this.setterStatusBar({
         newText        : messages[1],
         statusBarIndex : 1,
       })
     }
-    await delay(40)
+    await delay(SMALL_DELAY)
     if (messages[2]){
       this.setterStatusBar({
         newText        : messages[2],
@@ -323,13 +324,10 @@ class Worker{
     }
   }
 
-  requestCancelation(){
+  await requestCancelation(){
     sendMessage({ requestCancelation : true })
-    this.setterStatusBar({
-      newText        : '',
-      statusBarIndex : 1,
-    })
-    this.unlock()
+    await delay(SMALL_DELAY)
+    this.resetOnError()
   }
 
   getEditor(){
@@ -345,12 +343,12 @@ class Worker{
       newText        : '',
       statusBarIndex : 0,
     })
-    await delay(40)
+    await delay(SMALL_DELAY)
     this.setterStatusBar({
       newText        : '',
       statusBarIndex : 1,
     })
-    await delay(40)
+    await delay(SMALL_DELAY)
     this.setterStatusBar({
       newText        : 'with error',
       statusBarIndex : 2,
