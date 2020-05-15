@@ -8,7 +8,7 @@ const {
 const { delay, range, path, tryCatch, ok } = require('rambdax')
 const { existsSync } = require('fs')
 const { niketaConfig } = require('./utils/niketa-config.js')
-const { REQUEST_CANCELATION } = require('./constants')
+const { REQUEST_CANCELATION, DISABLE_ENABLE } = require('./constants')
 const { Socket } = require('net')
 
 const CLIENT_PORT = niketaConfig('PORT')
@@ -65,6 +65,7 @@ class Worker{
     }
     this.dir = workspace.workspaceFolders[ 0 ].uri.path
     this.loc = undefined
+    this.enabled = true
     this.hasWallaby = undefined
     this.firstStatusBar = undefined
     this.secondStatusBar = undefined
@@ -304,6 +305,7 @@ class Worker{
     this.firstStatusBar.text = 'NIKETA'
     this.secondStatusBar.show()
     this.secondStatusBar.text = 'APP'
+    this.thirdStatusBar.command =DISABLE_ENABLE
     this.thirdStatusBar.show()
     this.thirdStatusBar.text = 'INIT'
 
@@ -328,6 +330,10 @@ class Worker{
     sendMessage({ requestCancelation : true })
     await delay(SMALL_DELAY)
     this.resetOnError()
+  }
+
+  disableEnable(){
+    this.enabled = !this.enabled
   }
 
   getEditor(){
@@ -363,6 +369,7 @@ function initExtension(){
     console.log(e)
   })
   workspace.onDidSaveTextDocument(e => {
+    if(!this.enabled)return
     if (worker.isLocked()) return console.log('LOCKED')
     worker.lock(e.lineCount)
 
