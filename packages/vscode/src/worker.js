@@ -369,7 +369,7 @@ function initExtension(){
     console.log(e)
   })
   workspace.onDidSaveTextDocument(e => {
-    if(!this.enabled)return
+    // if(!this.enabled)return
     if (worker.isLocked()) return console.log('LOCKED')
     worker.lock(e.lineCount)
 
