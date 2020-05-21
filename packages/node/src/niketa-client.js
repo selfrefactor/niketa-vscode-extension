@@ -31,9 +31,9 @@ import { getUncoveredMessage } from './utils/get-uncovered-message'
 
 const EXTENDED_LOG = false
 
-const FUNCTIONS = '🧬' // ☈
-const SEPARATOR = '🌰'
-const STALE_SEPARATOR = '🔘'
+const FUNCTIONS = '🕸' // ☈
+const STALE_SEPARATOR = '☄' // '🌰'
+const SEPARATOR = '🎑' // '🔘'
 const STATEMENTS = '✍'
 const BRANCHES = '🎋'
 const LINES = '📜'
