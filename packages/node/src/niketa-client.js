@@ -276,6 +276,7 @@ export class NiketaClient{
       const command = [
         JEST_BIN,
         '-u',
+        '--detectOpenHandles',
         '--maxWorkers=1',
         '--env=node',
         '--collectCoverage=true',
