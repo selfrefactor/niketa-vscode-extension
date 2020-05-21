@@ -19,7 +19,7 @@ import {
   JEST_BIN,
   maybeWarn,
   parse,
-  SEPARATOR,
+  LONG_SEPARATOR,
   SHORT_SEPARATOR,
   SUCCESS_ICON,
   toNumber,
@@ -29,7 +29,14 @@ import { getCoveragePath } from './utils/get-coverage-path'
 import { getSpecFile } from './utils/get-spec-file.js'
 import { getUncoveredMessage } from './utils/get-uncovered-message'
 
-const EXTENDED_LOG = false
+const EXTENDED_LOG = true
+const FUNCTIONS = '🧬' // ☈
+const SEPARATOR = '🌰'
+const STALE_SEPARATOR = '🔘'
+const STATEMENTS = '✍'
+const BRANCHES = '🎋'
+const LINES = '📜'
+
 
 export class NiketaClient{
   constructor({ port, emit, testing }){
@@ -364,13 +371,13 @@ export class NiketaClient{
     }
 
     const coverageInfo = glue(`
-    statements ✍:
-    ${ statements } % 🌰
-    branches 🎋:
-    ${ branch } % 🌰
-    functions ☈:
-    ${ func } % 🌰
-    lines 📜:
+    statements ${STATEMENTS}:
+    ${ statements } % ${SEPARATOR}
+    branches ${BRANCHES}:
+    ${ branch } % ${SEPARATOR}
+    functions ${FUNCTIONS}:
+    ${ func } % ${SEPARATOR}
+    lines ${LINES}:
     ${ lines } %
   `)
 
@@ -394,7 +401,19 @@ export class NiketaClient{
       ${ linesDiff === 0 ? '' : `📜:${ maybeWarn(linesDiff) }` }
     `)
 
-    return message.trim() === '' ? coverageInfo : `change: ${message}`
+    const staleCoverageInfo = glue(`
+    NO CHANGE ${STALE_SEPARATOR}
+    ${STATEMENTS}:
+    ${ statements } % ${STALE_SEPARATOR}
+    ${BRANCHES}:
+    ${ branch } % ${STALE_SEPARATOR}
+    ${FUNCTIONS}:
+    ${ func } % ${STALE_SEPARATOR}
+    ${LINES}:
+    ${ lines } %
+  `)
+
+    return message.trim() === '' ? staleCoverageInfo : `change: ${message}`
   }
 
   logError(e, label){
@@ -408,7 +427,7 @@ export class NiketaClient{
     const stillWating = !(this.fileHolder && this.specFileHolder)
     if (stillWating){
       // This happens only until the script receives a correct filepath
-      this.debugLog('no specfile', fileName)
+      this.debugLog('no specfile', {fileName, fileHolder: this.fileHolder, specFileHolder: this.specFileHolder})
 
       return true
     }
@@ -432,7 +451,12 @@ export class NiketaClient{
     hasTypescript,
     maybeSpecFile,
   }){
-    if (disableLint) return { canContinue : true }
+    if (disableLint){
+      this.specFileHolder = maybeSpecFile
+      this.fileHolder = fileName
+      return { canContinue : true }
+    } 
+
 
     // If project is not Typescript, then there is no need to run lint on TS files
     if (!hasTypescript && fileName.endsWith('.ts')){
@@ -478,9 +502,9 @@ export class NiketaClient{
     if (!EXTENDED_LOG) return
 
     console.log(label, SHORT_SEPARATOR)
-    console.log(SEPARATOR)
+    console.log(LONG_SEPARATOR)
     console.log(toLog)
-    console.log(SEPARATOR)
+    console.log(LONG_SEPARATOR)
   }
 
   onCancelMessage(){
