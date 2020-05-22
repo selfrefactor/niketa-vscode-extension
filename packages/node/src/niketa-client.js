@@ -3,7 +3,7 @@ import { existsSync } from 'fs'
 import { log } from 'helpers-fn'
 import { lintFn } from 'lint-fn'
 import { createServer } from 'net'
-import { delay, filter, glue, tryCatch , takeLast } from 'rambdax'
+import { delay, filter, glue, takeLast, tryCatch } from 'rambdax'
 
 import { extractConsoleLogs } from './modules/extract-console-logs'
 import { isLintOnlyMode, lintOnlyMode } from './modules/lint-only-mode'
@@ -17,9 +17,9 @@ import {
   isMessageCorrect,
   isWorkFile,
   JEST_BIN,
+  LONG_SEPARATOR,
   maybeWarn,
   parse,
-  LONG_SEPARATOR,
   SHORT_SEPARATOR,
   SUCCESS_ICON,
   toNumber,
@@ -37,7 +37,6 @@ const SEPARATOR = '🎑' // '🔘'
 const STATEMENTS = '✍'
 const BRANCHES = '🎋'
 const LINES = '📜'
-
 
 export class NiketaClient{
   constructor({ port, emit, testing }){
@@ -72,14 +71,14 @@ export class NiketaClient{
       if (this.lintOnlyFileHolder){
         await lintOnlyMode(this.lintOnlyFileHolder)
         this.markLint(this.lintOnlyFileHolder)
-        lintMessage += ` ${this.fileInfo(this.lintOnlyFileHolder)}`
+        lintMessage += ` ${ this.fileInfo(this.lintOnlyFileHolder) }`
         this.lintOnlyFileHolder = undefined
       }
-      
+
       if (this.lintFileHolder){
         await this.whenFileLoseFocus(this.lintFileHolder)
         this.markLint(this.lintFileHolder)
-        lintMessage += ` ${this.fileInfo(this.lintFileHolder)}`
+        lintMessage += ` ${ this.fileInfo(this.lintFileHolder) }`
         this.lintFileHolder = undefined
       }
 
@@ -126,7 +125,7 @@ export class NiketaClient{
     this.logJest(execResult)
 
     this.sendToVSCode({
-      specFile: this.fileInfo(this.specFileHolder),
+      specFile : this.fileInfo(this.specFileHolder),
       execResult,
       actualFileName,
       fileName : this.fileHolder,
@@ -136,16 +135,16 @@ export class NiketaClient{
   }
 
   fileInfo(x){
-    const [firstFolder, fileName] = takeLast(2, x.split('/'))
+    const [ firstFolder, fileName ] = takeLast(2, x.split('/'))
 
-    return `${firstFolder}/${fileName}`
-  } 
+    return `${ firstFolder }/${ fileName }`
+  }
 
   emtpyAnswer(){
     this.emit({
       firstBarMessage  : '',
       secondBarMessage : undefined,
-      thirdBarMessage : undefined,
+      thirdBarMessage  : undefined,
       hasDecorations   : false,
     })
   }
@@ -154,7 +153,7 @@ export class NiketaClient{
     this.emit({
       firstBarMessage  : '',
       secondBarMessage : undefined,
-      thirdBarMessage : lintMessage,
+      thirdBarMessage  : lintMessage,
       hasDecorations   : false,
     })
   }
@@ -221,7 +220,7 @@ export class NiketaClient{
     this.emit({
       firstBarMessage,
       secondBarMessage,
-      thirdBarMessage: specFile,
+      thirdBarMessage : specFile,
       hasDecorations,
       newDecorations,
     })
@@ -372,13 +371,13 @@ export class NiketaClient{
     }
 
     const coverageInfo = glue(`
-    statements ${STATEMENTS}:
-    ${ statements } % ${SEPARATOR}
-    branches ${BRANCHES}:
-    ${ branch } % ${SEPARATOR}
-    functions ${FUNCTIONS}:
-    ${ func } % ${SEPARATOR}
-    lines ${LINES}:
+    statements ${ STATEMENTS }:
+    ${ statements } % ${ SEPARATOR }
+    branches ${ BRANCHES }:
+    ${ branch } % ${ SEPARATOR }
+    functions ${ FUNCTIONS }:
+    ${ func } % ${ SEPARATOR }
+    lines ${ LINES }:
     ${ lines } %
   `)
 
@@ -403,18 +402,18 @@ export class NiketaClient{
     `)
 
     const staleCoverageInfo = glue(`
-    NO CHANGE ${STALE_SEPARATOR}
-    ${STATEMENTS}:
-    ${ statements } % ${STALE_SEPARATOR}
-    ${BRANCHES}:
-    ${ branch } % ${STALE_SEPARATOR}
-    ${FUNCTIONS}:
-    ${ func } % ${STALE_SEPARATOR}
-    ${LINES}:
+    NO CHANGE ${ STALE_SEPARATOR }
+    ${ STATEMENTS }:
+    ${ statements } % ${ STALE_SEPARATOR }
+    ${ BRANCHES }:
+    ${ branch } % ${ STALE_SEPARATOR }
+    ${ FUNCTIONS }:
+    ${ func } % ${ STALE_SEPARATOR }
+    ${ LINES }:
     ${ lines } %
   `)
 
-    return message.trim() === '' ? staleCoverageInfo : `change: ${message}`
+    return message.trim() === '' ? staleCoverageInfo : `change: ${ message }`
   }
 
   logError(e, label){
@@ -428,7 +427,11 @@ export class NiketaClient{
     const stillWating = !(this.fileHolder && this.specFileHolder)
     if (stillWating){
       // This happens only until the script receives a correct filepath
-      this.debugLog('no specfile', {fileName, fileHolder: this.fileHolder, specFileHolder: this.specFileHolder})
+      this.debugLog('no specfile', {
+        fileName,
+        fileHolder     : this.fileHolder,
+        specFileHolder : this.specFileHolder,
+      })
 
       return true
     }
@@ -455,9 +458,9 @@ export class NiketaClient{
     if (disableLint){
       this.specFileHolder = maybeSpecFile
       this.fileHolder = fileName
-      return { canContinue : true }
-    } 
 
+      return { canContinue : true }
+    }
 
     // If project is not Typescript, then there is no need to run lint on TS files
     if (!hasTypescript && fileName.endsWith('.ts')){
@@ -475,7 +478,7 @@ export class NiketaClient{
       }`,
       'box')
     }
-    
+
     this.lintFileHolder = fileName
 
     if (hasWallaby){
@@ -490,7 +493,7 @@ export class NiketaClient{
       this.specFileHolder = maybeSpecFile
       this.fileHolder = fileName
 
-      // The missing return here also defines 
+      // The missing return here also defines
       // if editing JS/TS file with no corresponding spec
       // we still want the last test to run again
       // ============================================
@@ -519,15 +522,17 @@ export class NiketaClient{
   async onSocketData(messageFromVSCode){
     const parsedMessage = tryCatch(() => JSON.parse(messageFromVSCode.toString()),
       false)()
+
     if (parsedMessage === false){
       return this.onWrongIncomingMessage(messageFromVSCode.toString())
     }
 
-    log(parsedMessage, 'obj')
+    this.debugLog(parsedMessage, 'onSocketData')
 
     if (parsedMessage.requestCancelation){
       return this.onCancelMessage()
     }
+
     const result = await this.onJestMessage(parsedMessage)
 
     return result

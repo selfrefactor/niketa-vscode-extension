@@ -25,7 +25,7 @@ async function usePrettier(filePath){
   })
   log(`${ filePath } linted with Prettier`, 'info')
 }
- 
+
 export async function lintOnlyMode(filePath, callback){
   console.log('lintOnlyMode', filePath)
 
