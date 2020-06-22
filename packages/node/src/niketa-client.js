@@ -54,7 +54,7 @@ export class NiketaClient{
 
   async onJestMessage(message){
     const { fileName, hasWallaby, dir, hasTypescript } = message
-    if (!isMessageCorrect(message)) return this.emtpyAnswer()
+    if (!isMessageCorrect(message)) return this.emtpyAnswer(fileName)
 
     const disableLint = isWorkFile(fileName)
     const lintOnly = isLintOnlyMode(fileName)
@@ -64,7 +64,7 @@ export class NiketaClient{
       // As response to VSCode could be too  fast
       // ============================================
       await delay(500)
-      if (disableLint) return this.emtpyAnswer()
+      if (disableLint) return this.emtpyAnswer(fileName)
 
       let lintMessage = 'Lint'
 
@@ -107,8 +107,8 @@ export class NiketaClient{
       fileName,
     })
 
-    if (!canContinue) return this.emtpyAnswer()
-    if (this.stillWaitingForSpec(fileName, dir)) return this.emtpyAnswer()
+    if (!canContinue) return this.emtpyAnswer(fileName)
+    if (this.stillWaitingForSpec(fileName, dir)) return this.emtpyAnswer(fileName)
 
     const [
       failure,
@@ -121,7 +121,7 @@ export class NiketaClient{
       specFileName : this.specFileHolder,
     })
 
-    if (failure) return this.emtpyAnswer()
+    if (failure) return this.emtpyAnswer(fileName)
     this.logJest(execResult)
 
     this.sendToVSCode({
@@ -140,18 +140,18 @@ export class NiketaClient{
     return `${ firstFolder }/${ fileName }`
   }
 
-  emtpyAnswer(){
+  emtpyAnswer(fileName){
     this.emit({
-      firstBarMessage  : '',
+      firstBarMessage  : 'NO ACTION',
       secondBarMessage : undefined,
-      thirdBarMessage  : undefined,
+      thirdBarMessage  : this.fileInfo(fileName),
       hasDecorations   : false,
     })
   }
 
   lintAnswer(lintMessage){
     this.emit({
-      firstBarMessage  : '',
+      firstBarMessage  : 'LINT ACTION',
       secondBarMessage : undefined,
       thirdBarMessage  : lintMessage,
       hasDecorations   : false,
