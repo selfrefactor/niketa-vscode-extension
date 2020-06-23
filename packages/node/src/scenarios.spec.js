@@ -60,3 +60,18 @@ test('parallel scenario', async () => {
     emit,
   })).toMatchSnapshot()
 })
+
+test.only('bug', async () => {
+  const message = {
+    fileName: '/home/s/repos/services/packages/magic-beans/src/_modules/format-json.js',
+    hasWallaby: false,
+    hasTypescript: false,
+    dir: '/home/s/repos/services/packages/magic-beans'
+  }
+  await niketaClient.onSocketData(JSON.stringify(message))
+  await delay(5000)
+  expect(getFullSnap({
+    niketaClient,
+    emit,
+  })).toMatchSnapshot()
+})
