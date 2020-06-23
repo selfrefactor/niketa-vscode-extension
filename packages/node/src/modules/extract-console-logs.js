@@ -1,3 +1,4 @@
+import {outputFile} from 'fs-extra'
 import { anyFalse, map, remove, take, trim } from 'rambdax'
 const LIMIT = 115
 const MARK = 'NIKETA_MARKER'
@@ -6,8 +7,8 @@ function mergeLogs(hash){
   const iterable = x => {
     const lineDecoration = []
 
-    map((xx, lineNumber) => {
-      const decoration = xx.length === 1 ? xx[ 0 ] : xx.join(' ')
+    map((xInstance, lineNumber) => {
+      const decoration = xInstance.length === 1 ? xInstance[ 0 ] : xInstance.join(' ')
       lineDecoration.push({
         decoration,
         line : lineNumber,
@@ -20,7 +21,10 @@ function mergeLogs(hash){
   return map(iterable)(hash)
 }
 
+const SAVE_INPUT = true
+
 export function extractConsoleLogs(input){
+  if(SAVE_INPUT) outputFile(`${__dirname}/latest-log.txt`, input)
   const withMarker = input.replace(/console\.log/g, `${ MARK } console.log`)
 
   const parts = withMarker.split('console.log')
