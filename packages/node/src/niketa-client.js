@@ -29,7 +29,7 @@ import { getCoveragePath } from './utils/get-coverage-path'
 import { getSpecFile } from './utils/get-spec-file.js'
 import { getUncoveredMessage } from './utils/get-uncovered-message'
 
-const EXTENDED_LOG = true
+const EXTENDED_LOG = false
 
 const FUNCTIONS = '🕸' // ☈
 const STALE_SEPARATOR = '☄' // '🌰'
