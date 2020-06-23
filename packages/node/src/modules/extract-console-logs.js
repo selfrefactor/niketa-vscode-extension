@@ -26,7 +26,7 @@ export function extractConsoleLogs(input){
   const parts = withMarker.split('console.log')
   const hash = {}
 
-  const extractor = (part, i) => {
+  const extractor = part => {
     const partialLines = part
       .split('\n')
       .filter(Boolean)

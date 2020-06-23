@@ -26,4 +26,4 @@ Work with `25.4.0` onwards
 
 ## TODO
 
-Unexpected errors must be written in local file
+Doesn't work with `magic-beans` as it uses `exports.foo = foo`

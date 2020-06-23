@@ -8,7 +8,7 @@ Object {
         "firstBarMessage": "statements ✍: 85.71 % 🎑 branches 🎋: 100 % 🎑 functions 🕸: 100 % 🎑 lines 📜: 85.71 %",
         "hasDecorations": false,
         "newDecorations": undefined,
-        "secondBarMessage": "☔10",
+        "secondBarMessage": "☔11",
         "thirdBarMessage": "_modules/format-json.spec.js",
       },
     ],
@@ -19,36 +19,22 @@ Object {
 }
 `;
 
-exports[`parallel scenario 1`] = `
+exports[`happy scenario 1`] = `
 Object {
   "emited": Array [
     Array [
       Object {
-        "firstBarMessage": "❌",
+        "firstBarMessage": "statements ✍: 100 % 🎑 branches 🎋: 50 % 🎑 functions 🕸: 100 % 🎑 lines 📜: 100 %",
         "hasDecorations": true,
         "newDecorations": Object {
-          "correct": false,
-          "logData": Array [
-            "[ 1, 2, 3 ] { a: 1, b: 2 }",
-            "1",
-          ],
+          "correct": true,
+          "logData": Object {
+            "2": "2",
+            "3": "number",
+          },
         },
-        "secondBarMessage": undefined,
-      },
-    ],
-    Array [
-      Object {
-        "firstBarMessage": "🐰 st: 100 br: 100 fn: 100 lns: 100",
-        "hasDecorations": true,
-        "newDecorations": Object {
-          "correct": false,
-          "logData": Array [
-            "0, 1, 2",
-            "number, number, number",
-            "{ a: 1, b: 2 }",
-          ],
-        },
-        "secondBarMessage": undefined,
+        "secondBarMessage": "☔5",
+        "thirdBarMessage": "success/both-have-logs.spec.js",
       },
     ],
     Array [
@@ -63,11 +49,26 @@ Object {
           ],
         },
         "secondBarMessage": undefined,
+        "thirdBarMessage": "failed-expectation/file-has-logs.spec.js",
       },
     ],
     Array [
       Object {
-        "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
+        "firstBarMessage": "NO CHANGE ☄ ✍: 100 % ☄ 🎋: 50 % ☄ 🕸: 100 % ☄ 📜: 100 %",
+        "hasDecorations": true,
+        "newDecorations": Object {
+          "correct": true,
+          "logData": Object {
+            "5": "{ a: 1, b: 2 }",
+          },
+        },
+        "secondBarMessage": "☔5",
+        "thirdBarMessage": "success/both-have-logs.spec.js",
+      },
+    ],
+    Array [
+      Object {
+        "firstBarMessage": "statements ✍: 100 % 🎑 branches 🎋: 50 % 🎑 functions 🕸: 100 % 🎑 lines 📜: 100 %",
         "hasDecorations": true,
         "newDecorations": Object {
           "correct": true,
@@ -76,7 +77,83 @@ Object {
             "3": "number",
           },
         },
+        "secondBarMessage": "☔5",
+        "thirdBarMessage": "success/file-has-logs.spec.js",
+      },
+    ],
+  ],
+  "lintFile": "/home/s/repos/niketa/packages/node/test-data/success/file-has-logs.js",
+  "lintOnlyFile": undefined,
+  "linted": Array [
+    "/home/s/repos/niketa/packages/node/test-data/success/both-have-logs.js",
+    "/home/s/repos/niketa/packages/node/test-data/failed-expectation/file-has-logs.spec.js",
+    "/home/s/repos/niketa/packages/node/test-data/success/both-have-logs.spec.js",
+  ],
+}
+`;
+
+exports[`parallel scenario 1`] = `
+Object {
+  "emited": Array [
+    Array [
+      Object {
+        "firstBarMessage": "statements ✍: 100 % 🎑 branches 🎋: 50 % 🎑 functions 🕸: 100 % 🎑 lines 📜: 100 %",
+        "hasDecorations": true,
+        "newDecorations": Object {
+          "correct": false,
+          "logData": Array [
+            "2",
+            "number",
+            "{ a: 1, b: 2 }",
+          ],
+        },
+        "secondBarMessage": "☔5",
+        "thirdBarMessage": "failed-expectation/spec-has-logs.spec.js",
+      },
+    ],
+    Array [
+      Object {
+        "firstBarMessage": "❌",
+        "hasDecorations": true,
+        "newDecorations": Object {
+          "correct": false,
+          "logData": Array [
+            "[ 1, 2, 3 ] { a: 1, b: 2 }",
+            "1",
+          ],
+        },
         "secondBarMessage": undefined,
+        "thirdBarMessage": "failed-expectation/spec-has-logs.spec.js",
+      },
+    ],
+    Array [
+      Object {
+        "firstBarMessage": "❌",
+        "hasDecorations": true,
+        "newDecorations": Object {
+          "correct": false,
+          "logData": Array [
+            "9",
+            "number",
+          ],
+        },
+        "secondBarMessage": undefined,
+        "thirdBarMessage": "failed-expectation/file-has-logs.spec.js",
+      },
+    ],
+    Array [
+      Object {
+        "firstBarMessage": "statements ✍: 100 % 🎑 branches 🎋: 50 % 🎑 functions 🕸: 100 % 🎑 lines 📜: 100 %",
+        "hasDecorations": true,
+        "newDecorations": Object {
+          "correct": true,
+          "logData": Object {
+            "2": "9",
+            "3": "number",
+          },
+        },
+        "secondBarMessage": "☔5",
+        "thirdBarMessage": "success/file-has-logs.spec.js",
       },
     ],
     Array [
@@ -87,10 +164,11 @@ Object {
           "correct": true,
           "logData": Object {
             "4": "[ 1, 2, 3 ] { a: 1, b: 2 }",
-            "5": "1",
+            "8": "1",
           },
         },
         "secondBarMessage": undefined,
+        "thirdBarMessage": "failed-expectation/spec-has-logs.spec.js",
       },
     ],
   ],

@@ -61,7 +61,7 @@ test('parallel scenario', async () => {
   })).toMatchSnapshot()
 })
 
-test.only('bug', async () => {
+test('bug', async () => {
   const message = {
     fileName: '/home/s/repos/services/packages/magic-beans/src/_modules/format-json.js',
     hasWallaby: false,
