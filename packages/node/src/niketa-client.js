@@ -539,10 +539,14 @@ export class NiketaClient{
   }
 
   start(){
-    if (this.serverInit) return
+    log(`Attempting to start ${this.serverInit}`, 'box')
+    if (this.serverInit) return log('Server is already initialized','warning')
     this.server = createServer(socket => {
-      log('Server created', 'info')
+      this.serverInit = true
+      log(`Server created ${this.serverInit}`, 'info')
+
       socket.on('data', data => this.onSocketData(data.toString()))
+
       socket.on('error', err => {
         console.log(err, 'socket.error.niketa.client')
         this.server.close(() => {
@@ -552,11 +556,11 @@ export class NiketaClient{
           })
         })
       })
+      
       this.emit = message => {
         socket.write(JSON.stringify(message))
         socket.pipe(socket)
       }
-      this.serverInit = true
     })
 
     log(`Listen at ${ this.port } for vscode`, 'back')
