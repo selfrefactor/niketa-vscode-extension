@@ -42,7 +42,6 @@ export class NiketaClient{
   constructor({ port, emit, testing }){
     this.port = port
     this.testing = testing
-    this.serverInit = false
     this.coverageHolder = {}
     this.lastLintedFiles = []
     this.emit = emit === undefined ? defaultEmit : emit
@@ -147,6 +146,7 @@ export class NiketaClient{
       thirdBarMessage  : this.fileInfo(fileName),
       hasDecorations   : false,
     })
+    this.resetServer()
   }
 
   lintAnswer(lintMessage){
@@ -156,6 +156,7 @@ export class NiketaClient{
       thirdBarMessage  : lintMessage,
       hasDecorations   : false,
     })
+    this.resetServer()
   }
 
   logJest(execResult){
@@ -224,6 +225,7 @@ export class NiketaClient{
       hasDecorations,
       newDecorations,
     })
+    this.resetServer()
   }
 
   getNewDecorations({ execResult, fileName, hasTypescript }){
@@ -533,24 +535,26 @@ export class NiketaClient{
       return this.onCancelMessage()
     }
 
-    const result = await this.onJestMessage(parsedMessage)
+    await this.onJestMessage(parsedMessage)
+  }
 
-    return result
+  resetServer(){
+    delay(500).then(()=>{
+      this.server.close(() => {
+        delay(500).then(() => {
+          this.start()
+        })
+      })
+    })
   }
 
   start(){
-    log(`Attempting to start ${this.serverInit}`, 'box')
-    if (this.serverInit) return log('Server is already initialized','warning')
     this.server = createServer(socket => {
-      this.serverInit = true
-      log(`Server created ${this.serverInit}`, 'info')
-
       socket.on('data', data => this.onSocketData(data.toString()))
 
       socket.on('error', err => {
         console.log(err, 'socket.error.niketa.client')
         this.server.close(() => {
-          this.serverInit = false
           delay(2000).then(() => {
             this.start()
           })
@@ -563,7 +567,6 @@ export class NiketaClient{
       }
     })
 
-    log(`Listen at ${ this.port } for vscode`, 'back')
     this.server.listen(this.port, '127.0.0.1')
   }
 
