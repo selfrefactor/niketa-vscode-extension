@@ -1,82 +1,82 @@
 {
-  "jest": {
-    "moduleFileExtensions": [
-      "js"
-    ],
-    "testRegex": ".+spec.js$"
-  },
-  "icon": "logo.png",
-  "name": "niketa",
-  "displayName": "niketa",
-  "description": "Auto run jest tests with coverage",
-  "version": "3.4.2",
-  "license": "MIT",
-  "publisher": "selfrefactor",
-  "engines": {
-    "vscode": "^1.26.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onCommand:niketa.start"
-  ],
-  "main": "./src/extension",
-  "files": [
-    "src"
-  ],
-  "contributes": {
-    "commands": [
-      {
-        "command": "niketa.start",
-        "title": "Niketa"
-      },
-      {
-        "command": "niketa.start.demo",
-        "title": "Niketa Demo"
-      }
-    ],
-    "keybindings": [
-      {
-        "command": "niketa.start",
-        "key": "ctrl+1",
-        "when": "editorTextFocus"
-      },
-      {
-        "command": "niketa.start.demo",
-        "key": "ctrl+alt+h",
-        "when": "editorTextFocus"
-      }
-    ],
-    "configuration": {
-      "type": "object",
-      "title": "Niketa",
-      "properties": {
-        "niketa.PORT": {
-          "type": "number",
-          "default": 3020,
-          "description": "Port used in communications with `Niketa client`"
-        }
-      }
-    }
-  },
-  "scripts": {
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "jest src --watch"
-  },
-  "devDependencies": {
-    "jest": "25.3.0",
-    "typescript": "3.9.0-dev.20200408",
-    "vscode": "1.1.36"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/selfrefactor/niketa.git"
-  },
-  "dependencies": {
-    "rambdax": "3.7.0"
-  },
-  "commitMessage": {
-    "workInProgress": ""
-  }
+	"jest": {
+		"moduleFileExtensions": [
+			"js"
+		],
+		"testRegex": ".+spec.js$"
+	},
+	"icon": "logo.png",
+	"name": "niketa",
+	"displayName": "niketa",
+	"description": "Auto run jest tests with coverage",
+	"version": "3.4.2",
+	"license": "MIT",
+	"publisher": "selfrefactor",
+	"engines": {
+		"vscode": "^1.26.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:niketa.start"
+	],
+	"main": "./src/extension",
+	"files": [
+		"src"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"command": "niketa.start",
+				"title": "Niketa"
+			},
+			{
+				"command": "niketa.start.demo",
+				"title": "Niketa Demo"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "niketa.start",
+				"key": "ctrl+1",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "niketa.start.demo",
+				"key": "ctrl+alt+h",
+				"when": "editorTextFocus"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Niketa",
+			"properties": {
+				"niketa.PORT": {
+					"type": "number",
+					"default": 3020,
+					"description": "Port used in communications with `Niketa client`"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "jest src --watch"
+	},
+	"devDependencies": {
+		"jest": "26.2.2",
+		"typescript": "4.1.0-dev.20200807",
+		"vscode": "1.1.37"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/selfrefactor/niketa.git"
+	},
+	"dependencies": {
+		"rambdax": "4.1.0"
+	},
+	"commitMessage": {
+		"workInProgress": ""
+	}
 }

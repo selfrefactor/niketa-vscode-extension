@@ -1,8 +1,13 @@
 const vscode = require('vscode')
 const { initExtension } = require('./worker')
+const { getter, setter } = require('rambdax')
 const { START, REQUEST_CANCELATION, DISABLE_ENABLE } = require('./constants')
 
+const INIT_KEY = 'INIT'
+
 function activate(context){
+  if(getter(INIT_KEY)) return
+  setter(INIT_KEY, true)
   const worker = initExtension()
   const fn = () => {
     worker.initStatusBars()
