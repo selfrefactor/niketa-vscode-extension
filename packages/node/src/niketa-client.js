@@ -49,6 +49,7 @@ export class NiketaClient{
     this.lintOnlyFileHolder = undefined
     this.fileHolder = undefined
     this.specFileHolder = undefined
+    this.initialized = false
   }
 
   async onJestMessage(message){
@@ -549,7 +550,10 @@ export class NiketaClient{
   }
 
   start(){
+    if(this.initialized) log('Already initialized','box')
     this.server = createServer(socket => {
+      this.initialized = true
+
       socket.on('data', data => this.onSocketData(data.toString()))
 
       socket.on('error', err => {
