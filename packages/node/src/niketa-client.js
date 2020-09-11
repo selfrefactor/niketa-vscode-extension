@@ -553,10 +553,11 @@ export class NiketaClient{
     if(this.initialized) log('Already initialized','box')
     this.server = createServer(socket => {
       this.initialized = true
-
+      
       socket.on('data', data => this.onSocketData(data.toString()))
-
+      
       socket.on('error', err => {
+        this.initialized = falses
         console.log(err, 'socket.error.niketa.client')
         this.server.close(() => {
           delay(2000).then(() => {
