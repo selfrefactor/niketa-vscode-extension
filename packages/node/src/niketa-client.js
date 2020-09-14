@@ -147,7 +147,7 @@ export class NiketaClient{
       thirdBarMessage  : this.fileInfo(fileName),
       hasDecorations   : false,
     })
-    this.resetServer()
+    // this.resetServer()
   }
 
   lintAnswer(lintMessage){
@@ -157,7 +157,7 @@ export class NiketaClient{
       thirdBarMessage  : lintMessage,
       hasDecorations   : false,
     })
-    this.resetServer()
+    // this.resetServer()
   }
 
   logJest(execResult){
@@ -226,7 +226,7 @@ export class NiketaClient{
       hasDecorations,
       newDecorations,
     })
-    this.resetServer()
+    // this.resetServer()
   }
 
   getNewDecorations({ execResult, fileName, hasTypescript }){
