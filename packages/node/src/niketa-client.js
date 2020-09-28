@@ -557,7 +557,7 @@ export class NiketaClient{
       socket.on('data', data => this.onSocketData(data.toString()))
       
       socket.on('error', err => {
-        this.initialized = falses
+        this.initialized = false
         console.log(err, 'socket.error.niketa.client')
         this.server.close(() => {
           delay(2000).then(() => {
