@@ -1,6 +1,68 @@
-----------------|---------|----------|---------|---------|-------------------
-File            | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
-----------------|---------|----------|---------|---------|-------------------
-All files       |     100 |      100 |     100 |     100 |                   
- dropRepeats.js |     100 |      100 |     100 |     100 |                   
-----------------|---------|----------|---------|---------|-------------------
+console.log
+    $ maided out
+
+      at Socket.<anonymous> (node_modules/helpers-fn/src/exported/exec.js:17:17)
+
+  console.log
+    [02:00:29]
+
+      at Socket.<anonymous> (node_modules/helpers-fn/src/exported/exec.js:17:17)
+
+  console.log
+    Starting 'out'...
+
+      at Socket.<anonymous> (node_modules/helpers-fn/src/exported/exec.js:17:17)
+
+  console.log
+    [02:00:33] Finished 'out' after 3837 ms...
+
+      at Socket.<anonymous> (node_modules/helpers-fn/src/exported/exec.js:17:17)
+
+  console.log
+    $ maided build
+
+      at Socket.<anonymous> (node_modules/helpers-fn/src/exported/exec.js:17:17)
+
+  console.log
+    [02:00:33]
+
+      at Socket.<anonymous> (node_modules/helpers-fn/src/exported/exec.js:17:17)
+
+  console.log
+    Starting 'build:main'...
+
+      at Socket.<anonymous> (node_modules/helpers-fn/src/exported/exec.js:17:17)
+
+  console.log
+    [02:00:37]
+
+      at Socket.<anonymous> (node_modules/helpers-fn/src/exported/exec.js:17:17)
+
+  console.log
+    Finished 'build:main' after 3716 ms...
+    [02:00:37] Starting 'build:web'...
+
+      at Socket.<anonymous> (node_modules/helpers-fn/src/exported/exec.js:17:17)
+
+  console.log
+    [02:00:40] Finished 'build:web' after 3749 ms...
+
+      at Socket.<anonymous> (node_modules/helpers-fn/src/exported/exec.js:17:17)
+
+  console.log
+    [02:00:40] Starting 'build'...
+    [02:00:40] Finished 'build' after 1 ms...
+
+      at Socket.<anonymous> (node_modules/helpers-fn/src/exported/exec.js:17:17)
+
+  console.log
+    { methodToRun: 'dropLastWhile' }
+
+      at runSingleSpec (scripts/run-ramda-specs/src/run-specs.js:42:11)
+
+--------------------|---------|----------|---------|---------|-------------------
+File                | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+--------------------|---------|----------|---------|---------|-------------------
+All files           |       0 |      100 |       0 |       0 |                   
+ run-ramda-specs.js |       0 |      100 |       0 |       0 | 6-9               
+--------------------|---------|----------|---------|---------|-------------------

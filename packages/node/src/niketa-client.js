@@ -484,7 +484,7 @@ export class NiketaClient{
 
     this.lintFileHolder = fileName
 
-    if (hasWallaby){
+    if (hasWallaby && !fileName.includes('rambda/scripts')){
       this.debugLog(fileName, 'wallaby - saved for lint later')
 
       return { canContinue : false }
