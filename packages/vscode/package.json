@@ -6,7 +6,7 @@
 		"testRegex": ".+spec.js$"
 	},
 	"icon": "logo.png",
-	"name": "niketa_tools",
+	"name": "niketatools",
 	"displayName": "Niketa tools",
 	"description": "Auto run jest tests with coverage",
 	"version": "3.4.3",
