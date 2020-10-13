@@ -1,0 +1,1 @@
+run d&&vsce publish patch&&run d
