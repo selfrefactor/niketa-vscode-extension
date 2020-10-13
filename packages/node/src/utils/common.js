@@ -48,7 +48,6 @@ export const defaultEmit = x => console.log(x, 'emit not yet initialized')
 const messageSchema = {
   hasTypescript : Boolean,
   fileName      : String,
-  hasWallaby    : Boolean,
 }
 
 export function isMessageCorrect(message){

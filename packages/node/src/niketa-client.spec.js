@@ -1,6 +1,6 @@
 import { ms } from 'string-fn'
 
-import { NiketaClient } from './niketa-client.js'
+import { NiketaClient } from './niketa-client'
 jest.setTimeout(ms('4 minutes'))
 
 import {

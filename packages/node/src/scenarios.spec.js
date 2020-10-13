@@ -1,13 +1,13 @@
 import { delay } from 'rambdax'
 import { ms } from 'string-fn'
 
-import { NiketaClient } from './niketa-client.js'
+import { NiketaClient } from './niketa-client'
 import {
   FAILED_EXPECTATIONS,
   generateMessage,
   getFullSnap,
   SUCCESS,
-} from './test-data.js'
+} from './test-data'
 jest.setTimeout(ms('2 minutes'))
 
 let niketaClient
@@ -63,10 +63,10 @@ test('parallel scenario', async () => {
 
 test('bug', async () => {
   const message = {
-    fileName: '/home/s/repos/services/packages/magic-beans/src/_modules/format-json.js',
-    hasWallaby: false,
-    hasTypescript: false,
-    dir: '/home/s/repos/services/packages/magic-beans'
+    fileName :
+      '/home/s/repos/services/packages/magic-beans/src/_modules/format-json.js',
+    hasTypescript : false,
+    dir           : '/home/s/repos/services/packages/magic-beans',
   }
   await niketaClient.onSocketData(JSON.stringify(message))
   await delay(5000)

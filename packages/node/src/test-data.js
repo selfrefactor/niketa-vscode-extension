@@ -69,7 +69,6 @@ export const testDir = '/home/s/repos/niketa/packages/node'
 
 export function generateMessage(input){
   return JSON.stringify({
-    hasWallaby    : false,
     hasTypescript : false,
     dir           : testDir,
     ...input,

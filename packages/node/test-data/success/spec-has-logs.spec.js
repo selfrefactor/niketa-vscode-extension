@@ -1,4 +1,4 @@
-import { specHasLogs } from './spec-has-logs.js'
+import { specHasLogs } from './spec-has-logs'
 
 test('happy', () => {
   console.log([ 1, 2, 3 ], {

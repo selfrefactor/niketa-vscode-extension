@@ -1,4 +1,4 @@
-import { bothHaveLogs } from './both-have-logs.js'
+import { bothHaveLogs } from './both-have-logs'
 
 test('happy', () => {
   bothHaveLogs(2)

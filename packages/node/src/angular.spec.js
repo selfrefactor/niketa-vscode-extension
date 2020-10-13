@@ -1,7 +1,7 @@
 import { ms } from 'string-fn'
 
-import { NiketaClient } from './niketa-client.js'
-import { ANGULAR, generateMessage, getFullSnap } from './test-data.js'
+import { NiketaClient } from './niketa-client'
+import { ANGULAR, generateMessage, getFullSnap } from './test-data'
 jest.setTimeout(ms('2 minutes'))
 
 let niketaClient

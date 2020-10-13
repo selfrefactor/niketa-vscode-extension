@@ -7,7 +7,7 @@ import { delay, filter, glue, takeLast, tryCatch } from 'rambdax'
 
 import { extractConsoleLogs } from './modules/extract-console-logs'
 import { isLintOnlyMode, lintOnlyMode } from './modules/lint-only-mode'
-import { cleanJestOutput } from './utils/clean-jest-output.js'
+import { cleanJestOutput } from './utils/clean-jest-output'
 import {
   cleanAngularLog,
   defaultEmit,
@@ -26,7 +26,7 @@ import {
 } from './utils/common'
 import { createFileKey } from './utils/create-file-key'
 import { getCoveragePath } from './utils/get-coverage-path'
-import { getSpecFile } from './utils/get-spec-file.js'
+import { getSpecFile } from './utils/get-spec-file'
 import { getUncoveredMessage } from './utils/get-uncovered-message'
 
 const EXTENDED_LOG = false
@@ -53,8 +53,9 @@ export class NiketaClient{
   }
 
   async onJestMessage(message){
-    const { fileName, hasWallaby, dir, hasTypescript } = message
-    if (!isMessageCorrect(message)) return this.emtpyAnswer(fileName, 'message')
+    const { fileName, dir, hasTypescript } = message
+    if (!isMessageCorrect(message))
+      return this.emtpyAnswer(fileName, 'message')
 
     const disableLint = isWorkFile(fileName)
     const lintOnly = isLintOnlyMode(fileName)
@@ -102,13 +103,13 @@ export class NiketaClient{
     const { canContinue } = this.evaluateLint({
       maybeSpecFile,
       disableLint,
-      hasWallaby,
       hasTypescript,
       fileName,
     })
 
     if (!canContinue) return this.emtpyAnswer(fileName, 'cannot continue')
-    if (this.stillWaitingForSpec(fileName, dir)) return this.emtpyAnswer(fileName, 'still waiting')
+    if (this.stillWaitingForSpec(fileName, dir))
+      return this.emtpyAnswer(fileName, 'still waiting')
 
     const [
       failure,
@@ -451,13 +452,7 @@ export class NiketaClient{
     return false
   }
 
-  evaluateLint({
-    disableLint,
-    fileName,
-    hasWallaby,
-    hasTypescript,
-    maybeSpecFile,
-  }){
+  evaluateLint({ disableLint, fileName, hasTypescript, maybeSpecFile }){
     if (disableLint){
       this.specFileHolder = maybeSpecFile
       this.fileHolder = fileName
@@ -483,12 +478,6 @@ export class NiketaClient{
     }
 
     this.lintFileHolder = fileName
-
-    if (hasWallaby && !fileName.includes('rambda/scripts')){
-      this.debugLog(fileName, 'wallaby - saved for lint later')
-
-      return { canContinue : false }
-    }
 
     if (maybeSpecFile){
       // Happy case
@@ -540,7 +529,7 @@ export class NiketaClient{
   }
 
   resetServer(){
-    delay(500).then(()=>{
+    delay(500).then(() => {
       this.server.close(() => {
         delay(500).then(() => {
           this.start()
@@ -550,12 +539,12 @@ export class NiketaClient{
   }
 
   start(){
-    if(this.initialized) log('Already initialized','box')
+    if (this.initialized) log('Already initialized', 'box')
     this.server = createServer(socket => {
       this.initialized = true
-      
+
       socket.on('data', data => this.onSocketData(data.toString()))
-      
+
       socket.on('error', err => {
         this.initialized = false
         console.log(err, 'socket.error.niketa.client')
@@ -565,7 +554,7 @@ export class NiketaClient{
           })
         })
       })
-      
+
       this.emit = message => {
         socket.write(JSON.stringify(message))
         socket.pipe(socket)
