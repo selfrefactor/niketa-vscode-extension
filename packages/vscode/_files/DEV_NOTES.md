@@ -1,5 +1,11 @@
 # Dev notes
 
+TODO
+
+- fallback to show in visible lines, when lines of console logs are not reliable(Angular, Typescript, compiled code)
+
+- log on client after message to VSCode is sent. One can write to database.
+
 ## Cannot publish
 
 `vsce ls` errors then small laptop can publish it. `npm i --no-optional` could help.
