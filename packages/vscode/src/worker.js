@@ -66,7 +66,6 @@ class Worker{
     this.dir = workspace.workspaceFolders[ 0 ].uri.path
     this.loc = undefined
     this.enabled = true
-    this.hasWallaby = undefined
     this.firstStatusBar = undefined
     this.secondStatusBar = undefined
     this.thirdStatusBar = undefined
@@ -89,7 +88,6 @@ class Worker{
   }
 
   init(){
-    this.hasWallaby = existsSync(`${ this.dir }/wallaby.js`)
     this.hasTypescript = existsSync(`${ this.dir }/tsconfig.json`)
   }
 
@@ -113,7 +111,6 @@ class Worker{
 
   getCalculated(){
     return {
-      hasWallaby    : this.hasWallaby,
       hasTypescript : this.hasTypescript,
       dir           : this.dir,
     }
