@@ -62,7 +62,8 @@ export class NiketaClient{
     const jestable = isJestable(fileName)
 
     if (lintOnly || !jestable){
-      // As response to VSCode could be too  fast
+      log(`lintOnly || !jestable ${fileName}`,'box')
+      // As response to VSCode could be too fast
       // ============================================
       await delay(500)
       if (disableLint) return this.emtpyAnswer(fileName, 'disable lint')
@@ -100,6 +101,9 @@ export class NiketaClient{
     const maybeSpecFile = getSpecFile(fileName,
       hasTypescript ? '.ts' : '.js')
 
+    if(maybeSpecFile === fileName){
+
+    }  
     const { canContinue } = this.evaluateLint({
       maybeSpecFile,
       disableLint,
@@ -453,6 +457,7 @@ export class NiketaClient{
   }
 
   evaluateLint({ disableLint, fileName, hasTypescript, maybeSpecFile }){
+    console.log({maybeSpecFile, fileName})
     if (disableLint){
       this.specFileHolder = maybeSpecFile
       this.fileHolder = fileName
