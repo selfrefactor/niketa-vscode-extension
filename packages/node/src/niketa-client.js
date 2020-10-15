@@ -29,11 +29,11 @@ import { getCoveragePath } from './utils/get-coverage-path'
 import { getSpecFile } from './utils/get-spec-file'
 import { getUncoveredMessage } from './utils/get-uncovered-message'
 
-const EXTENDED_LOG = false
+const EXTENDED_LOG = true
 
 const FUNCTIONS = '🕸' // ☈
 const STALE_SEPARATOR = '☄' // '🌰'
-const SEPARATOR = '🎑' // '🔘'
+const SEPARATOR = '🧱' // '🎑 🔘'
 const STATEMENTS = '✍'
 const BRANCHES = '🎋'
 const LINES = '📜'
