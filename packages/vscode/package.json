@@ -9,7 +9,7 @@
 	"name": "niketatools",
 	"displayName": "Niketa tools",
 	"description": "Auto run jest tests with coverage",
-	"version": "3.4.5",
+	"version": "3.5.0",
 	"license": "MIT",
 	"publisher": "selfrefactor",
 	"engines": {
