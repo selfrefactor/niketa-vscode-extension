@@ -22,7 +22,7 @@ function mergeLogs(hash){
   return map(iterable)(hash)
 }
 
-const SAVE_INPUT = true
+const SAVE_INPUT = false
 
 export function extractConsoleLogs(input){
   if (SAVE_INPUT) outputFile(`${ __dirname }/latest-log.txt`, input)

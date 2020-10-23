@@ -62,7 +62,12 @@ export class NiketaClient{
     const jestable = isJestable(fileName)
 
     if (lintOnly || !jestable){
-      log(`lintOnly || !jestable ${fileName}`,'box')
+      log(glue(`
+        lintOnly || !jestable ${fileName}
+        ${SEPARATOR}
+        ${this.lintOnlyFileHolder}
+        ${this.lintFileHolder}
+      `),'box')
       // As response to VSCode could be too fast
       // ============================================
       await delay(500)
@@ -71,6 +76,7 @@ export class NiketaClient{
       let lintMessage = 'Lint'
 
       if (this.lintOnlyFileHolder){
+        log('this.lintOnlyFileHolder','info');
         await lintOnlyMode(this.lintOnlyFileHolder)
         this.markLint(this.lintOnlyFileHolder)
         lintMessage += ` ${ this.fileInfo(this.lintOnlyFileHolder) }`
@@ -78,14 +84,18 @@ export class NiketaClient{
       }
 
       if (this.lintFileHolder){
+        log('this.lintFileHolder','info');
         await this.whenFileLoseFocus(this.lintFileHolder)
         this.markLint(this.lintFileHolder)
         lintMessage += ` ${ this.fileInfo(this.lintFileHolder) }`
         this.lintFileHolder = undefined
       }
 
-      if (lintOnly) this.lintOnlyFileHolder = fileName
-
+      if (lintOnly){
+        log('this.lintOnly','info');
+        this.lintOnlyFileHolder = fileName
+      } 
+      
       return this.lintAnswer(lintMessage)
     }
 
