@@ -3,8 +3,13 @@ import {
   testInputSecond,
   testInputThird,
 } from '../../test-data/extract-logs/data'
-import { newJest } from '../../test-data/extract-logs/new-jest'
+import { newJest, bug } from '../../test-data/extract-logs/new-jest'
 import { extractConsoleLogs } from './extract-console-logs'
+
+test('bug', async () => {
+  const result = extractConsoleLogs(bug)
+  expect(result).toMatchSnapshot()
+})
 
 test('happy only with new jest', () => {
   const result = extractConsoleLogs(newJest)

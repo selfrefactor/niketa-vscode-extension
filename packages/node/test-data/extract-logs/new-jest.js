@@ -57,3 +57,25 @@ All files             |   92.31 |       60 |     100 |   91.67 |
 sort-package-json.js |   92.31 |       60 |     100 |   91.67 | 29                
 ----------------------|---------|----------|---------|---------|-------------------
 `
+
+export const bug = `console.log
+1
+
+  at Object.<anonymous> (src/_modules/format-json.spec.js:150:10)
+
+console.log
+[ 1, 2, 3 ]
+
+  at Object.<anonymous> (src/_modules/format-json.spec.js:151:10)
+
+console.log
+{ a: 1 }
+
+  at Object.<anonymous> (src/_modules/format-json.spec.js:152:10)
+
+----------------|---------|----------|---------|---------|-------------------
+File            | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+----------------|---------|----------|---------|---------|-------------------
+All files       |   83.33 |      100 |     100 |   83.33 |                   
+format-json.js |   83.33 |      100 |     100 |   83.33 | 10                
+----------------|---------|----------|---------|---------|-------------------`
