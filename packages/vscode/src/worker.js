@@ -8,7 +8,7 @@ const {
 const { delay, range, path, tryCatch, ok } = require('rambdax')
 const { existsSync } = require('fs')
 const { niketaConfig } = require('./utils/niketa-config.js')
-const { REQUEST_CANCELATION, DISABLE_ENABLE } = require('./constants')
+const { REQUEST_CANCELATION, REQUEST_TEST_RUN } = require('./constants')
 const { Socket } = require('net')
 
 const CLIENT_PORT = niketaConfig('PORT')
@@ -65,10 +65,11 @@ class Worker{
     }
     this.dir = workspace.workspaceFolders[ 0 ].uri.path
     this.loc = undefined
-    this.enabled = true
+    this.latestFilePath = undefined
     this.firstStatusBar = undefined
     this.secondStatusBar = undefined
     this.thirdStatusBar = undefined
+    this.fourthStatusBar = undefined
   }
 
   isLocked(){
@@ -77,8 +78,11 @@ class Worker{
 
   lock(loc){
     if (this.lockFlag) return
+    
     this.lockFlag = true
-    this.loc = loc
+    
+    if(loc) this.loc = loc
+    
     this.startLoading()
   }
 
@@ -89,6 +93,10 @@ class Worker{
 
   init(){
     this.hasTypescript = existsSync(`${ this.dir }/tsconfig.json`)
+  }
+
+  setLatestFile(filePath){
+    this.latestFilePath = filePath
   }
 
   startLoading(){
@@ -277,7 +285,7 @@ class Worker{
   }
 
   setterStatusBar({ newText, statusBarIndex }){
-    if (![ 0, 1, 2 ].includes(statusBarIndex)) return
+    if (![ 0, 1, 2, 3 ].includes(statusBarIndex)) return
     const indexToProperty = [
       'firstStatusBar',
       'secondStatusBar',
@@ -296,20 +304,19 @@ class Worker{
       PRIORITY)
     this.thirdStatusBar = window.createStatusBarItem(StatusBarAlignment.Right,
       PRIORITY - 1)
+    this.fourthStatusBar = window.createStatusBarItem(StatusBarAlignment.Right,
+      PRIORITY - 2)
 
     this.firstStatusBar.command = REQUEST_CANCELATION
     this.firstStatusBar.show()
-    this.firstStatusBar.text = 'NIKETA'
+    this.firstStatusBar.text = 'NIKETA APP STARTED'
     this.secondStatusBar.show()
-    this.secondStatusBar.text = 'APP'
-    this.thirdStatusBar.command =DISABLE_ENABLE
+    this.secondStatusBar.text = ''
     this.thirdStatusBar.show()
-    this.thirdStatusBar.text = 'INIT'
-
-    delay(3200).then(() => {
-      this.secondStatusBar.text = ''
-      this.thirdStatusBar.text = ''
-    })
+    this.thirdStatusBar.text = ''
+    this.fourthStatusBar.command = REQUEST_TEST_RUN
+    this.fourthStatusBar.show()
+    this.fourthStatusBar.text = '📸'
   }
 
   findLinesInFocus(){
@@ -329,8 +336,23 @@ class Worker{
     this.resetOnError()
   }
 
-  disableEnable(){
-    this.enabled = !this.enabled
+  requestTestRun(){
+    if(!this.latestFilePath) return console.log('latestFilePath is empty')
+    if (this.isLocked()) return console.log('LOCKED')
+    this.lock()
+
+    const messageToSend = {
+      fileName : this.latestFilePath,
+      ...this.getCalculated(),
+    }
+
+    sendMessage(messageToSend)
+      .then(messageFromServer => {
+        this.messageReceived(messageFromServer)
+      })
+      .catch(() => {
+        this.resetOnError()
+      })
   }
 
   getEditor(){
@@ -366,9 +388,9 @@ function initExtension(){
     console.log(e)
   })
   workspace.onDidSaveTextDocument(e => {
-    if(!worker.enabled) return console.log('DISABLED')
     if (worker.isLocked()) return console.log('LOCKED')
     worker.lock(e.lineCount)
+    worker.setLatestFile(e.fileName)
 
     const messageToSend = {
       fileName : e.fileName,

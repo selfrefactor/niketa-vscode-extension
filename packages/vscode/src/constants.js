@@ -1,3 +1,3 @@
 exports.START = 'niketa.start'
 exports.REQUEST_CANCELATION = 'niketa.request.cancelation'
-exports.DISABLE_ENABLE = 'niketa.disable.enable'
+exports.REQUEST_TEST_RUN = 'niketa.request.test.run'
