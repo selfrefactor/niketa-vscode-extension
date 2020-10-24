@@ -1,1 +1,3 @@
-export function niketaClient(): void
+export class NiketaClient{
+  start(): void
+}
