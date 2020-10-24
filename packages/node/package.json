@@ -9,7 +9,7 @@
 		"start": "node start"
 	},
 	"name": "niketa",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"main": "./index.js",
 	"typings": "./index.d.ts",
 	"dependencies": {
@@ -30,8 +30,8 @@
 		"typescript": "4.1.0-dev.20201023"
 	},
 	"author": "Dejan Toteff <deyan8284@gmail.com>",
-  "license": "MIT",
-  "repository": {
+	"license": "MIT",
+	"repository": {
 		"type": "git",
 		"url": "https://github.com/selfrefactor/niketa/tree/master/packages/node"
 	},
