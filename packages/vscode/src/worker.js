@@ -337,7 +337,13 @@ class Worker{
   }
 
   requestTestRun(){
-    if(!this.latestFilePath) return console.log('latestFilePath is empty')
+    if(!this.latestFilePath){
+      const editor = this.getEditor()
+      const currentFilePath = editor.document.fileName
+      if(!currentFilePath) return console.log('currentFilePath is empty')
+      this.latestFilePath = currentFilePath
+    }
+
     if (this.isLocked()) return console.log('LOCKED')
     this.lock()
 
