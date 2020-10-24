@@ -467,7 +467,7 @@ export class NiketaClient{
   }
 
   evaluateLint({ disableLint, fileName, hasTypescript, maybeSpecFile }){
-    console.log({maybeSpecFile, fileName})
+    if(EXTENDED_LOG) log({maybeSpecFile, fileName}, 'obj')
     if (disableLint){
       this.specFileHolder = maybeSpecFile
       this.fileHolder = fileName
