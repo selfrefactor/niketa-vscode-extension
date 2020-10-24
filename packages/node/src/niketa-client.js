@@ -29,7 +29,7 @@ import { getCoveragePath } from './utils/get-coverage-path'
 import { getSpecFile } from './utils/get-spec-file'
 import { getUncoveredMessage } from './utils/get-uncovered-message'
 
-const EXTENDED_LOG = true
+const EXTENDED_LOG = false
 
 const FUNCTIONS = '🕸' // ☈
 const STALE_SEPARATOR = '☄' // '🌰'
@@ -62,12 +62,15 @@ export class NiketaClient{
     const jestable = isJestable(fileName)
 
     if (lintOnly || !jestable){
-      log(glue(`
+      if (EXTENDED_LOG){
+        log(glue(`
         lintOnly || !jestable ${fileName}
         ${SEPARATOR}
         ${this.lintOnlyFileHolder}
         ${this.lintFileHolder}
-      `),'box')
+        `),'box')
+      }
+        
       // As response to VSCode could be too fast
       // ============================================
       await delay(500)
@@ -76,7 +79,6 @@ export class NiketaClient{
       let lintMessage = 'Lint'
 
       if (this.lintOnlyFileHolder){
-        log('this.lintOnlyFileHolder','info');
         await lintOnlyMode(this.lintOnlyFileHolder)
         this.markLint(this.lintOnlyFileHolder)
         lintMessage += ` ${ this.fileInfo(this.lintOnlyFileHolder) }`
@@ -84,7 +86,6 @@ export class NiketaClient{
       }
 
       if (this.lintFileHolder){
-        log('this.lintFileHolder','info');
         await this.whenFileLoseFocus(this.lintFileHolder)
         this.markLint(this.lintFileHolder)
         lintMessage += ` ${ this.fileInfo(this.lintFileHolder) }`
@@ -92,7 +93,6 @@ export class NiketaClient{
       }
 
       if (lintOnly){
-        log('this.lintOnly','info');
         this.lintOnlyFileHolder = fileName
       } 
       
