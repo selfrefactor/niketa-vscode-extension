@@ -337,18 +337,18 @@ class Worker{
   }
 
   requestTestRun(){
-    if(!this.latestFilePath){
-      const editor = this.getEditor()
-      const currentFilePath = editor.document.fileName
-      if(!currentFilePath) return console.log('currentFilePath is empty')
-      this.latestFilePath = currentFilePath
-    }
+    const editor = this.getEditor()
+    const { fileName: currentFilePath, lineCount: loc} = editor.document
+    if(!currentFilePath) return console.log('currentFilePath is empty')
+
+    this.setLatestFile(currentFilePath)
 
     if (this.isLocked()) return console.log('LOCKED')
-    this.lock()
+    
+    this.lock(loc)
 
     const messageToSend = {
-      fileName : this.latestFilePath,
+      fileName : currentFilePath,
       ...this.getCalculated(),
     }
 
