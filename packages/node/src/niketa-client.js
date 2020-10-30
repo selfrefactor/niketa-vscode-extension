@@ -53,12 +53,12 @@ export class NiketaClient{
   }
 
   async onJestMessage(message){
-    const { fileName, dir, hasTypescript } = message
+    const { fileName, dir, hasTypescript, requestLintFile } = message
     if (!isMessageCorrect(message))
       return this.emtpyAnswer(fileName, 'message')
 
     const disableLint = isWorkFile(fileName)
-    const lintOnly = isLintOnlyMode(fileName)
+    const lintOnly = isLintOnlyMode(fileName) || Boolean(requestLintFile)
     const jestable = isJestable(fileName)
 
     if (lintOnly || !jestable){
