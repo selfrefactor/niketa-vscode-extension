@@ -33,7 +33,15 @@
 			},
 			{
 				"command": "niketa.request.test.run",
-				"title": "Niketa run with latest file"
+				"title": "Niketa run with current file"
+			},
+			{
+				"command": "niketa.request.cancelation",
+				"title": "Niketa cancel current test run"
+			},
+			{
+				"command": "niketa.lint.file",
+				"title": "Lint current file"
 			}
 		],
 		"keybindings": [
@@ -44,6 +52,14 @@
 			{
 				"command": "niketa.request.test.run",
 				"key": "ctrl+shift+1"
+			},
+			{
+				"command": "niketa.lint.file",
+				"key": "ctrl+shift+2"
+			},
+			{
+				"command": "niketa.request.cancelation",
+				"key": "ctrl+shift+3"
 			}
 		],
 		"configuration": {
@@ -64,7 +80,7 @@
 	},
 	"devDependencies": {
 		"jest": "26.6.1",
-		"typescript": "4.1.0-dev.20201023",
+		"typescript": "4.1.0-dev.20201030",
 		"vscode": "1.1.37"
 	},
 	"repository": {

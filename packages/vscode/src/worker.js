@@ -8,7 +8,7 @@ const {
 const { delay, range, path, tryCatch, ok } = require('rambdax')
 const { existsSync } = require('fs')
 const { niketaConfig } = require('./utils/niketa-config.js')
-const { REQUEST_CANCELATION, REQUEST_TEST_RUN } = require('./constants')
+const { REQUEST_LINT_FILE, REQUEST_TEST_RUN } = require('./constants')
 const { Socket } = require('net')
 
 const CLIENT_PORT = niketaConfig('PORT')
@@ -78,11 +78,11 @@ class Worker{
 
   lock(loc){
     if (this.lockFlag) return
-    
+
     this.lockFlag = true
-    
-    if(loc) this.loc = loc
-    
+
+    if (loc) this.loc = loc
+
     this.startLoading()
   }
 
@@ -220,27 +220,28 @@ class Worker{
     secondBarMessage,
     thirdBarMessage,
   }){
-    const messages = firstBarMessage === '' ?
-      [' ', ' ', ' '] :
-      [firstBarMessage, secondBarMessage, thirdBarMessage]  
+    const messages =
+      firstBarMessage === '' ?
+        [ ' ', ' ', ' ' ] :
+        [ firstBarMessage, secondBarMessage, thirdBarMessage ]
 
     await delay(SMALL_DELAY)
     this.setterStatusBar({
-      newText        : messages[0],
+      newText        : messages[ 0 ],
       statusBarIndex : 0,
     })
 
     await delay(SMALL_DELAY)
-    if (messages[1]){
+    if (messages[ 1 ]){
       this.setterStatusBar({
-        newText        : messages[1],
+        newText        : messages[ 1 ],
         statusBarIndex : 1,
       })
     }
     await delay(SMALL_DELAY)
-    if (messages[2]){
+    if (messages[ 2 ]){
       this.setterStatusBar({
-        newText        : messages[2],
+        newText        : messages[ 2 ],
         statusBarIndex : 2,
       })
     }
@@ -307,7 +308,7 @@ class Worker{
     this.fourthStatusBar = window.createStatusBarItem(StatusBarAlignment.Right,
       PRIORITY - 2)
 
-    this.firstStatusBar.command = REQUEST_CANCELATION
+    this.firstStatusBar.command = REQUEST_LINT_FILE
     this.firstStatusBar.show()
     this.firstStatusBar.text = 'NIKETA APP STARTED'
     this.secondStatusBar.show()
@@ -335,16 +336,43 @@ class Worker{
     await delay(SMALL_DELAY)
     this.resetOnError()
   }
+  
+  getCurrentFile(){
+    const editor = this.getEditor()
+    const { fileName: currentFilePath, lineCount: loc } = editor.document
+    if (!currentFilePath) return {}
+
+    return {currentFilePath, loc}
+  }
+
+  async requestLintFile(){
+    const {currentFilePath} = this.getCurrentFile()
+    if (!currentFilePath) return console.log('currentFilePath is empty')
+
+    sendMessage()
+    const messageToSend = { 
+      requestLintFile : true, 
+      fileName : currentFilePath,
+      ...this.getCalculated(),
+    }
+
+    sendMessage(messageToSend)
+      .then(messageFromServer => {
+        this.messageReceived(messageFromServer)
+      })
+      .catch(() => {
+        this.resetOnError()
+      })
+  }
 
   requestTestRun(){
-    const editor = this.getEditor()
-    const { fileName: currentFilePath, lineCount: loc} = editor.document
-    if(!currentFilePath) return console.log('currentFilePath is empty')
+    const {loc, currentFilePath} = this.getCurrentFile()
+    if (!currentFilePath) return console.log('currentFilePath is empty')
 
     this.setLatestFile(currentFilePath)
 
     if (this.isLocked()) return console.log('LOCKED')
-    
+
     this.lock(loc)
 
     const messageToSend = {
