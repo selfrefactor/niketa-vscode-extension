@@ -18,7 +18,7 @@ function activate(context){
   const startCommand = vscode.commands.registerCommand(START, fn)
   const requestCancelationCommand = vscode.commands.registerCommand(REQUEST_CANCELATION,
     () => worker.requestCancelation())
-  const lintFileCommand = vscode.commands.registerCommand(REQUEST_CANCELATION,
+  const lintFileCommand = vscode.commands.registerCommand(REQUEST_LINT_FILE,
     () => worker.requestLintFile())
   const disableEnableCommand = vscode.commands.registerCommand(REQUEST_TEST_RUN,
     () => worker.requestTestRun())
