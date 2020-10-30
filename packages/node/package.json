@@ -9,7 +9,7 @@
 		"start": "node start"
 	},
 	"bin": {
-		"run": "./bin/niketa.js"
+		"niketa": "./bin/niketa.js"
 	},
 	"name": "niketa",
 	"version": "1.4.0",
