@@ -64,7 +64,7 @@ Array [
         "3": "number",
       },
     },
-    "secondBarMessage": undefined,
+    "secondBarMessage": "☔5",
     "thirdBarMessage": "failed-expectation/file-has-logs.spec.js",
   },
 ]
@@ -82,7 +82,7 @@ Array [
         "number",
       ],
     },
-    "secondBarMessage": undefined,
+    "secondBarMessage": "☔5",
     "thirdBarMessage": "failed-expectation/file-has-logs.spec.js",
   },
 ]
@@ -100,7 +100,7 @@ Array [
         "1",
       ],
     },
-    "secondBarMessage": undefined,
+    "secondBarMessage": "☔2",
     "thirdBarMessage": "failed-expectation/spec-has-logs.spec.js",
   },
 ]
@@ -118,7 +118,7 @@ Array [
         "8": "1",
       },
     },
-    "secondBarMessage": undefined,
+    "secondBarMessage": "☔2",
     "thirdBarMessage": "failed-expectation/spec-has-logs.spec.js",
   },
 ]

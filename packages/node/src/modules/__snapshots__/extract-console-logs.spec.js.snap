@@ -2,6 +2,25 @@
 
 exports[`bug 1`] = `
 Object {
+  "src/_modules/format-json.spec.js": Array [
+    Object {
+      "decoration": "1",
+      "line": "150",
+    },
+    Object {
+      "decoration": "[ 1, 2, 3 ]",
+      "line": "151",
+    },
+    Object {
+      "decoration": "{ a: 1 }",
+      "line": "152",
+    },
+  ],
+}
+`;
+
+exports[`bug 2`] = `
+Object {
   "libs/sort-package-json/sort-package-json.spec.js": Array [
     Object {
       "decoration": "object",

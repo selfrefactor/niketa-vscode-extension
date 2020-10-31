@@ -5,16 +5,14 @@ Object {
   "emited": Array [
     Array [
       Object {
-        "firstBarMessage": "statements ✍: 85.71 % 🎑 branches 🎋: 100 % 🎑 functions 🕸: 100 % 🎑 lines 📜: 85.71 %",
+        "firstBarMessage": "statements ✍: 83.33 % 🧱 branches 🎋: 100 % 🧱 functions 🕸: 100 % 🧱 lines 📜: 83.33 %",
         "hasDecorations": false,
         "newDecorations": undefined,
-        "secondBarMessage": "☔11",
+        "secondBarMessage": "☔10",
         "thirdBarMessage": "_modules/format-json.spec.js",
       },
     ],
   ],
-  "lintFile": "/home/s/repos/services/packages/magic-beans/src/_modules/format-json.js",
-  "lintOnlyFile": undefined,
   "linted": Array [],
 }
 `;
@@ -24,7 +22,7 @@ Object {
   "emited": Array [
     Array [
       Object {
-        "firstBarMessage": "statements ✍: 100 % 🎑 branches 🎋: 50 % 🎑 functions 🕸: 100 % 🎑 lines 📜: 100 %",
+        "firstBarMessage": "statements ✍: 100 % 🧱 branches 🎋: 50 % 🧱 functions 🕸: 100 % 🧱 lines 📜: 100 %",
         "hasDecorations": true,
         "newDecorations": Object {
           "correct": true,
@@ -48,7 +46,7 @@ Object {
             "number",
           ],
         },
-        "secondBarMessage": undefined,
+        "secondBarMessage": "☔5",
         "thirdBarMessage": "failed-expectation/file-has-logs.spec.js",
       },
     ],
@@ -68,7 +66,7 @@ Object {
     ],
     Array [
       Object {
-        "firstBarMessage": "statements ✍: 100 % 🎑 branches 🎋: 50 % 🎑 functions 🕸: 100 % 🎑 lines 📜: 100 %",
+        "firstBarMessage": "statements ✍: 100 % 🧱 branches 🎋: 50 % 🧱 functions 🕸: 100 % 🧱 lines 📜: 100 %",
         "hasDecorations": true,
         "newDecorations": Object {
           "correct": true,
@@ -82,13 +80,7 @@ Object {
       },
     ],
   ],
-  "lintFile": "/home/s/repos/niketa/packages/node/test-data/success/file-has-logs.js",
-  "lintOnlyFile": undefined,
-  "linted": Array [
-    "/home/s/repos/niketa/packages/node/test-data/success/both-have-logs.js",
-    "/home/s/repos/niketa/packages/node/test-data/failed-expectation/file-has-logs.spec.js",
-    "/home/s/repos/niketa/packages/node/test-data/success/both-have-logs.spec.js",
-  ],
+  "linted": Array [],
 }
 `;
 
@@ -97,7 +89,22 @@ Object {
   "emited": Array [
     Array [
       Object {
-        "firstBarMessage": "statements ✍: 100 % 🎑 branches 🎋: 50 % 🎑 functions 🕸: 100 % 🎑 lines 📜: 100 %",
+        "firstBarMessage": "❌",
+        "hasDecorations": true,
+        "newDecorations": Object {
+          "correct": false,
+          "logData": Array [
+            "[ 1, 2, 3 ] { a: 1, b: 2 }",
+            "1",
+          ],
+        },
+        "secondBarMessage": "☔2",
+        "thirdBarMessage": "failed-expectation/spec-has-logs.spec.js",
+      },
+    ],
+    Array [
+      Object {
+        "firstBarMessage": "NO CHANGE ☄ ✍: 100 % ☄ 🎋: 50 % ☄ 🕸: 100 % ☄ 📜: 100 %",
         "hasDecorations": true,
         "newDecorations": Object {
           "correct": false,
@@ -118,32 +125,17 @@ Object {
         "newDecorations": Object {
           "correct": false,
           "logData": Array [
-            "[ 1, 2, 3 ] { a: 1, b: 2 }",
-            "1",
-          ],
-        },
-        "secondBarMessage": undefined,
-        "thirdBarMessage": "failed-expectation/spec-has-logs.spec.js",
-      },
-    ],
-    Array [
-      Object {
-        "firstBarMessage": "❌",
-        "hasDecorations": true,
-        "newDecorations": Object {
-          "correct": false,
-          "logData": Array [
             "9",
             "number",
           ],
         },
-        "secondBarMessage": undefined,
+        "secondBarMessage": "☔5",
         "thirdBarMessage": "failed-expectation/file-has-logs.spec.js",
       },
     ],
     Array [
       Object {
-        "firstBarMessage": "statements ✍: 100 % 🎑 branches 🎋: 50 % 🎑 functions 🕸: 100 % 🎑 lines 📜: 100 %",
+        "firstBarMessage": "statements ✍: 100 % 🧱 branches 🎋: 50 % 🧱 functions 🕸: 100 % 🧱 lines 📜: 100 %",
         "hasDecorations": true,
         "newDecorations": Object {
           "correct": true,
@@ -167,18 +159,11 @@ Object {
             "8": "1",
           },
         },
-        "secondBarMessage": undefined,
+        "secondBarMessage": "☔2",
         "thirdBarMessage": "failed-expectation/spec-has-logs.spec.js",
       },
     ],
   ],
-  "lintFile": "/home/s/repos/niketa/packages/node/test-data/failed-expectation/spec-has-logs.spec.js",
-  "lintOnlyFile": undefined,
-  "linted": Array [
-    "/home/s/repos/niketa/packages/node/test-data/success/both-have-logs.js",
-    "/home/s/repos/niketa/packages/node/test-data/failed-expectation/spec-has-logs.js",
-    "/home/s/repos/niketa/packages/node/test-data/failed-expectation/file-has-logs.spec.js",
-    "/home/s/repos/niketa/packages/node/test-data/success/file-has-logs.js",
-  ],
+  "linted": Array [],
 }
 `;

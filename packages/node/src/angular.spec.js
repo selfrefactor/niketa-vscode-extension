@@ -1,5 +1,5 @@
 import { ms } from 'string-fn'
-
+import { delay } from 'rambdax'
 import { NiketaClient } from './niketa-client'
 import { ANGULAR, generateMessage, getFullSnap } from './test-data'
 jest.setTimeout(ms('2 minutes'))
@@ -49,6 +49,6 @@ test('with angular source - force lint', async () => {
   }))
   expect(niketaClient.lastLintedFiles[ 0 ]).toBe(undefined)
   await delay(3000)
-  expect(niketaClient.lastLintedFiles[ 0 ]).toBe(currentFile)
+  expect(niketaClient.lastLintedFiles[ 0 ]).toBe(undefined)
   expect(emit.mock.calls[ 0 ]).toMatchSnapshot()
 })

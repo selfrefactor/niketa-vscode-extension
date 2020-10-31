@@ -77,8 +77,6 @@ export function generateMessage(input){
 
 export function getFullSnap({ niketaClient, emit }){
   return {
-    lintOnlyFile : niketaClient.lintOnlyFileHolder,
-    lintFile     : niketaClient.lintFileHolder,
     emited       : emit.mock.calls,
     linted       : niketaClient.lastLintedFiles,
   }
