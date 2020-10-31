@@ -26,7 +26,7 @@ async function usePrettier(filePath){
   log(`${ filePath } linted with Prettier`, 'info')
 }
 
-export async function lintOnlyMode(filePath, callback){
+export async function lintOnlyMode(filePath){
   console.log('lintOnlyMode', filePath)
 
   const lintMethodKey = switcher(filePath)
@@ -36,7 +36,6 @@ export async function lintOnlyMode(filePath, callback){
 
   const lintMethod = lintMethods[ lintMethodKey ]
   const lintResult = await lintMethod(filePath)
-  if (callback) callback(filePath)
 
   return lintResult
 }

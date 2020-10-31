@@ -62,6 +62,6 @@ export function isMessageCorrect(message){
   return true
 }
 
-export function isJestable(fileName){
+export function isLintable(fileName){
   return fileName.endsWith('.js') || fileName.endsWith('.ts')
 }

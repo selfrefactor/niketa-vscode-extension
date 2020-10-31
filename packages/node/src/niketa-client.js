@@ -13,7 +13,7 @@ import {
   defaultEmit,
   ERROR_ICON,
   extractNumber,
-  isJestable,
+  isLintable,
   isMessageCorrect,
   isWorkFile,
   JEST_BIN,
@@ -45,8 +45,6 @@ export class NiketaClient{
     this.coverageHolder = {}
     this.lastLintedFiles = []
     this.emit = emit === undefined ? defaultEmit : emit
-    this.lintFileHolder = undefined
-    this.lintOnlyFileHolder = undefined
     this.fileHolder = undefined
     this.specFileHolder = undefined
     this.initialized = false
@@ -58,72 +56,54 @@ export class NiketaClient{
       return this.emtpyAnswer(fileName, 'message')
 
     const disableLint = isWorkFile(fileName)
-    const lintOnly = isLintOnlyMode(fileName) || Boolean(requestLintFile)
-    const jestable = isJestable(fileName)
-
-    if (lintOnly || !jestable){
-      if (EXTENDED_LOG){
-        log(glue(`
-        lintOnly || !jestable ${fileName}
-        ${SEPARATOR}
-        ${this.lintOnlyFileHolder}
-        ${this.lintFileHolder}
-        `),'box')
-      }
-        
-      // As response to VSCode could be too fast
-      // ============================================
-      await delay(500)
-      if (disableLint) return this.emtpyAnswer(fileName, 'disable lint')
-
-      let lintMessage = 'Lint'
-
-      if (this.lintOnlyFileHolder){
-        await lintOnlyMode(this.lintOnlyFileHolder)
-        this.markLint(this.lintOnlyFileHolder)
-        lintMessage += ` ${ this.fileInfo(this.lintOnlyFileHolder) }`
-        this.lintOnlyFileHolder = undefined
-      }
-
-      if (this.lintFileHolder){
-        await this.whenFileLoseFocus(this.lintFileHolder)
-        this.markLint(this.lintFileHolder)
-        lintMessage += ` ${ this.fileInfo(this.lintFileHolder) }`
-        this.lintFileHolder = undefined
-      }
-
-      if (lintOnly){
-        this.lintOnlyFileHolder = fileName
-      } 
-      
-      return this.lintAnswer(lintMessage)
-    }
-
-    if (this.lintOnlyFileHolder){
-      lintOnlyMode(this.lintOnlyFileHolder, lintedFile => {
-        this.markLint(lintedFile)
-        this.lintOnlyFileHolder = undefined
-      })
-    }
+    const lintOnly = isLintOnlyMode(fileName)
+    const canLint = isLintable(fileName)
+    const lintMessage = ` ${ this.fileInfo(fileName) }`
 
     // Check that if project `hasTypescript` is false
     // then we can check only for `.js` file
     const maybeSpecFile = getSpecFile(fileName,
       hasTypescript ? '.ts' : '.js')
 
-    if(maybeSpecFile === fileName){
+    const jestable = Boolean(maybeSpecFile)
 
-    }  
-    const { canContinue } = this.evaluateLint({
+    if (requestLintFile){
+      return this.handleRequestLint({
+        fileName,
+        lintOnly,
+        lintMessage,
+      })
+    }
+
+    if (lintOnly && !disableLint){
+      await lintOnlyMode(fileName)
+      this.markLint(fileName)
+
+      return this.lintAnswer(lintMessage)
+    }
+
+    if (!jestable && disableLint){
+      return this.emtpyAnswer(fileName, 'lint is disabled')
+    }
+
+    if (!jestable && !canLint){
+      return this.emtpyAnswer(fileName, 'skip')
+    }
+
+    if (!jestable && canLint){
+      await this.applyLint(fileName)
+
+      return this.lintAnswer(lintMessage)
+    }
+
+    this.evaluateLint({
       maybeSpecFile,
-      disableLint,
-      hasTypescript,
       fileName,
     })
 
-    if (!canContinue) return this.emtpyAnswer(fileName, 'cannot continue')
-    if (this.stillWaitingForSpec(fileName, dir))
+    if (this.stillWaitingForSpec(fileName, dir)){
       return this.emtpyAnswer(fileName, 'still waiting')
+    }
 
     const [
       failure,
@@ -147,6 +127,18 @@ export class NiketaClient{
       extension,
       hasTypescript,
     })
+  }
+
+  async handleRequestLint({ fileName, lintOnly, lintMessage }){
+    if (lintOnly){
+      await lintOnlyMode(fileName)
+    } else {
+      await this.applyLint(fileName)
+    }
+
+    this.markLint(fileName)
+
+    return this.lintAnswer(lintMessage)
   }
 
   fileInfo(x){
@@ -187,8 +179,8 @@ export class NiketaClient{
     this.lastLintedFiles.push(fileName)
   }
 
-  async whenFileLoseFocus(fileName){
-    if (!existsSync(fileName)) return
+  async applyLint(fileName){
+    if (!existsSync(fileName)) return log(`${ fileName } is deleted`, 'error')
     log('sep')
     log(`willLint ${ fileName }`, 'info')
     log('sep')
@@ -466,47 +458,15 @@ export class NiketaClient{
     return false
   }
 
-  evaluateLint({ disableLint, fileName, hasTypescript, maybeSpecFile }){
-    if(EXTENDED_LOG) log({maybeSpecFile, fileName}, 'obj')
-    if (disableLint){
-      this.specFileHolder = maybeSpecFile
-      this.fileHolder = fileName
-
-      return { canContinue : true }
-    }
-
-    // If project is not Typescript, then there is no need to run lint on TS files
-    if (!hasTypescript && fileName.endsWith('.ts')){
-      return { canContinue : true }
-    }
-
-    const allowLint =
-      fileName !== this.lintFileHolder && this.lintFileHolder !== undefined
-
-    if (allowLint){
-      this.whenFileLoseFocus(this.lintFileHolder)
-    } else {
-      log(`SKIP_LINT ${
-        this.lintFileHolder ? this.lintFileHolder : 'initial state'
-      }`,
-      'box')
-    }
-
-    this.lintFileHolder = fileName
-
-    if (maybeSpecFile){
-      // Happy case
-      // ============================================
-      this.specFileHolder = maybeSpecFile
-      this.fileHolder = fileName
-
-      // The missing return here also defines
-      // if editing JS/TS file with no corresponding spec
-      // we still want the last test to run again
-      // ============================================
-    }
-
-    return { canContinue : true }
+  evaluateLint({ fileName, maybeSpecFile }){
+    if (EXTENDED_LOG)
+      log({
+        maybeSpecFile,
+        fileName,
+      },
+      'obj')
+    this.specFileHolder = maybeSpecFile
+    this.fileHolder = fileName
   }
 
   debugLog(toLog, label){

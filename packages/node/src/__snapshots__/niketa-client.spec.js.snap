@@ -12,6 +12,7 @@ Array [
       },
     },
     "secondBarMessage": undefined,
+    "thirdBarMessage": "failed-code/async.spec.js",
   },
 ]
 `;
@@ -29,6 +30,7 @@ Array [
       },
     },
     "secondBarMessage": undefined,
+    "thirdBarMessage": "failed-expectation/both-have-logs.spec.js",
   },
 ]
 `;
@@ -45,6 +47,7 @@ Array [
       },
     },
     "secondBarMessage": undefined,
+    "thirdBarMessage": "failed-expectation/both-have-logs.spec.js",
   },
 ]
 `;
@@ -62,6 +65,7 @@ Array [
       },
     },
     "secondBarMessage": undefined,
+    "thirdBarMessage": "failed-expectation/file-has-logs.spec.js",
   },
 ]
 `;
@@ -79,6 +83,7 @@ Array [
       ],
     },
     "secondBarMessage": undefined,
+    "thirdBarMessage": "failed-expectation/file-has-logs.spec.js",
   },
 ]
 `;
@@ -96,6 +101,7 @@ Array [
       ],
     },
     "secondBarMessage": undefined,
+    "thirdBarMessage": "failed-expectation/spec-has-logs.spec.js",
   },
 ]
 `;
@@ -109,10 +115,11 @@ Array [
       "correct": true,
       "logData": Object {
         "4": "[ 1, 2, 3 ] { a: 1, b: 2 }",
-        "5": "1",
+        "8": "1",
       },
     },
     "secondBarMessage": undefined,
+    "thirdBarMessage": "failed-expectation/spec-has-logs.spec.js",
   },
 ]
 `;
@@ -120,7 +127,7 @@ Array [
 exports[`success - bothHaveLogsFile 1`] = `
 Array [
   Object {
-    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
+    "firstBarMessage": "statements ✍: 100 % 🧱 branches 🎋: 50 % 🧱 functions 🕸: 100 % 🧱 lines 📜: 100 %",
     "hasDecorations": true,
     "newDecorations": Object {
       "correct": true,
@@ -130,6 +137,7 @@ Array [
       },
     },
     "secondBarMessage": "☔5",
+    "thirdBarMessage": "success/both-have-logs.spec.js",
   },
 ]
 `;
@@ -137,7 +145,7 @@ Array [
 exports[`success - bothHaveLogsSpec 1`] = `
 Array [
   Object {
-    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
+    "firstBarMessage": "statements ✍: 100 % 🧱 branches 🎋: 50 % 🧱 functions 🕸: 100 % 🧱 lines 📜: 100 %",
     "hasDecorations": true,
     "newDecorations": Object {
       "correct": true,
@@ -146,6 +154,7 @@ Array [
       },
     },
     "secondBarMessage": "☔5",
+    "thirdBarMessage": "success/both-have-logs.spec.js",
   },
 ]
 `;
@@ -153,7 +162,7 @@ Array [
 exports[`success - fileHasLogsFile 1`] = `
 Array [
   Object {
-    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
+    "firstBarMessage": "statements ✍: 100 % 🧱 branches 🎋: 50 % 🧱 functions 🕸: 100 % 🧱 lines 📜: 100 %",
     "hasDecorations": true,
     "newDecorations": Object {
       "correct": true,
@@ -163,6 +172,7 @@ Array [
       },
     },
     "secondBarMessage": "☔5",
+    "thirdBarMessage": "success/file-has-logs.spec.js",
   },
 ]
 `;
@@ -170,7 +180,7 @@ Array [
 exports[`success - fileHasLogsSpec 1`] = `
 Array [
   Object {
-    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
+    "firstBarMessage": "statements ✍: 100 % 🧱 branches 🎋: 50 % 🧱 functions 🕸: 100 % 🧱 lines 📜: 100 %",
     "hasDecorations": true,
     "newDecorations": Object {
       "correct": false,
@@ -180,6 +190,7 @@ Array [
       ],
     },
     "secondBarMessage": "☔5",
+    "thirdBarMessage": "success/file-has-logs.spec.js",
   },
 ]
 `;
@@ -187,7 +198,7 @@ Array [
 exports[`success - specHasLogsFile 1`] = `
 Array [
   Object {
-    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
+    "firstBarMessage": "statements ✍: 100 % 🧱 branches 🎋: 50 % 🧱 functions 🕸: 100 % 🧱 lines 📜: 100 %",
     "hasDecorations": true,
     "newDecorations": Object {
       "correct": false,
@@ -197,6 +208,7 @@ Array [
       ],
     },
     "secondBarMessage": "☔2",
+    "thirdBarMessage": "success/spec-has-logs.spec.js",
   },
 ]
 `;
@@ -204,16 +216,17 @@ Array [
 exports[`success - specHasLogsSpec 1`] = `
 Array [
   Object {
-    "firstBarMessage": "🐰 st: 100 br: 50 fn: 100 lns: 100",
+    "firstBarMessage": "statements ✍: 100 % 🧱 branches 🎋: 50 % 🧱 functions 🕸: 100 % 🧱 lines 📜: 100 %",
     "hasDecorations": true,
     "newDecorations": Object {
       "correct": true,
       "logData": Object {
         "4": "[ 1, 2, 3 ] { a: 1, b: 2 }",
-        "5": "1",
+        "8": "1",
       },
     },
     "secondBarMessage": "☔2",
+    "thirdBarMessage": "success/spec-has-logs.spec.js",
   },
 ]
 `;
@@ -230,6 +243,7 @@ Array [
       },
     },
     "secondBarMessage": undefined,
+    "thirdBarMessage": "failed-code/sync.spec.js",
   },
 ]
 `;
