@@ -29,7 +29,7 @@ import { getCoveragePath } from './utils/get-coverage-path'
 import { getSpecFile } from './utils/get-spec-file'
 import { getUncoveredMessage } from './utils/get-uncovered-message'
 
-const EXTENDED_LOG = false
+const EXTENDED_LOG = true
 
 const FUNCTIONS = '🕸' // ☈
 const STALE_SEPARATOR = '☄' // '🌰'
@@ -67,6 +67,8 @@ export class NiketaClient{
 
     const jestable = Boolean(maybeSpecFile)
 
+    this.debugLog({disableLint, lintOnly, canLint, jestable})
+
     if (requestLintFile){
       return this.handleRequestLint({
         fileName,
@@ -79,14 +81,18 @@ export class NiketaClient{
       await lintOnlyMode(fileName)
       this.markLint(fileName)
 
+      this.debugLog('lintOnly && !disableLint')
       return this.lintAnswer(lintMessage)
     }
-
+    
     if (!jestable && disableLint){
+      this.debugLog('!jestable && disableLint')
       return this.emtpyAnswer(fileName, 'lint is disabled')
     }
-
+    
     if (!jestable && !canLint){
+      this.debugLog('!jestable && !canLint')
+      
       return this.emtpyAnswer(fileName, 'skip')
     }
 
@@ -95,7 +101,9 @@ export class NiketaClient{
 
       return this.lintAnswer(lintMessage)
     }
+
     if(forceLint && canLint){
+      this.debugLog('force lint')
       await this.applyLint(fileName)
     }
 
@@ -151,7 +159,7 @@ export class NiketaClient{
   }
 
   emtpyAnswer(fileName, reason){
-    console.log(reason)
+    this.log(reason)
     this.emit({
       firstBarMessage  : 'NO ACTION',
       secondBarMessage : undefined,
@@ -472,7 +480,7 @@ export class NiketaClient{
     this.fileHolder = fileName
   }
 
-  debugLog(toLog, label){
+  debugLog(toLog, label = ''){
     if (!EXTENDED_LOG) return
 
     console.log(label, SHORT_SEPARATOR)
