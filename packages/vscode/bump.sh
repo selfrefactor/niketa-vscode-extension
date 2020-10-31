@@ -1,1 +1,1 @@
-run d&&vsce publish patch&&run d
+run d&&vsce publish minor&&run d

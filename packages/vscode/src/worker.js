@@ -64,6 +64,7 @@ class Worker{
       console.log(x, 'emit is not yet initialized')
     }
     this.dir = workspace.workspaceFolders[ 0 ].uri.path
+    this.forceLint = false
     this.loc = undefined
     this.latestFilePath = undefined
     this.firstStatusBar = undefined
@@ -120,6 +121,7 @@ class Worker{
   getCalculated(){
     return {
       hasTypescript : this.hasTypescript,
+      forceLint : this.forceLint,
       dir           : this.dir,
     }
   }
@@ -387,6 +389,10 @@ class Worker{
       .catch(() => {
         this.resetOnError()
       })
+  }
+
+  toggleForceLintMode(){
+    this.forceLint = !this.forceLint
   }
 
   getEditor(){

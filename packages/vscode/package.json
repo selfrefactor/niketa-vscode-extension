@@ -42,6 +42,10 @@
 			{
 				"command": "niketa.lint.file",
 				"title": "Lint current file"
+			},
+			{
+				"command": "niketa.toggle.force.lint",
+				"title": "Toggle force lint mode"
 			}
 		],
 		"keybindings": [
@@ -58,8 +62,12 @@
 				"key": "ctrl+shift+2"
 			},
 			{
-				"command": "niketa.request.cancelation",
+				"command": "niketa.toggle.force.lint",
 				"key": "ctrl+shift+3"
+			},
+			{
+				"command": "niketa.request.cancelation",
+				"key": "ctrl+shift+4"
 			}
 		],
 		"configuration": {

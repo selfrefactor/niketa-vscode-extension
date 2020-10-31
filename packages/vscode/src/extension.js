@@ -1,7 +1,7 @@
 const vscode = require('vscode')
 const { initExtension } = require('./worker')
 const { getter, setter } = require('rambdax')
-const { START, REQUEST_CANCELATION, REQUEST_TEST_RUN, REQUEST_LINT_FILE } = require('./constants')
+const { START, REQUEST_CANCELATION, REQUEST_TEST_RUN, REQUEST_LINT_FILE, TOGGLE_FORCE_LINT_MODE} = require('./constants')
 
 const INIT_KEY = 'INIT'
 
@@ -22,8 +22,11 @@ function activate(context){
     () => worker.requestLintFile())
   const disableEnableCommand = vscode.commands.registerCommand(REQUEST_TEST_RUN,
     () => worker.requestTestRun())
+  const toggleForceLintModeCommand = vscode.commands.registerCommand(TOGGLE_FORCE_LINT_MODE,
+    () => worker.toggleForceLintMode())
 
   context.subscriptions.push(startCommand)
+  context.subscriptions.push(toggleForceLintModeCommand)
   context.subscriptions.push(requestCancelationCommand)
   context.subscriptions.push(lintFileCommand)
   context.subscriptions.push(disableEnableCommand)
