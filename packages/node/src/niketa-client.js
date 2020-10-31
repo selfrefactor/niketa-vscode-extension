@@ -51,7 +51,7 @@ export class NiketaClient{
   }
 
   async onJestMessage(message){
-    const { fileName, dir, hasTypescript, requestLintFile } = message
+    const { fileName, dir, hasTypescript, requestLintFile, forceLint } = message
     if (!isMessageCorrect(message))
       return this.emtpyAnswer(fileName, 'message')
 
@@ -94,6 +94,9 @@ export class NiketaClient{
       await this.applyLint(fileName)
 
       return this.lintAnswer(lintMessage)
+    }
+    if(forceLint && canLint){
+      await this.applyLint(fileName)
     }
 
     this.evaluateLint({
