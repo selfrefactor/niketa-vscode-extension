@@ -159,7 +159,7 @@ export class NiketaClient{
   }
 
   emtpyAnswer(fileName, reason){
-    this.log(reason)
+    this.debugLog(reason)
     this.emit({
       firstBarMessage  : 'NO ACTION',
       secondBarMessage : undefined,
