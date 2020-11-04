@@ -3,11 +3,9 @@ import { existsSync } from 'fs'
 import { log } from 'helpers-fn'
 import { lintFn } from 'lint-fn'
 import { createServer } from 'net'
-import { delay, filter, glue, takeLast, tryCatch } from 'rambdax'
+import { delay, glue, takeLast, tryCatch } from 'rambdax'
 
-import { extractConsoleLogs } from './modules/extract-console-logs'
 import { isLintOnlyMode, lintOnlyMode } from './modules/lint-only-mode'
-import { cleanJestOutput } from './utils/clean-jest-output'
 import {
   cleanAngularLog,
   defaultEmit,
@@ -27,6 +25,7 @@ import {
 import { createFileKey } from './utils/create-file-key'
 import { getCoveragePath } from './utils/get-coverage-path'
 import { getSpecFile } from './utils/get-spec-file'
+import { getNewDecorations } from './utils/get-new-decorations'
 import { getUncoveredMessage } from './utils/get-uncovered-message'
 
 const EXTENDED_LOG = true
@@ -38,38 +37,71 @@ const STATEMENTS = '✍'
 const BRANCHES = '🎋'
 const LINES = '📜'
 
+function logJest(execResult, enabled){
+  if (!enabled) return
+  process.stderr.write('\n🐬\n' + execResult.stderr + '\n🐬\n')
+  process.stderr.write('\n🍵\n' + execResult.stdout + '\n🍵\n')
+}
+
+function fileInfo(x){
+  const [ firstFolder, fileName ] = takeLast(2, x.split('/'))
+
+  return `${ firstFolder }/${ fileName }`
+}
+
+function  onWrongIncomingMessage(message){
+  console.log({
+    message : message.toString(),
+    type    : typeof message,
+  })
+
+  return log('Error while parsing messageFromVSCode', 'error')
+}
+
+function   debugLog(toLog, label = ''){
+  if (!EXTENDED_LOG) return
+
+  console.log(label, SHORT_SEPARATOR)
+  console.log(LONG_SEPARATOR)
+  console.log(toLog)
+  console.log(LONG_SEPARATOR)
+}
+
 export class NiketaClient{
   constructor({ port, emit, testing }){
     this.port = port
-    this.testing = testing
+    this.testing = Boolean(testing)
     this.coverageHolder = {}
     this.lastLintedFiles = []
+    this.lintActionBusy = false
     this.emit = emit === undefined ? defaultEmit : emit
-    this.fileHolder = undefined
-    this.specFileHolder = undefined
     this.initialized = false
   }
 
   async onJestMessage(message){
     const { fileName, dir, hasTypescript, requestLintFile, forceLint } = message
-    if (!isMessageCorrect(message))
+    if (!isMessageCorrect(message)){
       return this.emtpyAnswer(fileName, 'message')
+    }
 
     const disableLint = isWorkFile(fileName)
     const lintOnly = isLintOnlyMode(fileName)
     const canLint = isLintable(fileName)
-    const lintMessage = ` ${ this.fileInfo(fileName) }`
+    const lintMessage = ` ${ fileInfo(fileName) }`
 
-    // Check that if project `hasTypescript` is false
-    // then we can check only for `.js` file
-    const maybeSpecFile = getSpecFile(fileName,
-      hasTypescript ? '.ts' : '.js')
+    /*
+      Jest is setup for one of the two so we shouldn't check for both
+    */
+   const allowedSpecExtension = hasTypescript ? '.ts' : '.js'
+    const {hasValidSpec, specFile} = getSpecFile(
+      fileName,
+      allowedSpecExtension
+    )
 
-    const jestable = Boolean(maybeSpecFile)
-
-    this.debugLog({disableLint, lintOnly, canLint, jestable})
+    debugLog({disableLint, lintOnly, canLint, hasValidSpec})
 
     if (requestLintFile){
+      debugLog('requestLintFile')
       return this.handleRequestLint({
         fileName,
         lintOnly,
@@ -78,39 +110,35 @@ export class NiketaClient{
     }
 
     if (lintOnly && !disableLint){
+      debugLog('lintOnly && !disableLint')
       await lintOnlyMode(fileName)
-      this.markLint(fileName)
 
-      this.debugLog('lintOnly && !disableLint')
-      return this.lintAnswer(lintMessage)
+      return this.lintAnswer(fileName, lintMessage)
     }
     
-    if (!jestable && disableLint){
-      this.debugLog('!jestable && disableLint')
+    if (!hasValidSpec && disableLint){
+      debugLog('!hasValidSpec && disableLint')
       return this.emtpyAnswer(fileName, 'lint is disabled')
     }
     
-    if (!jestable && !canLint){
-      this.debugLog('!jestable && !canLint')
+    if (!hasValidSpec && !canLint){
+      debugLog('!hasValidSpec && !canLint')
       
       return this.emtpyAnswer(fileName, 'skip')
     }
 
     if(forceLint && canLint){
-      this.debugLog('force lint')
-      await this.applyLint(fileName)
+      if(this.lintActionBusy){
+        debugLog('lint is busy')
+      } else{
+        debugLog('lint is possible')
+        this.lintActionBusy = true
+        this.applyLint(fileName)
+        this.markLint(fileName)
+      }
     }
 
-    if (!jestable) return this.lintAnswer(lintMessage)
-
-    this.evaluateLint({
-      maybeSpecFile,
-      fileName,
-    })
-
-    if (this.stillWaitingForSpec(fileName, dir)){
-      return this.emtpyAnswer(fileName, 'still waiting')
-    }
+    if (!hasValidSpec) return this.emtpyAnswer(fileName, '!hasValidSpec')
 
     const [
       failure,
@@ -119,18 +147,19 @@ export class NiketaClient{
       extension,
     ] = await this.execJest({
       dir,
-      fileName     : this.fileHolder,
-      specFileName : this.specFileHolder,
+      fileName     : fileName,
+      specFileName : specFile,
     })
+    this.lintActionBusy = false
 
-    if (failure) return this.emtpyAnswer(fileName, 'failure')
-    this.logJest(execResult)
+    if (failure) return this.emtpyAnswer(fileName, 'Jest stopped for known or unknown reasons')
+    logJest(execResult, !this.testing)
 
-    this.sendToVSCode({
-      specFile : this.fileInfo(this.specFileHolder),
+    return this.sendToVSCode({
+      specFile,
       execResult,
       actualFileName,
-      fileName : this.fileHolder,
+      fileName,
       extension,
       hasTypescript,
     })
@@ -143,28 +172,24 @@ export class NiketaClient{
       await this.applyLint(fileName)
     }
 
-    this.markLint(fileName)
-
-    return this.lintAnswer(lintMessage)
+    return this.lintAnswer(fileName, lintMessage)
   }
 
-  fileInfo(x){
-    const [ firstFolder, fileName ] = takeLast(2, x.split('/'))
-
-    return `${ firstFolder }/${ fileName }`
-  }
+  
 
   emtpyAnswer(fileName, reason){
-    this.debugLog(reason)
+    debugLog(reason)
     this.emit({
       firstBarMessage  : 'NO ACTION',
       secondBarMessage : undefined,
-      thirdBarMessage  : this.fileInfo(fileName),
+      thirdBarMessage  : fileInfo(fileName),
       hasDecorations   : false,
     })
   }
 
-  lintAnswer(lintMessage){
+  lintAnswer(fileName, lintMessage){
+    this.markLint(fileName)
+
     this.emit({
       firstBarMessage  : 'LINT ACTION',
       secondBarMessage : undefined,
@@ -172,12 +197,6 @@ export class NiketaClient{
       hasDecorations   : false,
     })
     // this.resetServer()
-  }
-
-  logJest(execResult){
-    if (this.testing) return
-    process.stderr.write('\n🐬\n' + execResult.stderr + '\n🐬\n')
-    process.stderr.write('\n🍵\n' + execResult.stdout + '\n🍵\n')
   }
 
   markLint(fileName){
@@ -193,7 +212,6 @@ export class NiketaClient{
     log('sep')
 
     await lintFn(fileName)
-    this.markLint(fileName)
   }
 
   sendToVSCode({
@@ -215,7 +233,7 @@ export class NiketaClient{
       fileName,
       extension,
     })
-    const { newDecorations, hasDecorations } = this.getNewDecorations({
+    const { newDecorations, hasDecorations } = getNewDecorations({
       execResult,
       fileName,
       hasTypescript,
@@ -223,7 +241,7 @@ export class NiketaClient{
     const firstBarMessage = pass ? message : ERROR_ICON
     const secondBarMessage = getUncoveredMessage(uncovered)
 
-    this.debugLog({
+    debugLog({
       pass,
       hasTypescript,
       message,
@@ -241,53 +259,6 @@ export class NiketaClient{
       newDecorations,
     })
     // this.resetServer()
-  }
-
-  getNewDecorations({ execResult, fileName, hasTypescript }){
-    const input = cleanJestOutput(execResult.stdout)
-    const [ consoleLogs ] = input.split('----------------------|')
-    const newDecorationsData = extractConsoleLogs(consoleLogs)
-    if (Object.keys(newDecorationsData).length === 0){
-      return { hasDecorations : false }
-    }
-
-    const newDecorations = this.evaluateDecorations({
-      newDecorationsData,
-      fileName,
-      hasTypescript,
-    })
-
-    return {
-      hasDecorations : true,
-      newDecorations,
-    }
-  }
-
-  evaluateDecorations({ newDecorationsData, fileName, hasTypescript }){
-    const unreliableLogData = []
-    const reliableLogData = {}
-
-    const triggerFileHasDecoration = filter((logData, prop) => {
-      const okLogData = fileName.endsWith(prop)
-
-      logData.map(({ line, decoration }) => {
-        unreliableLogData.push(decoration)
-        if (okLogData){
-          reliableLogData[ line ] = decoration
-        }
-      })
-
-      return okLogData
-    })(newDecorationsData)
-
-    const correct =
-      !hasTypescript && Object.keys(triggerFileHasDecoration).length === 1
-    const logData = correct ? reliableLogData : unreliableLogData
-
-    return {
-      correct,
-      logData,
-    }
   }
 
   async execJest({ fileName, dir, specFileName }){
@@ -433,60 +404,8 @@ export class NiketaClient{
     return message.trim() === '' ? staleCoverageInfo : `change: ${ message }`
   }
 
-  logError(e, label){
-    console.log({
-      e,
-      label,
-    })
-  }
-
-  stillWaitingForSpec(fileName, dir){
-    const stillWating = !(this.fileHolder && this.specFileHolder)
-    if (stillWating){
-      // This happens only until the script receives a correct filepath
-      this.debugLog('no specfile', {
-        fileName,
-        fileHolder     : this.fileHolder,
-        specFileHolder : this.specFileHolder,
-      })
-
-      return true
-    }
-
-    const specBelongs = this.fileHolder.startsWith(dir)
-
-    if (!specBelongs){
-      // when we have filepath from previous project but not in the current
-      this.debugLog(dir, 'still waiting for testable file in this project')
-
-      return true
-    }
-
-    return false
-  }
-
-  evaluateLint({ fileName, maybeSpecFile }){
-    if (EXTENDED_LOG)
-      log({
-        maybeSpecFile,
-        fileName,
-      },
-      'obj')
-    this.specFileHolder = maybeSpecFile
-    this.fileHolder = fileName
-  }
-
-  debugLog(toLog, label = ''){
-    if (!EXTENDED_LOG) return
-
-    console.log(label, SHORT_SEPARATOR)
-    console.log(LONG_SEPARATOR)
-    console.log(toLog)
-    console.log(LONG_SEPARATOR)
-  }
-
   onCancelMessage(){
-    if (!this.jestChild) return
+    if (!this.jestChild) return log('', 'error')
     if (!this.jestChild.cancel) return
 
     this.jestChild.cancel()
@@ -498,10 +417,10 @@ export class NiketaClient{
       false)()
 
     if (parsedMessage === false){
-      return this.onWrongIncomingMessage(messageFromVSCode.toString())
+      return onWrongIncomingMessage(messageFromVSCode.toString())
     }
 
-    this.debugLog(parsedMessage, 'onSocketData')
+    debugLog(parsedMessage, 'onSocketData')
 
     if (parsedMessage.requestCancelation){
       return this.onCancelMessage()
@@ -544,14 +463,5 @@ export class NiketaClient{
     })
 
     this.server.listen(this.port, '127.0.0.1')
-  }
-
-  onWrongIncomingMessage(message){
-    console.log({
-      message : message.toString(),
-      type    : typeof message,
-    })
-
-    return log('Error while parsing messageFromVSCode', 'error')
   }
 }

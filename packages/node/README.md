@@ -4,6 +4,10 @@ Auto run `Jest` upon file save in `VSCode`
 
 This library does the heavy work, while `Niketa` VSCode extension provides the communication with `VSCode`.
 
+## TODO
+
+with typescript
+
 ## Install
 
 1. Install `Niketa` [vscode extension](https://marketplace.visualstudio.com/items?itemName=selfrefactor.niketa)
