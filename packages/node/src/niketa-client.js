@@ -96,16 +96,12 @@ export class NiketaClient{
       return this.emtpyAnswer(fileName, 'skip')
     }
 
-    if (!jestable && canLint){
-      await this.applyLint(fileName)
-
-      return this.lintAnswer(lintMessage)
-    }
-
     if(forceLint && canLint){
       this.debugLog('force lint')
       await this.applyLint(fileName)
     }
+
+    if (!jestable) return this.lintAnswer(lintMessage)
 
     this.evaluateLint({
       maybeSpecFile,
