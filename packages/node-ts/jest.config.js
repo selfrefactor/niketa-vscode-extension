@@ -1,5 +1,3 @@
-const {compilerOptions} = require('./tsconfig.json')
-const {pathsToModuleNameMapper} = require('ts-jest/utils')
 const {envFn} = require('env-fn')
 envFn('special')
 
@@ -16,5 +14,4 @@ module.exports = {
     "<rootDir>"
   ],
   roots: ['<rootDir>/src/'],
-  // moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
 }
