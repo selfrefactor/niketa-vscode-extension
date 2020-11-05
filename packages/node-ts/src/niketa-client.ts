@@ -1,11 +1,11 @@
 import execa from 'execa'
-import { existsSync } from 'fs'
-import { log } from 'helpers-fn'
-import { lintFn } from 'lint-fn'
-import { createServer } from 'net'
-import { delay, glue, takeLast, tryCatch } from 'rambdax'
+import {existsSync} from 'fs'
+import {log} from 'helpers-fn'
+import {lintFn} from 'lint-fn'
+import {createServer} from 'net'
+import {delay, glue, takeLast, tryCatch} from 'rambdax'
 
-import { isLintOnlyMode, lintOnlyMode } from './modules/lint-only-mode'
+import {isLintOnlyMode, lintOnlyMode} from './modules/lint-only-mode'
 import {
   cleanAngularLog,
   defaultEmit,
@@ -22,11 +22,11 @@ import {
   SUCCESS_ICON,
   toNumber,
 } from './utils/common'
-import { createFileKey } from './utils/create-file-key'
-import { getCoveragePath } from './utils/get-coverage-path'
-import { getSpecFile } from './utils/get-spec-file'
-import { getNewDecorations } from './utils/get-new-decorations'
-import { getUncoveredMessage } from './utils/get-uncovered-message'
+import {createFileKey} from './utils/create-file-key'
+import {getCoveragePath} from './utils/get-coverage-path'
+import {getSpecFile} from './utils/get-spec-file'
+import {getNewDecorations} from './utils/get-new-decorations'
+import {getUncoveredMessage} from './utils/get-uncovered-message'
 
 const EXTENDED_LOG = true
 
@@ -37,28 +37,28 @@ const STATEMENTS = '✍'
 const BRANCHES = '🎋'
 const LINES = '📜'
 
-function logJest(execResult: any, enabled: boolean): void{
+function logJest(execResult: any, enabled: boolean): void {
   if (!enabled) return
   process.stderr.write('\n🐬\n' + execResult.stderr + '\n🐬\n')
   process.stderr.write('\n🍵\n' + execResult.stdout + '\n🍵\n')
 }
 
-function fileInfo(x: string){
-  const [ firstFolder, fileName ] = takeLast(2, x.split('/'))
+function fileInfo(x: string) {
+  const [firstFolder, fileName] = takeLast(2, x.split('/'))
 
-  return `${ firstFolder }/${ fileName }`
+  return `${firstFolder}/${fileName}`
 }
 
-function  onWrongIncomingMessage(message: Buffer){
+function onWrongIncomingMessage(message: Buffer) {
   console.log({
-    message : message.toString(),
-    type    : typeof message,
+    message: message.toString(),
+    type: typeof message,
   })
 
   return log('Error while parsing messageFromVSCode', 'error')
 }
 
-function   debugLog(toLog: any, label = ''){
+function debugLog(toLog: any, label = '') {
   if (!EXTENDED_LOG) return
 
   console.log(label, SHORT_SEPARATOR)
@@ -67,9 +67,7 @@ function   debugLog(toLog: any, label = ''){
   console.log(LONG_SEPARATOR)
 }
 
-
-
-export class NiketaClient{
+export class NiketaClient {
   port: number
   testing: boolean
   coverageHolder: object
@@ -78,7 +76,7 @@ export class NiketaClient{
   emit: object
   initialized: boolean
 
-  constructor(input: NiketaClientInput){
+  constructor(input: NiketaClientInput) {
     this.port = input.port
     this.testing = Boolean(input.testing)
     this.coverageHolder = {}
@@ -88,21 +86,27 @@ export class NiketaClient{
     this.initialized = false
   }
 
-  async onJestMessage(message: Message){
-    const { fileName, dir, hasTypescript, requestLintFile, forceLint } = message
-    if (!isMessageCorrect(message)){
+  async onJestMessage(message: Message) {
+    const {
+      fileName,
+      dir,
+      hasTypescript,
+      requestLintFile,
+      forceLint,
+    } = message
+    if (!isMessageCorrect(message)) {
       return this.emtpyAnswer(fileName, 'message')
     }
 
     const disableLint = isWorkFile(fileName)
     const lintOnly = isLintOnlyMode(fileName)
     const canLint = isLintable(fileName)
-    const lintMessage = ` ${ fileInfo(fileName) }`
+    const lintMessage = ` ${fileInfo(fileName)}`
 
     /*
       Jest is setup for one of the two so we shouldn't check for both
     */
-   const allowedSpecExtension = hasTypescript ? '.ts' : '.js'
+    const allowedSpecExtension = hasTypescript ? '.ts' : '.js'
     const {hasValidSpec, specFile} = getSpecFile(
       fileName,
       allowedSpecExtension
@@ -110,7 +114,7 @@ export class NiketaClient{
 
     debugLog({disableLint, lintOnly, canLint, hasValidSpec})
 
-    if (requestLintFile){
+    if (requestLintFile) {
       debugLog('requestLintFile')
       return this.handleRequestLint({
         fileName,
@@ -119,28 +123,28 @@ export class NiketaClient{
       })
     }
 
-    if (lintOnly && !disableLint){
+    if (lintOnly && !disableLint) {
       debugLog('lintOnly && !disableLint')
       await lintOnlyMode(fileName)
 
       return this.lintAnswer(fileName, lintMessage)
     }
-    
-    if (!hasValidSpec && disableLint){
+
+    if (!hasValidSpec && disableLint) {
       debugLog('!hasValidSpec && disableLint')
       return this.emtpyAnswer(fileName, 'lint is disabled')
     }
-    
-    if (!hasValidSpec && !canLint){
+
+    if (!hasValidSpec && !canLint) {
       debugLog('!hasValidSpec && !canLint')
-      
+
       return this.emtpyAnswer(fileName, 'skip')
     }
 
-    if(forceLint && canLint){
-      if(this.lintActionBusy){
+    if (forceLint && canLint) {
+      if (this.lintActionBusy) {
         debugLog('lint is busy')
-      } else{
+      } else {
         debugLog('lint is possible')
         this.lintActionBusy = true
         this.applyLint(fileName)
@@ -157,12 +161,16 @@ export class NiketaClient{
       extension,
     ] = await this.execJest({
       dir,
-      fileName     : fileName,
-      specFileName : specFile,
+      fileName: fileName,
+      specFileName: specFile,
     })
     this.lintActionBusy = false
 
-    if (failure) return this.emtpyAnswer(fileName, 'Jest stopped for known or unknown reasons')
+    if (failure)
+      return this.emtpyAnswer(
+        fileName,
+        'Jest stopped for known or unknown reasons'
+      )
     logJest(execResult, !this.testing)
 
     return this.sendToVSCode({
@@ -175,8 +183,8 @@ export class NiketaClient{
     })
   }
 
-  async handleRequestLint({ fileName, lintOnly, lintMessage }){
-    if (lintOnly){
+  async handleRequestLint({fileName, lintOnly, lintMessage}) {
+    if (lintOnly) {
       await lintOnlyMode(fileName)
     } else {
       await this.applyLint(fileName)
@@ -185,40 +193,38 @@ export class NiketaClient{
     return this.lintAnswer(fileName, lintMessage)
   }
 
-  
-
-  emtpyAnswer(fileName, reason){
+  emtpyAnswer(fileName, reason) {
     debugLog(reason)
     this.emit({
-      firstBarMessage  : 'NO ACTION',
-      secondBarMessage : undefined,
-      thirdBarMessage  : fileInfo(fileName),
-      hasDecorations   : false,
+      firstBarMessage: 'NO ACTION',
+      secondBarMessage: undefined,
+      thirdBarMessage: fileInfo(fileName),
+      hasDecorations: false,
     })
   }
 
-  lintAnswer(fileName, lintMessage){
+  lintAnswer(fileName, lintMessage) {
     this.markLint(fileName)
 
     this.emit({
-      firstBarMessage  : 'LINT ACTION',
-      secondBarMessage : undefined,
-      thirdBarMessage  : lintMessage,
-      hasDecorations   : false,
+      firstBarMessage: 'LINT ACTION',
+      secondBarMessage: undefined,
+      thirdBarMessage: lintMessage,
+      hasDecorations: false,
     })
     // this.resetServer()
   }
 
-  markLint(fileName){
+  markLint(fileName) {
     if (!this.testing) return
 
     this.lastLintedFiles.push(fileName)
   }
 
-  async applyLint(fileName){
-    if (!existsSync(fileName)) return log(`${ fileName } is deleted`, 'error')
+  async applyLint(fileName) {
+    if (!existsSync(fileName)) return log(`${fileName} is deleted`, 'error')
     log('sep')
-    log(`willLint ${ fileName }`, 'info')
+    log(`willLint ${fileName}`, 'info')
     log('sep')
 
     await lintFn(fileName)
@@ -231,19 +237,19 @@ export class NiketaClient{
     fileName,
     extension,
     hasTypescript,
-  }){
+  }) {
     const hasError =
       execResult.stderr.startsWith('FAIL') ||
       execResult.stderr.includes('ERROR:')
 
-    const { pass, message, uncovered } = this.parseCoverage({
+    const {pass, message, uncovered} = this.parseCoverage({
       execResult,
       hasError,
       actualFileName,
       fileName,
       extension,
     })
-    const { newDecorations, hasDecorations } = getNewDecorations({
+    const {newDecorations, hasDecorations} = getNewDecorations({
       execResult,
       fileName,
       hasTypescript,
@@ -251,32 +257,36 @@ export class NiketaClient{
     const firstBarMessage = pass ? message : ERROR_ICON
     const secondBarMessage = getUncoveredMessage(uncovered)
 
-    debugLog({
-      pass,
-      hasTypescript,
-      message,
-      hasError,
-      newDecorations,
-      hasDecorations,
-    },
-    'vscode.message')
+    debugLog(
+      {
+        pass,
+        hasTypescript,
+        message,
+        hasError,
+        newDecorations,
+        hasDecorations,
+      },
+      'vscode.message'
+    )
 
     this.emit({
       firstBarMessage,
       secondBarMessage,
-      thirdBarMessage : specFile,
+      thirdBarMessage: specFile,
       hasDecorations,
       newDecorations,
     })
     // this.resetServer()
   }
 
-  async execJest({ fileName, dir, specFileName }){
-    const [ coveragePath, actualFileName, extension ] = getCoveragePath(dir,
-      fileName)
+  async execJest({fileName, dir, specFileName}) {
+    const [coveragePath, actualFileName, extension] = getCoveragePath(
+      dir,
+      fileName
+    )
 
     try {
-      const testPattern = `-- ${ specFileName }`
+      const testPattern = `-- ${specFileName}`
 
       const command = [
         JEST_BIN,
@@ -288,23 +298,23 @@ export class NiketaClient{
         coveragePath,
         testPattern,
       ].join(' ')
-      this.jestChild = execa.command(command, { cwd : dir })
+      this.jestChild = execa.command(command, {cwd: dir})
       log('Jest start', 'info')
       const result = await this.jestChild
       log('Jest end', 'info')
       this.jestChild = undefined
 
-      return [ false, result, actualFileName, extension ]
-    } catch (e){
-      if (e.isCanceled) return [ true ]
-      if (!e.stdout) return [ true ]
-      if (!e.stderr) return [ true ]
+      return [false, result, actualFileName, extension]
+    } catch (e) {
+      if (e.isCanceled) return [true]
+      if (!e.stdout) return [true]
+      if (!e.stderr) return [true]
 
       return [
         false,
         {
-          stdout : e.stdout,
-          stderr : e.stderr,
+          stdout: e.stdout,
+          stderr: e.stderr,
         },
         actualFileName,
         extension,
@@ -318,23 +328,23 @@ export class NiketaClient{
     fileName,
     extension,
     hasError,
-  }){
+  }) {
     if (hasError) return {}
     const input = cleanAngularLog(execResult)
     const pass = input.stderr.includes('PASS')
     const jestOutputLines = input.stdout.split('\n')
 
     let foundCoverage = false
-    const [ lineWithCoverage ] = jestOutputLines.filter(line => {
+    const [lineWithCoverage] = jestOutputLines.filter(line => {
       if (line.includes('% Stmts')) foundCoverage = true
 
-      return foundCoverage && line.includes(`${ actualFileName }${ extension }`)
+      return foundCoverage && line.includes(`${actualFileName}${extension}`)
     })
 
-    if (lineWithCoverage === undefined){
+    if (lineWithCoverage === undefined) {
       return {
         pass,
-        message : SUCCESS_ICON,
+        message: SUCCESS_ICON,
       }
     }
 
@@ -346,20 +356,22 @@ export class NiketaClient{
       lines,
       uncovered,
     ] = lineWithCoverage.split('|').map(extractNumber)
-    const message = this.getCoverageDiff([ statements, branch, func, lines ],
-      fileName)
+    const message = this.getCoverageDiff(
+      [statements, branch, func, lines],
+      fileName
+    )
 
     return {
       pass,
-      message : message === undefined ? 'MESSAGE === undefined' : message,
+      message: message === undefined ? 'MESSAGE === undefined' : message,
       uncovered,
     }
   }
 
-  getCoverageDiff(inputs, filePath){
+  getCoverageDiff(inputs, filePath) {
     const fileKey = createFileKey(filePath)
-    const firstTime = this.coverageHolder[ fileKey ] === undefined
-    const [ statements, branch, func, lines ] = inputs.map(toNumber)
+    const firstTime = this.coverageHolder[fileKey] === undefined
+    const [statements, branch, func, lines] = inputs.map(toNumber)
 
     const hash = {
       branch,
@@ -369,52 +381,54 @@ export class NiketaClient{
     }
 
     const coverageInfo = glue(`
-    statements ${ STATEMENTS }:
-    ${ statements } % ${ SEPARATOR }
-    branches ${ BRANCHES }:
-    ${ branch } % ${ SEPARATOR }
-    functions ${ FUNCTIONS }:
-    ${ func } % ${ SEPARATOR }
-    lines ${ LINES }:
-    ${ lines } %
+    statements ${STATEMENTS}:
+    ${statements} % ${SEPARATOR}
+    branches ${BRANCHES}:
+    ${branch} % ${SEPARATOR}
+    functions ${FUNCTIONS}:
+    ${func} % ${SEPARATOR}
+    lines ${LINES}:
+    ${lines} %
   `)
 
-    if (firstTime){
-      this.coverageHolder[ fileKey ] = hash
+    if (firstTime) {
+      this.coverageHolder[fileKey] = hash
 
       return coverageInfo
     }
 
-    const statementsDiff = parse(statements - this.coverageHolder[ fileKey ].statements)
-    const branchDiff = parse(branch - this.coverageHolder[ fileKey ].branch)
-    const funcDiff = parse(func - this.coverageHolder[ fileKey ].func)
-    const linesDiff = parse(lines - this.coverageHolder[ fileKey ].lines)
+    const statementsDiff = parse(
+      statements - this.coverageHolder[fileKey].statements
+    )
+    const branchDiff = parse(branch - this.coverageHolder[fileKey].branch)
+    const funcDiff = parse(func - this.coverageHolder[fileKey].func)
+    const linesDiff = parse(lines - this.coverageHolder[fileKey].lines)
 
-    this.coverageHolder[ fileKey ] = hash
+    this.coverageHolder[fileKey] = hash
 
     const message = glue(`
-      ${ statementsDiff === 0 ? '' : `✍:${ maybeWarn(statementsDiff) }` }
-      ${ branchDiff === 0 ? '' : `🎋:${ maybeWarn(branchDiff) }` }
-      ${ funcDiff === 0 ? '' : `☈:${ maybeWarn(funcDiff) }` }
-      ${ linesDiff === 0 ? '' : `📜:${ maybeWarn(linesDiff) }` }
+      ${statementsDiff === 0 ? '' : `✍:${maybeWarn(statementsDiff)}`}
+      ${branchDiff === 0 ? '' : `🎋:${maybeWarn(branchDiff)}`}
+      ${funcDiff === 0 ? '' : `☈:${maybeWarn(funcDiff)}`}
+      ${linesDiff === 0 ? '' : `📜:${maybeWarn(linesDiff)}`}
     `)
 
     const staleCoverageInfo = glue(`
-    NO CHANGE ${ STALE_SEPARATOR }
-    ${ STATEMENTS }:
-    ${ statements } % ${ STALE_SEPARATOR }
-    ${ BRANCHES }:
-    ${ branch } % ${ STALE_SEPARATOR }
-    ${ FUNCTIONS }:
-    ${ func } % ${ STALE_SEPARATOR }
-    ${ LINES }:
-    ${ lines } %
+    NO CHANGE ${STALE_SEPARATOR}
+    ${STATEMENTS}:
+    ${statements} % ${STALE_SEPARATOR}
+    ${BRANCHES}:
+    ${branch} % ${STALE_SEPARATOR}
+    ${FUNCTIONS}:
+    ${func} % ${STALE_SEPARATOR}
+    ${LINES}:
+    ${lines} %
   `)
 
-    return message.trim() === '' ? staleCoverageInfo : `change: ${ message }`
+    return message.trim() === '' ? staleCoverageInfo : `change: ${message}`
   }
 
-  onCancelMessage(){
+  onCancelMessage() {
     if (!this.jestChild) return log('', 'error')
     if (!this.jestChild.cancel) return
 
@@ -422,24 +436,26 @@ export class NiketaClient{
     this.jestChild = undefined
   }
 
-  async onSocketData(messageFromVSCode){
-    const parsedMessage = tryCatch(() => JSON.parse(messageFromVSCode.toString()),
-      false)()
+  async onSocketData(messageFromVSCode) {
+    const parsedMessage = tryCatch(
+      () => JSON.parse(messageFromVSCode.toString()),
+      false
+    )()
 
-    if (parsedMessage === false){
+    if (parsedMessage === false) {
       return onWrongIncomingMessage(messageFromVSCode.toString())
     }
 
     debugLog(parsedMessage, 'onSocketData')
 
-    if (parsedMessage.requestCancelation){
+    if (parsedMessage.requestCancelation) {
       return this.onCancelMessage()
     }
 
     await this.onJestMessage(parsedMessage)
   }
 
-  resetServer(){
+  resetServer() {
     delay(500).then(() => {
       this.server.close(() => {
         delay(500).then(() => {
@@ -449,7 +465,7 @@ export class NiketaClient{
     })
   }
 
-  start(){
+  start() {
     if (this.initialized) log('Already initialized', 'box')
     this.server = createServer(socket => {
       this.initialized = true
