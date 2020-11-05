@@ -55,19 +55,19 @@
 			},
 			{
 				"command": "niketa.request.test.run",
-				"key": "ctrl+shift+1"
+				"key": "alt+w"
 			},
 			{
 				"command": "niketa.lint.file",
-				"key": "ctrl+shift+2"
+				"key": "ctrl+shift+1"
 			},
 			{
 				"command": "niketa.toggle.force.lint",
-				"key": "ctrl+shift+3"
+				"key": "ctrl+shift+2"
 			},
 			{
 				"command": "niketa.request.cancelation",
-				"key": "ctrl+shift+4"
+				"key": "ctrl+shift+3"
 			}
 		],
 		"configuration": {
