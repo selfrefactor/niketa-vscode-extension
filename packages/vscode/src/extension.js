@@ -8,7 +8,12 @@ const INIT_KEY = 'INIT'
 function activate(context){
   const worker = initExtension()
   const initNiketa = () => {
-    if(getter(INIT_KEY)) return
+    if(getter(INIT_KEY)){
+      if(worker.isLocked()){
+        return worker.unlock()
+      }
+      return worker.stop()
+    } 
     setter(INIT_KEY, true)
     worker.initStatusBars()
     worker.init()

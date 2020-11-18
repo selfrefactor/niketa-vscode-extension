@@ -72,7 +72,9 @@ class Worker{
   isLocked(){
     return this.lockFlag === true
   }
-
+  stop(){
+    this.lockFlag = true
+  }
   lock(loc){
     if (this.lockFlag) return
 
