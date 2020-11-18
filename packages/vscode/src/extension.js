@@ -6,16 +6,15 @@ const { START, REQUEST_CANCELATION, REQUEST_TEST_RUN, REQUEST_LINT_FILE, TOGGLE_
 const INIT_KEY = 'INIT'
 
 function activate(context){
-  if(getter(INIT_KEY)) return
-  
-  setter(INIT_KEY, true)
   const worker = initExtension()
-  const fn = () => {
+  const initNiketa = () => {
+    if(getter(INIT_KEY)) return
+    setter(INIT_KEY, true)
     worker.initStatusBars()
     worker.init()
   }
 
-  const startCommand = vscode.commands.registerCommand(START, fn)
+  const startCommand = vscode.commands.registerCommand(START, initNiketa)
   const requestCancelationCommand = vscode.commands.registerCommand(REQUEST_CANCELATION,
     () => worker.requestCancelation())
   const lintFileCommand = vscode.commands.registerCommand(REQUEST_LINT_FILE,

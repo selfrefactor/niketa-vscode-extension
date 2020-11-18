@@ -27,21 +27,17 @@ function sendMessage(messageToSend){
       const client = new Socket()
       client.connect(
         CLIENT_PORT, '127.0.0.1', () => {
-          console.log('Connected')
           client.write(JSON.stringify(messageToSend))
         }
       )
 
       client.on('data', data => {
-        console.log('Received: ' + data)
         client.destroy()
 
         return resolve(data)
       })
 
       client.on('close', () => {
-        console.log('Connection closed')
-
         return resolve(false)
       })
     } catch (error){
@@ -424,9 +420,6 @@ class Worker{
 const worker = new Worker()
 
 function initExtension(){
-  workspace.onDidOpenTextDocument(e => {
-    console.log(e)
-  })
   workspace.onDidSaveTextDocument(e => {
     if (worker.isLocked()) return console.log('LOCKED')
     worker.lock(e.lineCount)
