@@ -1,10 +1,6 @@
 # Niketa tools - lightweight Wallaby.js alternative
 > VSCode extension
 
-## Start
-
-**Ctrl+Shift+1**
-
 ## Start automatic Jest run on every file save
 
 **Ctrl+Shift+2**

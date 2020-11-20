@@ -1,17 +1,12 @@
 const vscode = require('vscode')
 const { initExtension } = require('./worker')
-const { getter, setter } = require('rambdax')
-const { START, REQUEST_CANCELATION, REQUEST_TEST_RUN, REQUEST_LINT_FILE, START_AUTO_MODE} = require('./constants')
+const { getter, setter, delay } = require('rambdax')
+const { REQUEST_CANCELATION, REQUEST_TEST_RUN, REQUEST_LINT_FILE, START_AUTO_MODE} = require('./constants')
 
 const INIT_KEY = 'INIT'
 
-const emptyWorker = {
-  requestLintFile: () => {},
-  requestTestRun: () => {},
-}
-
 function activate(context){
-  let worker = emptyWorker
+  let worker = {}
   
   const initNiketa = (mode) => () => {
     worker = initExtension(mode)
@@ -22,16 +17,25 @@ function activate(context){
     worker.init()
   }
 
-  const startCommand = vscode.commands.registerCommand(START, initNiketa('default'))
   const startAutoModeCommand = vscode.commands.registerCommand(START_AUTO_MODE, initNiketa('auto.jest'))
   const requestCancelationCommand = vscode.commands.registerCommand(REQUEST_CANCELATION,
     () => worker.requestCancelation())
   const lintFileCommand = vscode.commands.registerCommand(REQUEST_LINT_FILE,
-    () => worker.requestLintFile())
-  const requestTestRunCommand = vscode.commands.registerCommand(REQUEST_TEST_RUN,
-    () => worker.requestTestRun())
+    () => {
+      if(worker.requestLintFile) return worker.requestLintFile()
 
-  context.subscriptions.push(startCommand)
+      initNiketa('default')()
+      delay(1000).then(() => worker.requestLintFile())
+    })
+
+  const requestTestRunCommand = vscode.commands.registerCommand(REQUEST_TEST_RUN,
+    () => {
+      if(worker.requestTestRun) return worker.requestTestRun()
+
+      initNiketa('default')()
+      delay(1000).then(() => worker.requestTestRun())
+    })
+
   context.subscriptions.push(startAutoModeCommand)
   context.subscriptions.push(requestCancelationCommand)
   context.subscriptions.push(lintFileCommand)

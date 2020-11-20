@@ -19,7 +19,8 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:niketa.start",
+		"onCommand:niketa.request.test.run",
+		"onCommand:niketa.lint.file",
 		"onCommand:niketa.start.auto.mode"
 	],
 	"main": "./src/extension",
@@ -28,10 +29,6 @@
 	],
 	"contributes": {
 		"commands": [
-			{
-				"command": "niketa.start",
-				"title": "Niketa start"
-			},
 			{
 				"command": "niketa.start.auto.mode",
 				"title": "Niketa start auto-jest mode"
@@ -50,10 +47,6 @@
 			}
 		],
 		"keybindings": [
-			{
-				"command": "niketa.start",
-				"key": "ctrl+shift+1"
-			},
 			{
 				"command": "niketa.request.test.run",
 				"key": "alt+w"
