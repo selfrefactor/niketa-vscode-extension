@@ -54,16 +54,16 @@
 				"key": "ctrl+shift+1"
 			},
 			{
+				"command": "niketa.start.auto.mode",
+				"key": "ctrl+shift+2"
+			},
+			{
 				"command": "niketa.request.test.run",
 				"key": "alt+w"
 			},
 			{
 				"command": "niketa.lint.file",
 				"key": "ctrl+1"
-			},
-			{
-				"command": "niketa.start.auto.mode",
-				"key": "ctrl+shift+2"
 			},
 			{
 				"command": "niketa.request.cancelation",
