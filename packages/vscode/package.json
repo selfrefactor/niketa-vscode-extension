@@ -51,7 +51,7 @@
 		"keybindings": [
 			{
 				"command": "niketa.start",
-				"key": "ctrl+1"
+				"key": "ctrl+shift+1"
 			},
 			{
 				"command": "niketa.request.test.run",
@@ -59,7 +59,7 @@
 			},
 			{
 				"command": "niketa.lint.file",
-				"key": "ctrl+shift+1"
+				"key": "ctrl+1"
 			},
 			{
 				"command": "niketa.start.auto.mode",

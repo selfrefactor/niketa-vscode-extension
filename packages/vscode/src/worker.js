@@ -303,14 +303,12 @@ class Worker{
     this.fourthStatusBar = window.createStatusBarItem(StatusBarAlignment.Right,
       PRIORITY - 2)
 
-    this.firstStatusBar.command = REQUEST_LINT_FILE
     this.firstStatusBar.show()
     this.firstStatusBar.text = 'NIKETA APP STARTED'
     this.secondStatusBar.show()
     this.secondStatusBar.text = ''
     this.thirdStatusBar.show()
     this.thirdStatusBar.text = ''
-    this.fourthStatusBar.command = REQUEST_TEST_RUN
     this.fourthStatusBar.show()
     this.fourthStatusBar.text = '📸'
   }

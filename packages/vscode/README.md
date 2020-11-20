@@ -3,4 +3,13 @@
 
 ## Start
 
+**Ctrl+Shift+1**
+
+## Start Jest with current file
+
+**Alt+W**
+
+## Lint current file
+
 **Ctrl+1**
+

@@ -28,14 +28,14 @@ function activate(context){
     () => worker.requestCancelation())
   const lintFileCommand = vscode.commands.registerCommand(REQUEST_LINT_FILE,
     () => worker.requestLintFile())
-  const disableEnableCommand = vscode.commands.registerCommand(REQUEST_TEST_RUN,
+  const requestTestRunCommand = vscode.commands.registerCommand(REQUEST_TEST_RUN,
     () => worker.requestTestRun())
 
   context.subscriptions.push(startCommand)
   context.subscriptions.push(startAutoModeCommand)
   context.subscriptions.push(requestCancelationCommand)
   context.subscriptions.push(lintFileCommand)
-  context.subscriptions.push(disableEnableCommand)
+  context.subscriptions.push(requestTestRunCommand)
 }
 
 exports.activate = activate
