@@ -65,7 +65,6 @@ class Worker{
     this.firstStatusBar = undefined
     this.secondStatusBar = undefined
     this.thirdStatusBar = undefined
-    this.fourthStatusBar = undefined
   }
 
   isLocked(){
@@ -300,8 +299,6 @@ class Worker{
       PRIORITY)
     this.thirdStatusBar = window.createStatusBarItem(StatusBarAlignment.Right,
       PRIORITY - 1)
-    this.fourthStatusBar = window.createStatusBarItem(StatusBarAlignment.Right,
-      PRIORITY - 2)
 
     this.firstStatusBar.show()
     this.firstStatusBar.text = 'NIKETA APP STARTED'
@@ -309,8 +306,6 @@ class Worker{
     this.secondStatusBar.text = ''
     this.thirdStatusBar.show()
     this.thirdStatusBar.text = ''
-    this.fourthStatusBar.show()
-    this.fourthStatusBar.text = '📸'
   }
 
   findLinesInFocus(){

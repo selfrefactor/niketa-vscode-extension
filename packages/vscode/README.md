@@ -5,6 +5,10 @@
 
 **Ctrl+Shift+1**
 
+## Start automatic Jest run on every file save
+
+**Ctrl+Shift+2**
+
 ## Start Jest with current file
 
 **Alt+W**
