@@ -7,10 +7,6 @@ export const SUCCESS_ICON = '🐬'
 export const SHORT_SEPARATOR = repeat('🍄', 2).join('')
 export const LONG_SEPARATOR = repeat('🍺', 20).join('')
 
-export function isWorkFile(x){
-  return x.startsWith(`${ process.env.HOME }/work/`)
-}
-
 export function cleanAngularLog(x){
   return {
     ...x,

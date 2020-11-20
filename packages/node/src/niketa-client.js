@@ -13,7 +13,6 @@ import {
   extractNumber,
   isLintable,
   isMessageCorrect,
-  isWorkFile,
   JEST_BIN,
   LONG_SEPARATOR,
   maybeWarn,
@@ -28,7 +27,7 @@ import { getSpecFile } from './utils/get-spec-file'
 import { getNewDecorations } from './utils/get-new-decorations'
 import { getUncoveredMessage } from './utils/get-uncovered-message'
 
-const EXTENDED_LOG = true
+const EXTENDED_LOG = false
 
 const FUNCTIONS = '🕸' // ☈
 const STALE_SEPARATOR = '☄' // '🌰'
@@ -73,20 +72,17 @@ export class NiketaClient{
     this.testing = Boolean(testing)
     this.coverageHolder = {}
     this.lastLintedFiles = []
-    this.lintActionBusy = false
     this.emit = emit === undefined ? defaultEmit : emit
     this.initialized = false
   }
 
   async onJestMessage(message){
-    const { fileName, dir, hasTypescript, requestLintFile, forceLint } = message
+    const { fileName, dir, hasTypescript, requestLintFile } = message
     if (!isMessageCorrect(message)){
       return this.emtpyAnswer(fileName, 'message')
     }
 
-    const disableLint = isWorkFile(fileName)
     const lintOnly = isLintOnlyMode(fileName)
-    const canLint = isLintable(fileName)
     const lintMessage = ` ${ fileInfo(fileName) }`
 
     /*
@@ -98,7 +94,7 @@ export class NiketaClient{
       allowedSpecExtension
     )
 
-    debugLog({disableLint, lintOnly, canLint, hasValidSpec})
+    debugLog({lintOnly, hasValidSpec})
 
     if (requestLintFile){
       debugLog('requestLintFile')
@@ -109,35 +105,13 @@ export class NiketaClient{
       })
     }
 
-    if (lintOnly && !disableLint){
-      debugLog('lintOnly && !disableLint')
+    if (lintOnly){
+      debugLog('lintOnly')
       await lintOnlyMode(fileName)
 
       return this.lintAnswer(fileName, lintMessage)
     }
     
-    if (!hasValidSpec && disableLint){
-      debugLog('!hasValidSpec && disableLint')
-      return this.emtpyAnswer(fileName, 'lint is disabled')
-    }
-    
-    if (!hasValidSpec && !canLint){
-      debugLog('!hasValidSpec && !canLint')
-      
-      return this.emtpyAnswer(fileName, 'skip')
-    }
-
-    if(forceLint && canLint){
-      if(this.lintActionBusy){
-        debugLog('lint is busy')
-      } else{
-        debugLog('lint is possible')
-        this.lintActionBusy = true
-        this.applyLint(fileName)
-        this.markLint(fileName)
-      }
-    }
-
     if (!hasValidSpec) return this.emtpyAnswer(fileName, '!hasValidSpec')
 
     const [
@@ -150,7 +124,6 @@ export class NiketaClient{
       fileName     : fileName,
       specFileName : specFile,
     })
-    this.lintActionBusy = false
 
     if (failure) return this.emtpyAnswer(fileName, 'Jest stopped for known or unknown reasons')
     logJest(execResult, !this.testing)
@@ -168,7 +141,9 @@ export class NiketaClient{
   async handleRequestLint({ fileName, lintOnly, lintMessage }){
     if (lintOnly){
       await lintOnlyMode(fileName)
-    } else {
+    } else if(!isLintable(fileName)){
+      return this.emtpyAnswer(fileName, '!lintable')
+    }else{
       await this.applyLint(fileName)
     }
 
@@ -196,7 +171,6 @@ export class NiketaClient{
       thirdBarMessage  : lintMessage,
       hasDecorations   : false,
     })
-    // this.resetServer()
   }
 
   markLint(fileName){
@@ -258,7 +232,6 @@ export class NiketaClient{
       hasDecorations,
       newDecorations,
     })
-    // this.resetServer()
   }
 
   async execJest({ fileName, dir, specFileName }){
@@ -427,16 +400,6 @@ export class NiketaClient{
     }
 
     await this.onJestMessage(parsedMessage)
-  }
-
-  resetServer(){
-    delay(500).then(() => {
-      this.server.close(() => {
-        delay(500).then(() => {
-          this.start()
-        })
-      })
-    })
   }
 
   start(){
