@@ -29,7 +29,11 @@
 		"commands": [
 			{
 				"command": "niketa.start",
-				"title": "Niketa"
+				"title": "Niketa start"
+			},
+			{
+				"command": "niketa.start.auto.mode",
+				"title": "Niketa start auto-jest mode"
 			},
 			{
 				"command": "niketa.request.test.run",
@@ -42,10 +46,6 @@
 			{
 				"command": "niketa.lint.file",
 				"title": "Lint current file"
-			},
-			{
-				"command": "niketa.toggle.force.lint",
-				"title": "Toggle force lint mode"
 			}
 		],
 		"keybindings": [
@@ -62,7 +62,7 @@
 				"key": "ctrl+shift+1"
 			},
 			{
-				"command": "niketa.toggle.force.lint",
+				"command": "niketa.start.auto.mode",
 				"key": "ctrl+shift+2"
 			},
 			{

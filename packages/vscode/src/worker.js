@@ -60,7 +60,6 @@ class Worker{
       console.log(x, 'emit is not yet initialized')
     }
     this.dir = workspace.workspaceFolders[ 0 ].uri.path
-    this.forceLint = false
     this.loc = undefined
     this.latestFilePath = undefined
     this.firstStatusBar = undefined
@@ -71,9 +70,6 @@ class Worker{
 
   isLocked(){
     return this.lockFlag === true
-  }
-  stop(){
-    this.lockFlag = true
   }
   lock(loc){
     if (this.lockFlag) return
@@ -119,7 +115,6 @@ class Worker{
   getCalculated(){
     return {
       hasTypescript : this.hasTypescript,
-      forceLint : this.forceLint,
       dir           : this.dir,
     }
   }
@@ -389,10 +384,6 @@ class Worker{
       })
   }
 
-  toggleForceLintMode(){
-    this.forceLint = !this.forceLint
-  }
-
   getEditor(){
     const [ editor ] = window.visibleTextEditors
     if (!editor) throw new Error('!editor')
@@ -419,31 +410,30 @@ class Worker{
   }
 }
 
-const worker = new Worker()
 
-function initExtension(){
-  workspace.onDidSaveTextDocument(e => {
-    if (worker.isLocked()) return console.log('LOCKED')
-    worker.lock(e.lineCount)
-    worker.setLatestFile(e.fileName)
+exports.initExtension = (mode) => {
+  const worker = new Worker(mode)
 
-    const messageToSend = {
-      fileName : e.fileName,
-      ...worker.getCalculated(),
-    }
-
-    sendMessage(messageToSend)
-      .then(messageFromServer => {
-        worker.messageReceived(messageFromServer)
-      })
-      .catch(() => {
-        worker.resetOnError()
-      })
-  })
-}
-
-exports.initExtension = () => {
-  initExtension()
+  if(mode === 'auto.jest'){
+    workspace.onDidSaveTextDocument(e => {
+      if (worker.isLocked()) return console.log('LOCKED')
+      worker.lock(e.lineCount)
+      worker.setLatestFile(e.fileName)
+  
+      const messageToSend = {
+        fileName : e.fileName,
+        ...worker.getCalculated(),
+      }
+  
+      sendMessage(messageToSend)
+        .then(messageFromServer => {
+          worker.messageReceived(messageFromServer)
+        })
+        .catch(() => {
+          worker.resetOnError()
+        })
+    })
+  }
 
   return worker
 }
