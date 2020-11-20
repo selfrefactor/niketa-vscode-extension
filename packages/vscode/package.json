@@ -19,7 +19,8 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:niketa.start"
+		"onCommand:niketa.start",
+		"onCommand:niketa.start.auto.mode"
 	],
 	"main": "./src/extension",
 	"files": [
@@ -52,10 +53,6 @@
 			{
 				"command": "niketa.start",
 				"key": "ctrl+shift+1"
-			},
-			{
-				"command": "niketa.start.auto.mode",
-				"key": "ctrl+shift+2"
 			},
 			{
 				"command": "niketa.request.test.run",
@@ -97,8 +94,5 @@
 	},
 	"dependencies": {
 		"rambdax": "7.0.1"
-	},
-	"commitMessage": {
-		"workInProgress": ""
 	}
 }
