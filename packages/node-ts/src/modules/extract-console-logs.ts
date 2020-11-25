@@ -3,7 +3,7 @@ const LIMIT = 115
 const MARK = 'NIKETA_MARKER'
 
 interface Decoration {
-  line: number,
+  line: string,
   decoration: string,
 }
 

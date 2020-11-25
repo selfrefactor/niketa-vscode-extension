@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`bug 1`] = `
+Object {
+  "src/_modules/format-json.spec.js": Array [
+    Object {
+      "decoration": "1",
+      "line": "150",
+    },
+    Object {
+      "decoration": "[ 1, 2, 3 ]",
+      "line": "151",
+    },
+    Object {
+      "decoration": "{ a: 1 }",
+      "line": "152",
+    },
+  ],
+}
+`;
+
+exports[`bug 2`] = `
+Object {
+  "libs/sort-package-json/sort-package-json.spec.js": Array [
+    Object {
+      "decoration": "object",
+      "line": "5",
+    },
+  ],
+}
+`;
+
+exports[`happy only with new jest 1`] = `
+Object {
+  "libs/sort-package-json/sort-package-json.spec.js": Array [
+    Object {
+      "decoration": "{ type: 'object' } { type: 'boolean' } ",
+      "line": "6",
+    },
+    Object {
+      "decoration": "{ array: 'not array' }",
+      "line": "7",
+    },
+    Object {
+      "decoration": "{ keys: [ 'unsortedKeys', 'sortedKeys' ] }",
+      "line": "8",
+    },
+    Object {
+      "decoration": "{ unsortedKeys: [ 'name', 'version', 'description', 'author', 'license', 'scripts', 'dependencies', 'devDependencie",
+      "line": "9",
+    },
+  ],
+}
+`;
+
+exports[`old jest 1 1`] = `Object {}`;
+
+exports[`old jest 2 1`] = `Object {}`;
