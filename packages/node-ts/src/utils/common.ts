@@ -1,5 +1,6 @@
 import {log} from 'helpers-fn'
 import {pass, remove, repeat, type} from 'rambdax'
+import { ExecResult } from 'src/interfaces'
 
 export const JEST_BIN = './node_modules/jest/bin/jest.js'
 export const ERROR_ICON = '❌'
@@ -7,30 +8,26 @@ export const SUCCESS_ICON = '🐬'
 export const SHORT_SEPARATOR = repeat('🍄', 2).join('')
 export const LONG_SEPARATOR = repeat('🍺', 20).join('')
 
-export function isWorkFile(x) {
-  return x.startsWith(`${process.env.HOME}/work/`)
-}
-
-export function cleanAngularLog(x) {
+export function cleanAngularLog(x: ExecResult) {
   return {
     ...x,
     stderr: remove(/ts-jest\[.+/, x.stderr),
   }
 }
 
-export function toNumber(x) {
+export function toNumber(x: any) {
   return x === undefined || Number.isNaN(Number(x)) ? 0 : Number(x)
 }
 
-export function parse(x) {
+export function parse(x: number) {
   const result = Math.round(x * 100) / 100
 
   return parseFloat(`${result}`)
 }
 
-export const maybeWarn = x => (x < 0 ? `❗${x}` : x)
+export const maybeWarn = (x: number) => (x < 0 ? `❗${x}` : x)
 
-export function extractNumber(text) {
+export function extractNumber(text: string) {
   const justText = text.replace(
     /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
     ''
@@ -52,7 +49,7 @@ const messageSchema = {
   fileName: String,
 }
 
-export function isMessageCorrect(message) {
+export function isMessageCorrect(message: Record<string, any>) {
   const isCorrect = pass(message)(messageSchema)
   if (!isCorrect) {
     log('isMessageCorrect', 'error')

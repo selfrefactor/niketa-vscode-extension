@@ -2,6 +2,7 @@
   "name": "niketa-client",
   "scripts": {
     "in": "tsc --watch",
+    "out": "tsc",
     "x": "jest src/utils/get-coverage-path.spec.ts"
   },
   "main": "index.js",

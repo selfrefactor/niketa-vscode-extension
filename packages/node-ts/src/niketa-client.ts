@@ -26,6 +26,8 @@ import {getCoveragePath} from './utils/get-coverage-path'
 import {getSpecFile} from './utils/get-spec-file'
 import {getNewDecorations} from './utils/get-new-decorations'
 import {getUncoveredMessage} from './utils/get-uncovered-message'
+import {Message, JestSuccessMessage,ParseCoverage, NiketaClientInput} from './interfaces'
+
 
 const EXTENDED_LOG = false
 
@@ -64,36 +66,6 @@ function debugLog(toLog: any, label = '') {
   console.log(LONG_SEPARATOR)
   console.log(toLog)
   console.log(LONG_SEPARATOR)
-}
-
-interface Message{
-  fileName: string
-  dir:string 
-  hasTypescript: boolean 
-  requestLintFile: boolean
-}
-
-interface ExecResult{
-  stderr: string
-  stdout: string
-}
-
-interface JestSuccessMessage{
-  execResult: ExecResult
-      specFile:string
-      dir:string
-      actualFileName: string
-      fileName: string
-      extension: string
-      hasTypescript: boolean
-}
-
-interface ParseCoverage{
-  fileName: string
-  extension: string
-  actualFileName: string
-  execResult: ExecResult
-      hasError: boolean
 }
 
 export class NiketaClient {
@@ -355,6 +327,7 @@ const shorterSpecFile = remove(dir, specFile)
       lines,
       uncovered,
     ] = lineWithCoverage.split('|').map(extractNumber)
+
     const message = this.getCoverageDiff(
       [statements, branch, func, lines],
       fileName
@@ -367,7 +340,7 @@ const shorterSpecFile = remove(dir, specFile)
     }
   }
 
-  getCoverageDiff(inputs: string[], filePath: string) {
+  getCoverageDiff(inputs: any[], filePath: string) {
     const fileKey = createFileKey(filePath)
     const firstTime = this.coverageHolder[fileKey] === undefined
     const [statements, branch, func, lines] = inputs.map(toNumber)
@@ -435,11 +408,14 @@ const shorterSpecFile = remove(dir, specFile)
     this.jestChild = undefined
   }
 
-  async onSocketData(messageFromVSCode) {
-    const parsedMessage = tryCatch(
-      () => JSON.parse(messageFromVSCode.toString()),
-      false
-    )()
+  async onSocketData(messageFromVSCode: any) {
+    let parsedMessage: false | Message
+
+    try {
+      parsedMessage = JSON.parse(messageFromVSCode.toString())
+    } catch (_) {
+      parsedMessage = false
+    }
 
     if (parsedMessage === false) {
       return onWrongIncomingMessage(messageFromVSCode.toString())

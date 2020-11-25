@@ -1,8 +1,10 @@
 import {extractConsoleLogs} from '../modules/extract-console-logs'
 import {evaluateDecorations} from './evaluate-decorations'
 import {cleanJestOutput} from './clean-jest-output'
+import {GetNewDecorations} from '../interfaces'
 
-export function getNewDecorations({execResult, fileName, hasTypescript}) {
+export function getNewDecorations(fnInput: GetNewDecorations) {
+  const {execResult, fileName, hasTypescript} = fnInput
   const input = cleanJestOutput(execResult.stdout)
   const [consoleLogs] = input.split('----------------------|')
   const newDecorationsData = extractConsoleLogs(consoleLogs)
@@ -11,7 +13,7 @@ export function getNewDecorations({execResult, fileName, hasTypescript}) {
   }
 
   const newDecorations = evaluateDecorations({
-    newDecorationsData,
+    newDecorationsData: (newDecorationsData as any),
     fileName,
     hasTypescript,
   })

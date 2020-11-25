@@ -1,6 +1,6 @@
 import {remove} from 'rambdax'
 
-export function getUncoveredMessage(input) {
+export function getUncoveredMessage(input: string | number | undefined) {
   if (input === undefined) return
   if (input === '') return
   if (input === 0) return

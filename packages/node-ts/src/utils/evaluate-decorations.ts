@@ -1,24 +1,27 @@
 import {filter} from 'rambdax'
-export function evaluateDecorations({
-  newDecorationsData,
-  fileName,
-  hasTypescript,
-}) {
-  const unreliableLogData = []
-  const reliableLogData = {}
+import { EvaluateDecorations } from 'src/interfaces'
 
-  const triggerFileHasDecoration = filter((logData, prop) => {
+export function evaluateDecorations(input: EvaluateDecorations) {
+  const {
+    newDecorationsData,
+    fileName,
+    hasTypescript,
+  } = input
+  const unreliableLogData: Record<string, any> = []
+  const reliableLogData: Record<string, any> = {}
+
+  const triggerFileHasDecoration = filter<any>((logData: any, prop: string) => {
     const okLogData = fileName.endsWith(prop)
 
-    logData.map(({line, decoration}) => {
-      unreliableLogData.push(decoration)
+    logData.map((x: any) => {
+      unreliableLogData.push(x.decoration)
       if (okLogData) {
-        reliableLogData[line] = decoration
+        reliableLogData[x.line] = x.decoration
       }
     })
 
     return okLogData
-  })(newDecorationsData)
+  }, newDecorationsData)
 
   const correct =
     !hasTypescript && Object.keys(triggerFileHasDecoration).length === 1
