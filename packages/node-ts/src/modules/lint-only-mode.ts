@@ -12,11 +12,11 @@ const lintMethods = {
 }
 const lintOnlyList = [ '.html', '.scss', '.css', 'package.json' ]
 
-export function isLintOnlyMode(filePath){
+export function isLintOnlyMode(filePath: string){
   return any(flip(endsWith)(filePath), lintOnlyList)
 }
 
-async function usePrettier(filePath){
+async function usePrettier(filePath: string){
   const printWidth = filePath.endsWith('.html') ? 40 : 35
   const injectOptions = `--print-width ${ printWidth }`
   await execPrettier({
@@ -26,15 +26,15 @@ async function usePrettier(filePath){
   log(`${ filePath } linted with Prettier`, 'info')
 }
 
-export async function lintOnlyMode(filePath){
+export async function lintOnlyMode(filePath: string){
   console.log('lintOnlyMode', filePath)
 
-  const lintMethodKey = switcher(filePath)
-    .is(x => x.endsWith('package.json'), 'sortPackageJson')
-    .is(x => x.endsWith('.html'), 'prettyHtml')
+  const lintMethodKey = switcher<string>(filePath)
+    .is((x: string) => x.endsWith('package.json'), 'sortPackageJson')
+    .is((x: string) => x.endsWith('.html'), 'prettyHtml')
     .default('usePrettier')
 
-  const lintMethod = lintMethods[ lintMethodKey ]
+  const lintMethod = (lintMethods as any)[ lintMethodKey ]
   const lintResult = await lintMethod(filePath)
 
   return lintResult

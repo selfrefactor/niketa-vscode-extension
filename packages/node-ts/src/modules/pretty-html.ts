@@ -2,7 +2,7 @@ import prettyHtmlLib from '@starptech/prettyhtml'
 import { readFileSync, writeFileSync } from 'fs'
 import { log } from 'helpers-fn'
 
-export async function prettyHtml(filePath){
+export async function prettyHtml(filePath: string){
   try {
     const input = readFileSync(filePath, 'utf8')
     const { contents } = await prettyHtmlLib(input, {
