@@ -3,7 +3,7 @@ import { existsSync } from 'fs'
 import { log } from 'helpers-fn'
 import { lintFn } from 'lint-fn'
 import { createServer } from 'net'
-import { delay, glue, takeLast, tryCatch } from 'rambdax'
+import { delay, glue, takeLast, tryCatch, remove } from 'rambdax'
 
 import { isLintOnlyMode, lintOnlyMode } from './modules/lint-only-mode'
 import {
