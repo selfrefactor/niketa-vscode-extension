@@ -23,8 +23,8 @@ import {
 } from './utils/common'
 import { createFileKey } from './utils/create-file-key'
 import { getCoveragePath } from './utils/get-coverage-path'
-import { getSpecFile } from './utils/get-spec-file'
 import { getNewDecorations } from './utils/get-new-decorations'
+import { getSpecFile } from './utils/get-spec-file'
 import { getUncoveredMessage } from './utils/get-uncovered-message'
 
 const EXTENDED_LOG = false
@@ -48,7 +48,7 @@ function fileInfo(x){
   return `${ firstFolder }/${ fileName }`
 }
 
-function  onWrongIncomingMessage(message){
+function onWrongIncomingMessage(message){
   console.log({
     message : message.toString(),
     type    : typeof message,
@@ -57,7 +57,7 @@ function  onWrongIncomingMessage(message){
   return log('Error while parsing messageFromVSCode', 'error')
 }
 
-function   debugLog(toLog, label = ''){
+function debugLog(toLog, label = ''){
   if (!EXTENDED_LOG) return
 
   console.log(label, SHORT_SEPARATOR)
@@ -88,16 +88,18 @@ export class NiketaClient{
     /*
       Jest is setup for one of the two so we shouldn't check for both
     */
-   const allowedSpecExtension = hasTypescript ? '.ts' : '.js'
-    const {hasValidSpec, specFile} = getSpecFile(
-      fileName,
-      allowedSpecExtension
-    )
+    const allowedSpecExtension = hasTypescript ? '.ts' : '.js'
+    const { hasValidSpec, specFile } = getSpecFile(fileName,
+      allowedSpecExtension)
 
-    debugLog({lintOnly, hasValidSpec})
+    debugLog({
+      lintOnly,
+      hasValidSpec,
+    })
 
     if (requestLintFile){
       debugLog('requestLintFile')
+
       return this.handleRequestLint({
         fileName,
         lintOnly,
@@ -111,7 +113,7 @@ export class NiketaClient{
 
       return this.lintAnswer(fileName, lintMessage)
     }
-    
+
     if (!hasValidSpec) return this.emtpyAnswer(fileName, '!hasValidSpec')
 
     const [
@@ -125,10 +127,12 @@ export class NiketaClient{
       specFileName : specFile,
     })
 
-    if (failure) return this.emtpyAnswer(fileName, 'Jest stopped for known or unknown reasons')
+    if (failure)
+      return this.emtpyAnswer(fileName,
+        'Jest stopped for known or unknown reasons')
     logJest(execResult, !this.testing)
 
-    return this.sendToVSCode({
+    return this.onJestSuccess({
       specFile,
       execResult,
       actualFileName,
@@ -141,16 +145,14 @@ export class NiketaClient{
   async handleRequestLint({ fileName, lintOnly, lintMessage }){
     if (lintOnly){
       await lintOnlyMode(fileName)
-    } else if(!isLintable(fileName)){
+    } else if (!isLintable(fileName)){
       return this.emtpyAnswer(fileName, '!lintable')
-    }else{
+    } else {
       await this.applyLint(fileName)
     }
 
     return this.lintAnswer(fileName, lintMessage)
   }
-
-  
 
   emtpyAnswer(fileName, reason){
     debugLog(reason)
@@ -188,7 +190,7 @@ export class NiketaClient{
     await lintFn(fileName)
   }
 
-  sendToVSCode({
+  onJestSuccess({
     execResult,
     specFile,
     actualFileName,
@@ -309,6 +311,7 @@ export class NiketaClient{
       lines,
       uncovered,
     ] = lineWithCoverage.split('|').map(extractNumber)
+    
     const message = this.getCoverageDiff([ statements, branch, func, lines ],
       fileName)
 
