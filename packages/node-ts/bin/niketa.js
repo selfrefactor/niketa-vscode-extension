@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require('../start.js')
+require('../dist/src/start.js')
