@@ -45,7 +45,7 @@ export function extractNumber(text) {
   return asNumber
 }
 
-export const defaultEmit = x => console.log(x, 'emit not yet initialized')
+export const defaultEmit = (x: any) => console.log(x, 'emit not yet initialized')
 
 const messageSchema = {
   hasTypescript: Boolean,
@@ -64,6 +64,6 @@ export function isMessageCorrect(message) {
   return true
 }
 
-export function isLintable(fileName) {
+export function isLintable(fileName: string) {
   return fileName.endsWith('.js') || fileName.endsWith('.ts')
 }

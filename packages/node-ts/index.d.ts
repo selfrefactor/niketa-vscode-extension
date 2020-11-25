@@ -1,7 +1,7 @@
 interface NiketaClientInput{
   port: number
   testing?: boolean
-  emit?: object
+  emit?: (x: any) => void
 }
 
 interface Message{
