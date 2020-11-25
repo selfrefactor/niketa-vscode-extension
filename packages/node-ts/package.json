@@ -5,7 +5,7 @@
     "in": "tsc --watch"
   },
   "main": "index.js",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "dependencies": {
     "@starptech/prettyhtml": "0.10.0",
     "execa": "4.1.0",
@@ -15,13 +15,13 @@
     "string-fn": "3.0.2"
   },
   "bin": {
-		"niketa": "./bin/niketa.js"
+    "niketa": "bin/niketa.js"
   },
   "author": "Dejan Toteff <deyan8284@gmail.com>",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/selfrefactor/niketa/tree/master/packages/node-ts"
-	},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/selfrefactor/niketa/tree/master/packages/node-ts"
+  },
   "devDependencies": {
     "ts-loader": "8.0.5",
     "ts-jest": "26.4.1",
