@@ -134,6 +134,7 @@ export class NiketaClient{
 
     return this.onJestSuccess({
       specFile,
+      dir,
       execResult,
       actualFileName,
       fileName,
@@ -192,6 +193,7 @@ export class NiketaClient{
 
   onJestSuccess({
     execResult,
+    dir,
     specFile,
     actualFileName,
     fileName,
@@ -227,10 +229,12 @@ export class NiketaClient{
     },
     'vscode.message')
 
+    const shorterSpecFile = remove(dir, specFile)
+
     this.emit({
       firstBarMessage,
       secondBarMessage,
-      thirdBarMessage : specFile,
+      thirdBarMessage : shorterSpecFile,
       hasDecorations,
       newDecorations,
     })
@@ -311,7 +315,7 @@ export class NiketaClient{
       lines,
       uncovered,
     ] = lineWithCoverage.split('|').map(extractNumber)
-    
+
     const message = this.getCoverageDiff([ statements, branch, func, lines ],
       fileName)
 
