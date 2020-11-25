@@ -1,55 +1,38 @@
 # Niketa tools
 
-## Request non-lint action
+## Request Jest action
 
-`Alt+W`
+`alt+w`
+
+## Request lint action
+
+`ctrl+1`
 
 ### package.json
 
 It will sort `package.json` file
 
-## Request lint action
-
 ### *.html files
 
 Lint with `pretty-html`
 
-## TODO
+## Install
 
-- fix `bin` prop
+1. Install `Niketa` [vscode extension](https://marketplace.visualstudio.com/items?itemName=selfrefactor.niketa-tools)
+
+2. Add `niketa` to your **PATH** by running `npm i -g niketa`
+
+3. Run `niketa` in terminal
+
+4. In VSCode, go to Jest spec file and press `alt+w` to trigger Jest action
+
+5. After Jest is complete, you will receive coverage info in your VSCode
+
+## TODO
 
 - remove `any`
 
-Doesn't work with `magic-beans` as it uses `exports.foo = foo`
-
----
-old readme
-
-# Niketa-client
-
-Auto run `Jest` upon file save in `VSCode`
-
-This library does the heavy work, while `Niketa` VSCode extension provides the communication with `VSCode`.
-
-## TODO
-
-with typescript
-
-## Install
-
-1. Install `Niketa` [vscode extension](https://marketplace.visualstudio.com/items?itemName=selfrefactor.niketa)
-
-2. `git clone https://github.com/selfrefactor/niketa.git`
-
-3. `cd packages/node`
-
-4. `yarn`
-
-5. Run `node start`
-
-6. Open with VSCode project which already has `Jest` in `package.json` and also has its dependecies installed.
-
-That is everything. Now every time you change one of `foo.js` or `foo.spec.js` files, `Jest` will be executed and its coverage result will be displayed in `VSCode`
+- Doesn't work with `magic-beans` as it uses `exports.foo = foo`
 
 ## Jest version
 
