@@ -21,6 +21,7 @@
     "src/**/*.ts"
   ],
   "exclude": [
-    "test-data/**/*.js"
+    "test-data/**/*.js",
+    "coverage/**/*"
   ]
 }

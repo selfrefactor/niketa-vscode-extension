@@ -1,6 +1,0 @@
-.cache
-latest-log.txt
-node_modules
-coverage
-yarn-debug.log*
-yarn-error.log*
