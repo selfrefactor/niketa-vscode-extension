@@ -1,7 +1,7 @@
 const {existsSync} = require('fs')
 const {replace} = require('rambdax')
 
-function getSpecFile(filePath, extension) {
+export function getSpecFile(filePath: string, extension: string) {
   if (!filePath.endsWith(extension)) {
     return {hasValidSpec: false}
   }
@@ -18,5 +18,3 @@ function getSpecFile(filePath, extension) {
 
   return {hasValidSpec: true, specFile: maybeSpecFile}
 }
-
-exports.getSpecFile = getSpecFile
