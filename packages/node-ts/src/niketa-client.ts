@@ -3,7 +3,7 @@ import {existsSync} from 'fs'
 import {log} from 'helpers-fn'
 import {lintFn} from 'lint-fn'
 import {createServer} from 'net'
-import {delay, glue, takeLast, tryCatch, remove} from 'rambdax'
+import {delay, glue, takeLast, remove} from 'rambdax'
 
 import {isLintOnlyMode, lintOnlyMode} from './modules/lint-only-mode'
 import {
@@ -27,7 +27,6 @@ import {getSpecFile} from './utils/get-spec-file'
 import {getNewDecorations} from './utils/get-new-decorations'
 import {getUncoveredMessage} from './utils/get-uncovered-message'
 import {Message, JestSuccessMessage,ParseCoverage, NiketaClientInput} from './interfaces'
-
 
 const EXTENDED_LOG = false
 
@@ -157,15 +156,19 @@ export class NiketaClient {
 
   async handleRequestLint(input: {fileName: string, lintOnly: boolean, lintMessage: string}) {
     const {fileName, lintOnly, lintMessage} = input
-    if (lintOnly){
-      await lintOnlyMode(fileName)
-    } else if (!isLintable(fileName)){
+    
+    if (!lintOnly && !isLintable(fileName)){
       return this.emtpyAnswer(fileName, '!lintable')
-    } else {
-      await this.applyLint(fileName)
     }
 
-    return this.lintAnswer(lintMessage)
+    if (lintOnly){
+      await lintOnlyMode(fileName)
+      return this.lintAnswer(lintMessage)
+    } 
+
+      const hasLintError = await this.applyLint(fileName)
+      
+    return this.lintAnswer(hasLintError ? `${ERROR_ICON} ${lintMessage}` : lintMessage)
   }
 
   emtpyAnswer(fileName: string, reason: string) {
@@ -192,8 +195,10 @@ export class NiketaClient {
     log('sep')
     log(`willLint ${fileName}`, 'info')
     log('sep')
+    
+    const lintResult = await lintFn(fileName)
 
-    await lintFn(fileName)
+    return lintResult === false
   }
 
   onJestSuccess(input: JestSuccessMessage) {

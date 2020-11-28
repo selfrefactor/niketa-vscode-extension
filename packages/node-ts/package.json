@@ -10,7 +10,7 @@
     "@starptech/prettyhtml": "0.10.0",
     "execa": "4.1.0",
     "helpers-fn": "1.0.0",
-    "lint-fn": "2.12.1",
+    "lint-fn": "2.13.1",
     "rambdax": "7.0.1",
     "string-fn": "3.0.2"
   },
