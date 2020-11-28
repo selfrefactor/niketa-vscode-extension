@@ -165,10 +165,12 @@ export class NiketaClient {
       await lintOnlyMode(fileName)
       return this.lintAnswer(lintMessage)
     } 
-
-      const hasLintError = await this.applyLint(fileName)
-      
-    return this.lintAnswer(hasLintError ? `${ERROR_ICON} ${lintMessage}` : lintMessage)
+    try {
+      await this.applyLint(fileName)
+      return this.lintAnswer(lintMessage)
+    } catch (_) {
+      return this.lintAnswer(`${ERROR_ICON} ${lintMessage}`)
+    }
   }
 
   emtpyAnswer(fileName: string, reason: string) {
@@ -196,9 +198,7 @@ export class NiketaClient {
     log(`willLint ${fileName}`, 'info')
     log('sep')
     
-    const lintResult = await lintFn(fileName)
-
-    return lintResult === false
+    await lintFn(fileName)
   }
 
   onJestSuccess(input: JestSuccessMessage) {
