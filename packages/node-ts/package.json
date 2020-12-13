@@ -1,6 +1,7 @@
 {
   "name": "niketa",
   "scripts": {
+    "on":"node dist/src/start.js",
     "out": "tsc -p tsconfig.json",
     "in": "tsc --watch"
   },
