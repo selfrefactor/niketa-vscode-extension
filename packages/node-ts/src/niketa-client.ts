@@ -88,7 +88,7 @@ export class NiketaClient {
     const { fileName, dir, hasTypescript, requestLintFile } = message
 
     if (!isMessageCorrect(message)){
-      return this.emtpyAnswer(fileName, 'message')
+      return this.emtpyAnswer(fileName, 'message is incorrect')
     }
 
     const lintOnly = isLintOnlyMode(fileName)
@@ -123,7 +123,7 @@ export class NiketaClient {
       return this.lintAnswer(lintMessage)
     }
 
-    if (!hasValidSpec) return this.emtpyAnswer(fileName, '!hasValidSpec')
+    if (!hasValidSpec) return this.emtpyAnswer(fileName, 'spec is not valid')
 
     const [
       failure,
@@ -171,7 +171,7 @@ export class NiketaClient {
     debugLog(reason)
     this.emit({
       firstBarMessage: 'NO ACTION',
-      secondBarMessage: undefined,
+      secondBarMessage: reason,
       thirdBarMessage: fileInfo(fileName),
       hasDecorations: false,
     })

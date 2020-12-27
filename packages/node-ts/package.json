@@ -3,6 +3,7 @@
   "scripts": {
     "on":"node dist/src/start.js",
     "out": "tsc -p tsconfig.json",
+    "debug": "yarn out&&yarn on",
     "in": "tsc --watch"
   },
   "main": "index.js",
