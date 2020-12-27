@@ -177,8 +177,8 @@ export class NiketaClient {
     debugLog(reason)
     this.emit({
       firstBarMessage: 'NO ACTION',
-      secondBarMessage: reason,
-      thirdBarMessage: fileInfo(fileName),
+      secondBarMessage: undefined,
+      thirdBarMessage: `${reason} - ${fileInfo(fileName)}`,
       hasDecorations: false,
     })
   }
