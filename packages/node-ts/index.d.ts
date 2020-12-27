@@ -11,3 +11,5 @@ interface Message{
   requestLintFile: boolean
   forceLint: boolean
 }
+
+export function start(port?: number): Promise<void>
