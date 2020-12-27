@@ -1,13 +1,13 @@
 {
   "name": "niketa",
   "scripts": {
-    "on":"node dist/src/start.js",
+    "on": "node dist/src/start.js",
     "out": "tsc -p tsconfig.json",
     "debug": "yarn out&&yarn on",
     "in": "tsc --watch"
   },
   "main": "dist/src/index.js",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "dependencies": {
     "@starptech/prettyhtml": "0.10.0",
     "execa": "4.1.0",
