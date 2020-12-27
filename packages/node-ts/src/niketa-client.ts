@@ -156,15 +156,21 @@ export class NiketaClient {
 
   async handleRequestLint(input: {fileName: string, lintOnly: boolean, lintMessage: string}) {
     const {fileName, lintOnly, lintMessage} = input
-    if (lintOnly){
-      await lintOnlyMode(fileName)
-    } else if (!isLintable(fileName)){
+    
+    if (!lintOnly && !isLintable(fileName)){
       return this.emtpyAnswer(fileName, '!lintable')
-    } else {
-      await this.applyLint(fileName)
     }
 
-    return this.lintAnswer(lintMessage)
+    if (lintOnly){
+      await lintOnlyMode(fileName)
+      return this.lintAnswer(lintMessage)
+    } 
+    try {
+      await this.applyLint(fileName)
+      return this.lintAnswer(lintMessage)
+    } catch (_) {
+      return this.lintAnswer(`${ERROR_ICON} ${lintMessage}`)
+    }
   }
 
   emtpyAnswer(fileName: string, reason: string) {
@@ -191,7 +197,7 @@ export class NiketaClient {
     log('sep')
     log(`willLint ${fileName}`, 'info')
     log('sep')
-
+    
     await lintFn(fileName)
   }
 
