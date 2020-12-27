@@ -6,7 +6,7 @@
     "debug": "yarn out&&yarn on",
     "in": "tsc --watch"
   },
-  "main": "index.js",
+  "main": "dist/src/index.js",
   "version": "1.8.0",
   "dependencies": {
     "@starptech/prettyhtml": "0.10.0",
