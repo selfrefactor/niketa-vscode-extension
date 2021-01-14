@@ -198,7 +198,7 @@ export class NiketaClient {
     log(`willLint ${fileName}`, 'info')
     log('sep')
     
-    await lintFn(fileName)
+    await lintFn(fileName, 'local', false, true)
   }
 
   onJestSuccess(input: JestSuccessMessage) {
