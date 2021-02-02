@@ -273,6 +273,7 @@ const shorterSpecFile = remove(dir, specFile)
         testPattern,
       ].join(' ')
       this.jestChild = execa.command(command, {cwd: dir})
+      log('sepx')
       log('Jest start', 'info')
       const result = await this.jestChild
       log('Jest end', 'info')
