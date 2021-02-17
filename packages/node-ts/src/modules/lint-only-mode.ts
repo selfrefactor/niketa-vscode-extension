@@ -17,7 +17,7 @@ export function isLintOnlyMode(filePath: string){
 }
 
 async function usePrettier(filePath: string){
-  const printWidth = filePath.endsWith('.html') ? 40 : 35
+  const printWidth = filePath.endsWith('.html') ? 50 : 70
   const injectOptions = `--print-width ${ printWidth }`
   await execPrettier({
     filePath,
