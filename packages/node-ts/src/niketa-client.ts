@@ -415,6 +415,7 @@ const shorterSpecFile = remove(dir, specFile)
   }
 
   async onSocketData(messageFromVSCode: any) {
+    console.log(`messageFromVSCode`, messageFromVSCode)
     let parsedMessage: false | Message
 
     try {
