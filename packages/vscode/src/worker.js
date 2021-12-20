@@ -417,12 +417,13 @@ exports.initExtension = (mode) => {
         fileName : e.fileName,
         ...worker.getCalculated(),
       }
-  
+  console.log(`messageToSend`, messageToSend)
       sendMessage(messageToSend)
         .then(messageFromServer => {
           worker.messageReceived(messageFromServer)
         })
-        .catch(() => {
+        .catch(err => {
+          console.log(`err`, err)
           worker.resetOnError()
         })
     })
