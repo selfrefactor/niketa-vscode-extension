@@ -403,7 +403,6 @@ class Worker{
   }
 }
 
-
 exports.initExtension = (mode) => {
   const worker = new Worker(mode)
 
