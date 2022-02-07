@@ -62,5 +62,5 @@ export function isMessageCorrect(message: Record<string, any>) {
 }
 
 export function isLintable(fileName: string) {
-  return fileName.endsWith('.js') || fileName.endsWith('.ts')
+  return fileName.endsWith('.js') || fileName.endsWith('.ts') || fileName.endsWith('.tsx')
 }
