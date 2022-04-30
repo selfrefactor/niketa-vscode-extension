@@ -87,7 +87,15 @@ export class NiketaClient {
 
   async onPytestMessage(message: Message){
     const { fileName, dir } = message
-
+    const baseProps = {
+      secondBarMessage: '',
+      thirdBarMessage: '',
+      hasDecorations: false,
+      newDecorations: {
+        correct: null,
+        logData: '',
+      }
+    }
     try {
       const command = [
         `pipenv`,
@@ -107,22 +115,18 @@ export class NiketaClient {
       console.log(`stdout`, stdout)
       log('Pytest end', 'info')
       this.pytestChild = undefined
-
+      this.emit({
+        ...baseProps,
+        firstBarMessage: 'success',
+        tooltip: stdout
+      })
     } catch (e) {
       console.log(e, `pytest try.catch`)
+      this.emit({
+        ...baseProps,
+        firstBarMessage: 'failed',
+      })
     }
-    const newDecorations = {
-      correct: null,
-      logData: 'foo',
-    }
-    this.emit({
-      firstBarMessage: 'completed',
-      secondBarMessage: '',
-      tooltip: 'FOO BAR',
-      thirdBarMessage: '',
-      hasDecorations: false,
-      newDecorations,
-    })
   }
   async onJestMessage(message: Message){
     const { fileName, dir, hasTypescript, requestLintFile } = message
