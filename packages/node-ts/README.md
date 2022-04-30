@@ -1,5 +1,7 @@
 # Niketa tools
 
+// pipenv run pytest tests/unit_tests/foo.py -v -rf --capture=no
+
 ## Request Jest action
 
 `alt+w`

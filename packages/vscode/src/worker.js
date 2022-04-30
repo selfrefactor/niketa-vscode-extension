@@ -8,7 +8,6 @@ const {
 const { delay, range, path, tryCatch, ok } = require('rambdax')
 const { existsSync } = require('fs')
 const { niketaConfig } = require('./utils/niketa-config.js')
-const { REQUEST_LINT_FILE, REQUEST_TEST_RUN } = require('./constants')
 const { Socket } = require('net')
 
 const CLIENT_PORT = niketaConfig('PORT')
@@ -416,7 +415,7 @@ exports.initExtension = (mode) => {
         fileName : e.fileName,
         ...worker.getCalculated(),
       }
-  console.log(`messageToSend`, messageToSend)
+      
       sendMessage(messageToSend)
         .then(messageFromServer => {
           worker.messageReceived(messageFromServer)
