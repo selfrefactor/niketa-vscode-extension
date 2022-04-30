@@ -112,12 +112,13 @@ export class NiketaClient {
       console.log(e, `pytest try.catch`)
     }
     const newDecorations = {
-      correct: true,
+      correct: null,
       logData: 'foo',
     }
     this.emit({
       firstBarMessage: 'completed',
       secondBarMessage: '',
+      tooltip: 'FOO BAR',
       thirdBarMessage: '',
       hasDecorations: false,
       newDecorations,

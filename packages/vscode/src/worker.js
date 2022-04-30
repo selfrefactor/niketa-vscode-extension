@@ -212,6 +212,7 @@ class Worker{
     firstBarMessage,
     secondBarMessage,
     thirdBarMessage,
+    tooltip
   }){
     const messages =
       firstBarMessage === '' ?
@@ -222,6 +223,7 @@ class Worker{
     this.setterStatusBar({
       newText        : messages[ 0 ],
       statusBarIndex : 0,
+      tooltip
     })
 
     await delay(SMALL_DELAY)
@@ -251,12 +253,14 @@ class Worker{
       firstBarMessage,
       secondBarMessage,
       thirdBarMessage,
+      tooltip
     } = parsedMessage
 
     this.updateStatusBars({
       firstBarMessage,
       secondBarMessage,
       thirdBarMessage,
+      tooltip
     })
     if (hasDecorations === false) return this.clearDecorations()
 
@@ -278,7 +282,7 @@ class Worker{
       textEditor.setDecorations(this.decorationType, []))
   }
 
-  setterStatusBar({ newText, statusBarIndex }){
+  setterStatusBar({ newText, statusBarIndex, tooltip = '' }){
     if (![ 0, 1, 2, 3 ].includes(statusBarIndex)) return
     const indexToProperty = [
       'firstStatusBar',
@@ -289,6 +293,9 @@ class Worker{
     if (!selectedStatusBar) return
 
     selectedStatusBar.text = newText
+    if(tooltip){
+      selectedStatusBar.tooltip = tooltip
+    }
   }
 
   initStatusBars(){
