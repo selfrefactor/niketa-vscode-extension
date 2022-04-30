@@ -75,6 +75,7 @@ export class NiketaClient {
   initialized: boolean
   server: any
   jestChild: any
+  pytestChild: any
 
   constructor(input: NiketaClientInput) {
     this.port = input.port
@@ -84,6 +85,33 @@ export class NiketaClient {
     this.initialized = false
   }
 
+  async onPytestMessage(message: Message){
+    const { fileName, dir } = message
+
+    try {
+      const command = [
+        `pipenv`,
+        'run',
+        `pytest`,
+        fileName,
+        '-v',
+        '-rf',
+        '--capture=no',
+      ].join(' ')
+      this.pytestChild = execa.command(command, {cwd: dir})
+      log('sepx')
+      log('Pytest start', 'info')
+      const {stdout, stderr} = await this.pytestChild
+
+      console.log(`stderr`, stderr)
+      console.log(`stdout`, stdout)
+      log('Pytest end', 'info')
+      this.pytestChild = undefined
+
+    } catch (e) {
+      console.log(e, `pytest try.catch`)
+    }
+  }
   async onJestMessage(message: Message){
     const { fileName, dir, hasTypescript, requestLintFile } = message
 
@@ -415,7 +443,6 @@ const shorterSpecFile = remove(dir, specFile)
   }
 
   async onSocketData(messageFromVSCode: any) {
-    console.log(`messageFromVSCode`, messageFromVSCode)
     let parsedMessage: false | Message
 
     try {
@@ -433,7 +460,10 @@ const shorterSpecFile = remove(dir, specFile)
     if (parsedMessage.requestCancelation) {
       return this.onCancelMessage()
     }
-
+    if(parsedMessage.fileName.endsWith('.py')){
+      await this.onPytestMessage(parsedMessage)
+      return
+    }
     await this.onJestMessage(parsedMessage)
   }
 
