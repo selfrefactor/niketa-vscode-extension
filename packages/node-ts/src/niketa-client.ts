@@ -111,6 +111,17 @@ export class NiketaClient {
     } catch (e) {
       console.log(e, `pytest try.catch`)
     }
+    const newDecorations = {
+      correct: true,
+      logData: 'foo',
+    }
+    this.emit({
+      firstBarMessage: 'completed',
+      secondBarMessage: '',
+      thirdBarMessage: '',
+      hasDecorations: false,
+      newDecorations,
+    })
   }
   async onJestMessage(message: Message){
     const { fileName, dir, hasTypescript, requestLintFile } = message
@@ -270,7 +281,8 @@ export class NiketaClient {
       },
       'vscode.message'
     )
-const shorterSpecFile = remove(dir, specFile)
+    const shorterSpecFile = remove(dir, specFile)
+    
     this.emit({
       firstBarMessage,
       secondBarMessage,
