@@ -117,7 +117,7 @@ export class NiketaClient {
       this.pytestChild = undefined
       this.emit({
         ...baseProps,
-        firstBarMessage: 'success',
+        firstBarMessage: `${fileName} - success`,
         tooltip: stdout
       })
     } catch (e) {
