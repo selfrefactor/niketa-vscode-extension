@@ -1,5 +1,9 @@
 # Niketa tools
 
+## TODO
+
+logging it doesn't work with `niketa-theme`
+
 // pipenv run pytest tests/unit_tests/foo.py -v -rf --capture=no
 
 ## Request Jest action

@@ -325,7 +325,7 @@ export class NiketaClient {
       this.jestChild = undefined
 
       return [false, result, actualFileName, extension]
-    } catch (e) {
+    } catch (e: any) {
       if (e.isCanceled) return [true]
       if (!e.stdout) return [true]
       if (!e.stderr) return [true]

@@ -13,7 +13,7 @@ const lintMethods = {
 const lintOnlyList = [ '.html', '.scss', '.css', 'package.json' ]
 
 export function isLintOnlyMode(filePath: string){
-  return any(flip(endsWith)(filePath), lintOnlyList)
+  return any<any>(flip(endsWith)(filePath), lintOnlyList)
 }
 
 async function usePrettier(filePath: string){
