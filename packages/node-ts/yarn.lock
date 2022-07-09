@@ -3355,10 +3355,10 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.2.4.tgz#eca284f75d2965079309dc0ad9255abb2ebc1632"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
-lint-fn@2.21.0:
-  version "2.21.0"
-  resolved "https://registry.yarnpkg.com/lint-fn/-/lint-fn-2.21.0.tgz#a5a039d1ff6880bf542df79f023594b4d08ee3a8"
-  integrity sha512-3mjQ5k2NEC9QgZl6q0TOsnXvkuS1IkHz1PiBio/BFnjyt8dUTbYQ19LHZCNbVWkDtsz8mMV7sOVwTDYr5WrPqw==
+lint-fn@2.22.0:
+  version "2.22.0"
+  resolved "https://registry.yarnpkg.com/lint-fn/-/lint-fn-2.22.0.tgz#5c8ba2af5932298383d874eb036d3e8074bd6c0e"
+  integrity sha512-fqufFjNH20uM5iU2Hxw6yKK/2U7wvrjeeDIcRt8poUbE3Zf/rIZ+DmTVdWxkCYzmtBxZl0WWYxHXzLniKPVtzg==
   dependencies:
     "@babel/core" "7.18.6"
     "@babel/eslint-parser" "7.18.2"
@@ -3376,6 +3376,7 @@ lint-fn@2.21.0:
     eslint-plugin-sort-requires "2.1.0"
     fs-extra "10.1.0"
     prettier "2.7.1"
+    prettier-plugin-organize-attributes "^0.0.5"
     rambdax "8.0.1"
 
 load-json-file@^4.0.0:
@@ -3894,6 +3895,11 @@ prepend-http@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha512-ravE6m9Atw9Z/jjttRUZ+clIXogdghyZAuWJ3qEzjT+jI/dL1ifAqhZeC5VHzQp1MSt1+jxKkFNemj/iO7tVUA==
+
+prettier-plugin-organize-attributes@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-organize-attributes/-/prettier-plugin-organize-attributes-0.0.5.tgz#46e54533936fc42a3cff3d876a738a3f98df0360"
+  integrity sha512-dSts16q8wd+oq8Zwk5mwmYXo1aN3B+ZkEJqx/ar5fedNHdOvx7S4XDMH/pNK7rmBW0bPXkp/kJX5gAANsWzh3A==
 
 prettier@2.7.1, prettier@^2.1.2:
   version "2.7.1"

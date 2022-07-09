@@ -1,9 +1,11 @@
 import prettyHtmlLib from '@starptech/prettyhtml'
+import { execPrettier } from 'lint-fn'
 import { readFileSync, writeFileSync } from 'fs'
 import { log } from 'helpers-fn'
-
+const injectOptions = '--print-width 34'
 export async function prettyHtml(filePath: string){
   try {
+    await execPrettier({filePath, prettierSpecialCase:'html', injectOptions})
     const input = readFileSync(filePath, 'utf8')
     const { contents } = await prettyHtmlLib(input, {
       printWidth     : 55,
