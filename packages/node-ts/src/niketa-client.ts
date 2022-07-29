@@ -248,14 +248,19 @@ export class NiketaClient {
     // await tryCatchAsync(lintFn, null)(fileName)
 
     // usual script
-    const lintResult = await lintFn({
+    const lintResult1 = await lintFn({
+      filePath:fileName,
+      debug:true
+    })
+    console.log(lintResult1, `lintResult1`)
+    const lintResult2 = await lintFn({
       filePath:fileName,
       prettierSpecialCase: 'local',
       cwdOverride: false,
       forceTypescript: true,
-      debug:false
+      debug:true
     })
-    // console.log(lintResult, `lintResult`)
+    console.log(lintResult2, `lintResult2`)
     // await tryCatchAsync(async x => lintFn(x, 'local', false, true), null)(fileName)
 
     log(`willLint ${fileName}`, 'success')
