@@ -245,10 +245,18 @@ export class NiketaClient {
     log(`willLint ${fileName}`, 'info')
     
     // not ideal but it works for work-related TS files
-    await tryCatchAsync(lintFn, null)(fileName)
+    // await tryCatchAsync(lintFn, null)(fileName)
 
     // usual script
-    await tryCatchAsync(async x => lintFn(x, 'local', false, true), null)(fileName)
+    const lintResult = await lintFn({
+      filePath:fileName,
+      prettierSpecialCase: 'local',
+      cwdOverride: false,
+      forceTypescript: true,
+      debug:false
+    })
+    // console.log(lintResult, `lintResult`)
+    // await tryCatchAsync(async x => lintFn(x, 'local', false, true), null)(fileName)
 
     log(`willLint ${fileName}`, 'success')
     log('sep')
