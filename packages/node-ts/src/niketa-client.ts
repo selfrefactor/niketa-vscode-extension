@@ -18,7 +18,7 @@ import {existsSync} from 'fs'
 import {log} from 'helpers-fn'
 import {lintFn} from 'lint-fn'
 import {createServer} from 'net'
-import {delay, glue, takeLast, remove} from 'rambdax'
+import {delay, glue, takeLast, remove, tryCatchAsync} from 'rambdax'
 import {isLintOnlyMode, lintOnlyMode} from './modules/lint-only-mode'
 import {createFileKey} from './utils/create-file-key'
 import {getCoveragePath} from './utils/get-coverage-path'
@@ -244,8 +244,12 @@ export class NiketaClient {
     log('sep')
     log(`willLint ${fileName}`, 'info')
     
-    // await lintFn(fileName) //
-    await lintFn(fileName, 'local', false, true)
+    // not ideal but it works for work-related TS files
+    await tryCatchAsync(lintFn, null)(fileName)
+
+    // usual script
+    await tryCatchAsync(async x => lintFn(x, 'local', false, true), null)(fileName)
+
     log(`willLint ${fileName}`, 'success')
     log('sep')
   }

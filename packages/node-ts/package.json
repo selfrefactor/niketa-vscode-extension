@@ -10,9 +10,9 @@
 	"version": "1.9.0",
 	"dependencies": {
 		"@starptech/prettyhtml": "0.10.0",
-		"execa": "5.0.0",
+		"execa": "5.0.1",
 		"helpers-fn": "1.6.0",
-		"lint-fn": "2.22.1",
+		"lint-fn": "2.24.0",
 		"rambdax": "8.0.1",
 		"string-fn": "3.1.0"
 	},
