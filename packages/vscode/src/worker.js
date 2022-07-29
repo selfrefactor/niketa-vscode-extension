@@ -36,9 +36,7 @@ function sendMessage(messageToSend){
         return resolve(data)
       })
 
-      client.on('close', () => {
-        return resolve(false)
-      })
+      client.on('close', () => resolve(false))
     } catch (error){
       return reject(error)
     }
@@ -69,6 +67,7 @@ class Worker{
   isLocked(){
     return this.lockFlag === true
   }
+
   lock(loc){
     if (this.lockFlag) return
 
@@ -212,7 +211,7 @@ class Worker{
     firstBarMessage,
     secondBarMessage,
     thirdBarMessage,
-    tooltip
+    tooltip,
   }){
     const messages =
       firstBarMessage === '' ?
@@ -223,7 +222,7 @@ class Worker{
     this.setterStatusBar({
       newText        : messages[ 0 ],
       statusBarIndex : 0,
-      tooltip
+      tooltip,
     })
 
     await delay(SMALL_DELAY)
@@ -242,6 +241,15 @@ class Worker{
     }
   }
 
+  simpleMessageToUser(message, fileName){
+    this.updateStatusBars({
+      firstBarMessage: message,
+      secondBarMessage: fileName,
+      thirdBarMessage: '',
+      tooltip: '',
+    })
+  }
+
   messageReceived(messageFromServer){
     const parse = () => JSON.parse(messageFromServer.toString())
     const parsedMessage = tryCatch(parse, false)()
@@ -253,14 +261,14 @@ class Worker{
       firstBarMessage,
       secondBarMessage,
       thirdBarMessage,
-      tooltip
+      tooltip,
     } = parsedMessage
 
     this.updateStatusBars({
       firstBarMessage,
       secondBarMessage,
       thirdBarMessage,
-      tooltip
+      tooltip,
     })
     if (hasDecorations === false) return this.clearDecorations()
 
@@ -293,7 +301,7 @@ class Worker{
     if (!selectedStatusBar) return
 
     selectedStatusBar.text = newText
-    if(tooltip){
+    if (tooltip){
       selectedStatusBar.tooltip = tooltip
     }
   }
@@ -330,25 +338,29 @@ class Worker{
     await delay(SMALL_DELAY)
     this.resetOnError()
   }
-  
+
   getCurrentFile(){
     const editor = this.getEditor()
     const { fileName: currentFilePath, lineCount: loc } = editor.document
     if (!currentFilePath) return {}
 
-    return {currentFilePath, loc}
+    return {
+      currentFilePath,
+      loc,
+    }
   }
 
   async requestLintFile(){
-    const {currentFilePath} = this.getCurrentFile()
+    const { currentFilePath } = this.getCurrentFile()
     if (!currentFilePath) return console.log('currentFilePath is empty')
 
-    sendMessage()
-    const messageToSend = { 
-      requestLintFile : true, 
-      fileName : currentFilePath,
+    const messageToSend = {
+      requestLintFile : true,
+      fileName        : currentFilePath,
       ...this.getCalculated(),
     }
+
+    this.simpleMessageToUser('LINT EXPECTED', currentFilePath)
 
     sendMessage(messageToSend)
       .then(messageFromServer => {
@@ -360,7 +372,7 @@ class Worker{
   }
 
   requestTestRun(){
-    const {loc, currentFilePath} = this.getCurrentFile()
+    const { loc, currentFilePath } = this.getCurrentFile()
     if (!currentFilePath) return console.log('currentFilePath is empty')
 
     this.setLatestFile(currentFilePath)
@@ -373,6 +385,7 @@ class Worker{
       fileName : currentFilePath,
       ...this.getCalculated(),
     }
+    this.simpleMessageToUser('TEST RUN EXPECTED', currentFilePath)
 
     sendMessage(messageToSend)
       .then(messageFromServer => {
@@ -409,30 +422,7 @@ class Worker{
   }
 }
 
-exports.initExtension = (mode) => {
+exports.initExtension = mode => {
   const worker = new Worker(mode)
-
-  if(mode === 'auto.jest'){
-    workspace.onDidSaveTextDocument(e => {
-      if (worker.isLocked()) return console.log('LOCKED')
-      worker.lock(e.lineCount)
-      worker.setLatestFile(e.fileName)
-  
-      const messageToSend = {
-        fileName : e.fileName,
-        ...worker.getCalculated(),
-      }
-      
-      sendMessage(messageToSend)
-        .then(messageFromServer => {
-          worker.messageReceived(messageFromServer)
-        })
-        .catch(err => {
-          console.log(`err`, err)
-          worker.resetOnError()
-        })
-    })
-  }
-
   return worker
 }
