@@ -12,10 +12,13 @@
 		"@starptech/prettyhtml": "0.10.0",
 		"execa": "5.0.0",
 		"helpers-fn": "1.6.0",
-		"lint-fn": "2.22.0",
+		"lint-fn": "2.22.1",
 		"rambdax": "8.0.1",
 		"string-fn": "3.1.0"
 	},
+	"depFn": [
+		"execa"
+	],
 	"bin": {
 		"niketa": "bin/niketa.js"
 	},
@@ -26,12 +29,12 @@
 	},
 	"devDependencies": {
 		"ts-loader": "9.3.1",
-		"ts-jest": "28.0.5",
+		"ts-jest": "28.0.7",
 		"tslint-fn": "0.2.2",
-		"@types/jest": "28.1.4",
-		"@types/node": "18.0.3",
+		"@types/jest": "28.1.6",
+		"@types/node": "18.6.2",
 		"@types/fs-extra": "9.0.13",
-		"jest": "28.1.2",
+		"jest": "28.1.3",
 		"typescript": "4.7.4"
 	},
 	"license": "MIT",

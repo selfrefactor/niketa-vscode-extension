@@ -25,7 +25,7 @@ import {getCoveragePath} from './utils/get-coverage-path'
 import {getSpecFile} from './utils/get-spec-file'
 import {getNewDecorations} from './utils/get-new-decorations'
 import {getUncoveredMessage} from './utils/get-uncovered-message'
-import {Message, JestSuccessMessage,ParseCoverage, NiketaClientInput} from './interfaces'
+import {Message, JestSuccessMessage, ParseCoverage, NiketaClientInput} from './interfaces'
 
 const EXTENDED_LOG = false
 
@@ -67,6 +67,16 @@ function debugLog(toLog: any, label = '') {
   console.log(LONG_SEPARATOR)
 }
 
+const baseEmitProps = {
+  secondBarMessage: '',
+  thirdBarMessage: '',
+  hasDecorations: false,
+  newDecorations: {
+    correct: null,
+    logData: '',
+  }
+}
+
 export class NiketaClient {
   port: number
   testing: boolean
@@ -82,20 +92,12 @@ export class NiketaClient {
     this.testing = Boolean(input.testing)
     this.coverageHolder = {}
     this.emit = input.emit === undefined ? defaultEmit : input.emit
-    this.initialized = false
+    this.initialized = false;
   }
 
   async onPytestMessage(message: Message){
     const { fileName, dir } = message
-    const baseProps = {
-      secondBarMessage: '',
-      thirdBarMessage: '',
-      hasDecorations: false,
-      newDecorations: {
-        correct: null,
-        logData: '',
-      }
-    }
+    
     try {
       const command = [
         `pipenv`,
@@ -116,15 +118,15 @@ export class NiketaClient {
       log('Pytest end', 'info')
       this.pytestChild = undefined
       this.emit({
-        ...baseProps,
-        firstBarMessage: `${fileName} - success`,
+        ...baseEmitProps,
+        firstBarMessage: `SUCCESS - ${fileName}`,
         tooltip: stdout
       })
     } catch (e) {
       console.log(e, `pytest try.catch`)
       this.emit({
-        ...baseProps,
-        firstBarMessage: 'failed',
+        ...baseEmitProps,
+        firstBarMessage: 'FAILED',
       })
     }
   }
@@ -156,6 +158,7 @@ export class NiketaClient {
       return this.handleRequestLint({
         fileName,
         lintOnly,
+        dir,
         lintMessage,
       })
     }
@@ -198,7 +201,7 @@ export class NiketaClient {
     })
   }
 
-  async handleRequestLint(input: {fileName: string, lintOnly: boolean, lintMessage: string}) {
+  async handleRequestLint(input: {fileName: string, lintOnly: boolean, lintMessage: string, dir: string}) {
     const {fileName, lintOnly, lintMessage} = input
     
     if (!lintOnly && !isLintable(fileName)){
@@ -229,7 +232,7 @@ export class NiketaClient {
 
   lintAnswer(lintMessage: string) {
     this.emit({
-      firstBarMessage: 'LINT ACTION',
+      firstBarMessage: 'LINT COMPLETED',
       secondBarMessage: undefined,
       thirdBarMessage: lintMessage,
       hasDecorations: false,
@@ -240,9 +243,11 @@ export class NiketaClient {
     if (!existsSync(fileName)) return log(`${fileName} is deleted`, 'error')
     log('sep')
     log(`willLint ${fileName}`, 'info')
-    log('sep')
     
+    // await lintFn(fileName) //
     await lintFn(fileName, 'local', false, true)
+    log(`willLint ${fileName}`, 'success')
+    log('sep')
   }
 
   onJestSuccess(input: JestSuccessMessage) {
@@ -485,7 +490,7 @@ export class NiketaClient {
   }
 
   start() {
-    if (this.initialized) log('Already initialized', 'box')
+    log(this.initialized ? 'Already initialized' : 'start niketa TDD tool', 'box')
     this.server = createServer(socket => {
       this.initialized = true
 
@@ -495,7 +500,9 @@ export class NiketaClient {
         this.initialized = false
         console.log(err, 'socket.error.niketa.client')
         this.server.close(() => {
+          console.log('niketa TDD closed')
           delay(2000).then(() => {
+            console.log('niketa TDD will restart')
             this.start()
           })
         })
