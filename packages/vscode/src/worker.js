@@ -244,7 +244,7 @@ class Worker{
   simpleMessageToUser(message, fileName){
     this.updateStatusBars({
       firstBarMessage: message,
-      secondBarMessage: fileName,
+      secondBarMessage: '',
       thirdBarMessage: '',
       tooltip: '',
     })
@@ -360,7 +360,7 @@ class Worker{
       ...this.getCalculated(),
     }
 
-    this.simpleMessageToUser('LINT EXPECTED', currentFilePath)
+    this.simpleMessageToUser('LINT EXPECTED')
 
     sendMessage(messageToSend)
       .then(messageFromServer => {
@@ -385,7 +385,7 @@ class Worker{
       fileName : currentFilePath,
       ...this.getCalculated(),
     }
-    this.simpleMessageToUser('TEST RUN EXPECTED', currentFilePath)
+    this.simpleMessageToUser('TEST RUN EXPECTED')
 
     sendMessage(messageToSend)
       .then(messageFromServer => {
