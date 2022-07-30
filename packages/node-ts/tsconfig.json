@@ -24,9 +24,5 @@
     "test-data/**/*.js",
     "src/**/*.spec.ts",
     "coverage/**/*"
-  ],
-  "files": [
-    "src/start.ts",
-    "src/niketa-client.ts"
   ]
 }

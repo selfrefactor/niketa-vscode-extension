@@ -14,11 +14,9 @@ import {
   toNumber,
 } from './utils/common'
 import execa from 'execa'
-import {existsSync} from 'fs'
 import {log} from 'helpers-fn'
-import {lintFn} from 'lint-fn'
 import {createServer} from 'net'
-import {delay, glue, takeLast, remove, tryCatchAsync} from 'rambdax'
+import {delay, glue, takeLast, remove} from 'rambdax'
 import {isLintOnlyMode, lintOnlyMode} from './modules/lint-only-mode'
 import {createFileKey} from './utils/create-file-key'
 import {getCoveragePath} from './utils/get-coverage-path'
@@ -26,6 +24,7 @@ import {getSpecFile} from './utils/get-spec-file'
 import {getNewDecorations} from './utils/get-new-decorations'
 import {getUncoveredMessage} from './utils/get-uncovered-message'
 import {Message, JestSuccessMessage, ParseCoverage, NiketaClientInput} from './interfaces'
+import { applyLint } from './apply-lint'
 
 const EXTENDED_LOG = false
 
@@ -213,7 +212,7 @@ export class NiketaClient {
       return this.lintAnswer(lintMessage)
     } 
     try {
-      await this.applyLint(fileName)
+      await applyLint(fileName)
       return this.lintAnswer(lintMessage)
     } catch (_) {
       return this.lintAnswer(`${ERROR_ICON} ${lintMessage}`)
@@ -237,34 +236,6 @@ export class NiketaClient {
       thirdBarMessage: lintMessage,
       hasDecorations: false,
     })
-  }
-
-  async applyLint(fileName: string) {
-    if (!existsSync(fileName)) return log(`${fileName} is deleted`, 'error')
-    log('sep')
-    log(`willLint ${fileName}`, 'info')
-    
-    // not ideal but it works for work-related TS files
-    // await tryCatchAsync(lintFn, null)(fileName)
-
-    // usual script
-    const lintResult1 = await lintFn({
-      filePath:fileName,
-      debug:true
-    })
-    console.log(lintResult1, `lintResult1`)
-    const lintResult2 = await lintFn({
-      filePath:fileName,
-      prettierSpecialCase: 'local',
-      cwdOverride: false,
-      forceTypescript: true,
-      debug:true
-    })
-    console.log(lintResult2, `lintResult2`)
-    // await tryCatchAsync(async x => lintFn(x, 'local', false, true), null)(fileName)
-
-    log(`willLint ${fileName}`, 'success')
-    log('sep')
   }
 
   onJestSuccess(input: JestSuccessMessage) {
