@@ -1805,10 +1805,10 @@ eslint-plugin-jest-formatting@3.1.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-jest-formatting/-/eslint-plugin-jest-formatting-3.1.0.tgz#b26dd5a40f432b642dcc880021a771bb1c93dcd2"
   integrity sha512-XyysraZ1JSgGbLSDxjj5HzKKh0glgWf+7CkqxbTqb7zEhW7X2WHo5SBQ8cGhnszKN+2Lj3/oevBlHNbHezoc/A==
 
-eslint-plugin-jest@26.6.0:
-  version "26.6.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-26.6.0.tgz#546804fa42da75d7d58d4d3b278d5186abd3f6c0"
-  integrity sha512-f8n46/97ZFdU4KqeQYqO8AEVGIhHWvkpgNBWHH3jrM28/y8llnbf3IjfIKv6p2pZIMinK1PCqbbROxs9Eud02Q==
+eslint-plugin-jest@26.7.0:
+  version "26.7.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-26.7.0.tgz#41d405ac9143e1284a3401282db47ed459436778"
+  integrity sha512-/YNitdfG3o3cC6juZziAdkk6nfJt01jXVfj4AgaYVLs7bupHzRDL5K+eipdzhDXtQsiqaX1TzfwSuRlEgeln1A==
   dependencies:
     "@typescript-eslint/utils" "^5.10.0"
 
@@ -3355,10 +3355,10 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.2.4.tgz#eca284f75d2965079309dc0ad9255abb2ebc1632"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
-lint-fn@2.30.0:
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/lint-fn/-/lint-fn-2.30.0.tgz#ff28560a3ce04f8724610244133b40fa2c353a31"
-  integrity sha512-ytA/G8DKwBz9YOIPqIDhWqpSv9CCIT7OJXZsPiZpkI1v47zX7VqMzazTUdbMXsCgOeFnAiKI3panBiYMWGMf9w==
+lint-fn@2.31.0:
+  version "2.31.0"
+  resolved "https://registry.yarnpkg.com/lint-fn/-/lint-fn-2.31.0.tgz#6c7b5454a009d2776b304a291e3715b945d66ead"
+  integrity sha512-ojOcsw7nqtIokh3h2FBsrhNL0TyrOizbBeT5wE6jt9j/WvWxyQMwPA9T/gRCEyGmgzc5F5PfKR0jSblWD/uj7Q==
   dependencies:
     "@babel/core" "7.18.9"
     "@babel/eslint-parser" "7.18.9"
@@ -3367,7 +3367,7 @@ lint-fn@2.30.0:
     eslint "8.20.0"
     eslint-plugin-async-await "0.0.0"
     eslint-plugin-babel "5.3.1"
-    eslint-plugin-jest "26.6.0"
+    eslint-plugin-jest "26.7.0"
     eslint-plugin-jest-formatting "3.1.0"
     eslint-plugin-no-unsafe-regex "1.0.0"
     eslint-plugin-node "11.1.0"
@@ -3377,7 +3377,7 @@ lint-fn@2.30.0:
     fs-extra "10.1.0"
     prettier "2.7.1"
     prettier-plugin-organize-attributes "0.0.5"
-    rambdax "8.0.1"
+    rambdax "8.1.0"
 
 load-json-file@^4.0.0:
   version "4.0.0"
@@ -4005,10 +4005,10 @@ rambdax@7.2.0:
   resolved "https://registry.yarnpkg.com/rambdax/-/rambdax-7.2.0.tgz#f2632cb96a89d330d05fa41b488c12185b46001a"
   integrity sha512-l1r7tYf/oRIpCiw1BJB7kSYl9i7H4tJheKbnWq95DM83Q4CazmRYJ+WM/VRaffr09yvMCdgeF4n6Ya4uWBe/Aw==
 
-rambdax@8.0.1:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/rambdax/-/rambdax-8.0.1.tgz#8539d1c0cc6fb4d0d27d1994006362f3ddd0908a"
-  integrity sha512-0hZag7A4PSSOG0P4AoluStiRMLFnM/1C/D7BdCBNvrqHfmeY7QDnxvkoXmTLmb6dXbnjS2SwyrXmlWCoq35Jlw==
+rambdax@8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/rambdax/-/rambdax-8.1.0.tgz#1737feb9ae33d184b1db85832dd1972b819e2630"
+  integrity sha512-8TQS3jorlSSubddKTyVrsp9mevF2WMBtdEPjp9Bk8ipVijD5/9gVXGgBF4d0JzO6kzegCFYWANrbHLyKLE6YVA==
 
 rc@1.2.8, rc@^1.1.0, rc@^1.2.8:
   version "1.2.8"
