@@ -1,10 +1,10 @@
 import { existsSync } from 'fs';
 import { log } from 'helpers-fn';
-import { lintFn, LintFnResult } from 'lint-fn';
+import { lintFn } from 'lint-fn';
 
-function checkShouldContinue(result: false|LintFnResult, label:string, debug: boolean){
+function checkShouldContinue(result: boolean, label:string, debug: boolean){
   if(debug) console.log(result, label);
-  if(!result || result.usePrettierResult.length === 0){
+  if(!result){
 
     return true
   } 
