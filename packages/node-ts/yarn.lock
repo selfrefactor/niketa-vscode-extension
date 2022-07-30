@@ -3611,10 +3611,10 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.2.4.tgz#eca284f75d2965079309dc0ad9255abb2ebc1632"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
-lint-fn@2.33.0:
-  version "2.33.0"
-  resolved "https://registry.yarnpkg.com/lint-fn/-/lint-fn-2.33.0.tgz#ac556a660d40728d1d29da2632016a3a3259798f"
-  integrity sha512-0de+s/xM2goYTLj6qsTFSUp6rMIavnTN3+VNS8EdyLZLB+pvp75t7K5RZtiT3JOhiTG4fMhbpti8f4opVYHyNQ==
+lint-fn@2.34.0:
+  version "2.34.0"
+  resolved "https://registry.yarnpkg.com/lint-fn/-/lint-fn-2.34.0.tgz#7289cbae6c45f1f31dc09c72a4a308c33de3f224"
+  integrity sha512-SsB/8kTv+0PDmBM4lZMUYWJ2fzzengOOPjmUNIcpDUrFIJiDcrO5p8bnjJMS6Pu41Ag8rIj/CrPRNm8sEoU0Ag==
   dependencies:
     "@babel/core" "7.18.9"
     "@babel/eslint-parser" "7.18.9"
