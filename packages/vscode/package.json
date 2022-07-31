@@ -56,6 +56,10 @@
 				"key": "ctrl+1"
 			},
 			{
+				"command": "niketa.lint.file.alt",
+				"key": "ctrl+shift+1"
+			},
+			{
 				"command": "niketa.request.cancelation",
 				"key": "ctrl+shift+3"
 			}
