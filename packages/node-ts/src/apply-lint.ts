@@ -2,7 +2,7 @@ import {existsSync} from 'fs'
 import {log} from 'helpers-fn'
 import {lintFn} from 'lint-fn'
 
-function checkShouldContinue(result: any, label: string, debug: boolean) {
+function checkShouldContinue(result: any, label: string, debug?: boolean) {
   if (debug) console.log(result, label)
   if (!result) {
     return true
@@ -13,31 +13,37 @@ function checkShouldContinue(result: any, label: string, debug: boolean) {
   return false
 }
 
-export async function applyLint(fileName: string, debug = false) {
-  if (!existsSync(fileName)) return log(`${fileName} is deleted`, 'error')
+export async function applyLint(input: {
+  fileName: string,
+  debug?: boolean,
+  altLintMode: boolean,
+}) {
+  if (!existsSync(input.fileName))
+    return log(`${input.fileName} is deleted`, 'error')
 
   log('sep')
-  log(`will lint ${fileName}`, 'info')
+  log(`will lint ${input.fileName}`, 'info')
 
-  const initialLintResult = await lintFn({
-    filePath: fileName,
-    debug,
-  })
-  if (!checkShouldContinue(initialLintResult, 'initial', debug)) return
+  const baseProps = {
+    filePath: input.fileName,
+    debug: input.debug,
+    useAlternativeExecCommand: input.altLintMode,
+  }
+
+  const initialLintResult = await lintFn(baseProps)
+  if (!checkShouldContinue(initialLintResult, 'initial', input.debug)) return
 
   const lintResultWithOuter = await lintFn({
-    filePath: fileName,
+    ...baseProps,
     prettierSpecialCase: 'outer',
-    debug,
   })
-  if (!checkShouldContinue(lintResultWithOuter, 'outer', debug)) return
+  if (!checkShouldContinue(lintResultWithOuter, 'outer', input.debug)) return
   const lintResultWithLocal = await lintFn({
-    filePath: fileName,
+    ...baseProps,
     prettierSpecialCase: 'local',
     forceTypescript: true,
-    debug,
   })
-  if (!checkShouldContinue(lintResultWithLocal, 'local', debug)) return
+  if (!checkShouldContinue(lintResultWithLocal, 'local', input.debug)) return
   log(`File failed to be linted`, 'error')
   log('sep')
 }

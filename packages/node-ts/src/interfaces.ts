@@ -3,6 +3,7 @@ export interface Message {
   dir: string,
   hasTypescript: boolean,
   requestLintFile: boolean,
+  altLintMode: boolean,
   requestCancelation: boolean,
 }
 
@@ -11,10 +12,10 @@ export interface ExecResult {
   stdout: string,
 }
 
-export interface GetNewDecorations{
-  execResult: ExecResult
-      fileName: string,
-      hasTypescript: boolean,
+export interface GetNewDecorations {
+  execResult: ExecResult,
+  fileName: string,
+  hasTypescript: boolean,
 }
 
 export interface JestSuccessMessage {
@@ -35,14 +36,14 @@ export interface ParseCoverage {
   hasError: boolean,
 }
 
-export interface EvaluateDecorations{
-  newDecorationsData: any[]
+export interface EvaluateDecorations {
+  newDecorationsData: any[],
   fileName: string,
   hasTypescript: boolean,
 }
 
-export interface NiketaClientInput{
-  port: number
-  testing?: boolean
-  emit?: (x: any) => void
+export interface NiketaClientInput {
+  port: number,
+  testing?: boolean,
+  emit?: (x: any) => void,
 }

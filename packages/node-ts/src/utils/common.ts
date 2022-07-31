@@ -1,6 +1,6 @@
 import {log} from 'helpers-fn'
 import {pass, remove, repeat, type} from 'rambdax'
-import { ExecResult } from 'src/interfaces'
+import {ExecResult} from 'src/interfaces'
 
 export const JEST_BIN = './node_modules/jest/bin/jest.js'
 export const ERROR_ICON = '❌'
@@ -25,7 +25,7 @@ export function parse(x: number) {
   return parseFloat(`${result}`)
 }
 
-export const maybeWarn = (x: number) => (x < 0 ? `❗${x}` : x)
+export const maybeWarn = (x: number) => x < 0 ? `❗${x}` : x
 
 export function extractNumber(text: string) {
   const justText = text.replace(
@@ -42,7 +42,8 @@ export function extractNumber(text: string) {
   return asNumber
 }
 
-export const defaultEmit = (x: any) => console.log(x, 'emit not yet initialized')
+export const defaultEmit = (x: any) =>
+  console.log(x, 'emit not yet initialized')
 
 const messageSchema = {
   hasTypescript: Boolean,
@@ -62,5 +63,9 @@ export function isMessageCorrect(message: Record<string, any>) {
 }
 
 export function isLintable(fileName: string) {
-  return fileName.endsWith('.js') || fileName.endsWith('.ts') || fileName.endsWith('.tsx')
+  return (
+    fileName.endsWith('.js') ||
+    fileName.endsWith('.ts') ||
+    fileName.endsWith('.tsx')
+  )
 }

@@ -23,8 +23,13 @@ import {getCoveragePath} from './utils/get-coverage-path'
 import {getSpecFile} from './utils/get-spec-file'
 import {getNewDecorations} from './utils/get-new-decorations'
 import {getUncoveredMessage} from './utils/get-uncovered-message'
-import {Message, JestSuccessMessage, ParseCoverage, NiketaClientInput} from './interfaces'
-import { applyLint } from './apply-lint'
+import {
+  Message,
+  JestSuccessMessage,
+  ParseCoverage,
+  NiketaClientInput,
+} from './interfaces'
+import {applyLint} from './apply-lint'
 
 const EXTENDED_LOG = false
 
@@ -73,7 +78,7 @@ const baseEmitProps = {
   newDecorations: {
     correct: null,
     logData: '',
-  }
+  },
 }
 
 export class NiketaClient {
@@ -91,12 +96,12 @@ export class NiketaClient {
     this.testing = Boolean(input.testing)
     this.coverageHolder = {}
     this.emit = input.emit === undefined ? defaultEmit : input.emit
-    this.initialized = false;
+    this.initialized = false
   }
 
-  async onPytestMessage(message: Message){
-    const { fileName, dir } = message
-    
+  async onPytestMessage(message: Message) {
+    const {fileName, dir} = message
+
     try {
       const command = [
         `pipenv`,
@@ -119,7 +124,7 @@ export class NiketaClient {
       this.emit({
         ...baseEmitProps,
         firstBarMessage: `SUCCESS - ${fileName}`,
-        tooltip: stdout
+        tooltip: stdout,
       })
     } catch (e) {
       console.log(e, `pytest try.catch`)
@@ -129,29 +134,32 @@ export class NiketaClient {
       })
     }
   }
-  async onJestMessage(message: Message){
-    const { fileName, dir, hasTypescript, requestLintFile } = message
+  async onJestMessage(message: Message) {
+    const {fileName, dir, hasTypescript, requestLintFile, altLintMode} =
+      message
 
-    if (!isMessageCorrect(message)){
+    if (!isMessageCorrect(message)) {
       return this.emtpyAnswer(fileName, 'message is incorrect')
     }
 
     const lintOnly = isLintOnlyMode(fileName)
-    const lintMessage = ` ${ fileInfo(fileName) }`
+    const lintMessage = ` ${fileInfo(fileName)}`
 
     /*
       Jest is setup for one of the two so we shouldn't check for both
     */
     const allowedSpecExtension = hasTypescript ? '.ts' : '.js'
-    const { hasValidSpec, specFile } = getSpecFile(fileName,
-      allowedSpecExtension)
+    const {hasValidSpec, specFile} = getSpecFile(
+      fileName,
+      allowedSpecExtension
+    )
 
     debugLog({
       lintOnly,
       hasValidSpec,
     })
 
-    if (requestLintFile){
+    if (requestLintFile) {
       debugLog('requestLintFile')
 
       return this.handleRequestLint({
@@ -159,10 +167,11 @@ export class NiketaClient {
         lintOnly,
         dir,
         lintMessage,
+        altLintMode,
       })
     }
 
-    if (lintOnly){
+    if (lintOnly) {
       debugLog('lintOnly')
       await lintOnlyMode(fileName)
 
@@ -171,20 +180,18 @@ export class NiketaClient {
 
     if (!hasValidSpec) return this.emtpyAnswer(fileName, 'spec is not valid')
 
-    const [
-      failure,
-      execResult,
-      actualFileName,
-      extension,
-    ] = await this.execJest({
-      dir,
-      fileName     : fileName,
-      specFileName : specFile,
-    })
+    const [failure, execResult, actualFileName, extension] =
+      await this.execJest({
+        dir,
+        fileName: fileName,
+        specFileName: specFile,
+      })
 
-    if (failure){
-      return this.emtpyAnswer(fileName,
-        'Jest stopped for known or unknown reasons')
+    if (failure) {
+      return this.emtpyAnswer(
+        fileName,
+        'Jest stopped for known or unknown reasons'
+      )
     }
 
     logJest(execResult, !this.testing)
@@ -200,19 +207,25 @@ export class NiketaClient {
     })
   }
 
-  async handleRequestLint(input: {fileName: string, lintOnly: boolean, lintMessage: string, dir: string}) {
-    const {fileName, lintOnly, lintMessage} = input
-    
-    if (!lintOnly && !isLintable(fileName)){
+  async handleRequestLint(input: {
+    fileName: string,
+    lintOnly: boolean,
+    lintMessage: string,
+    dir: string,
+    altLintMode: boolean,
+  }) {
+    const {fileName, lintOnly, lintMessage, altLintMode} = input
+
+    if (!lintOnly && !isLintable(fileName)) {
       return this.emtpyAnswer(fileName, '!lintable')
     }
 
-    if (lintOnly){
+    if (lintOnly) {
       await lintOnlyMode(fileName)
       return this.lintAnswer(lintMessage)
-    } 
+    }
     try {
-      await applyLint(fileName)
+      await applyLint({fileName, altLintMode})
       return this.lintAnswer(lintMessage)
     } catch (_) {
       return this.lintAnswer(`${ERROR_ICON} ${lintMessage}`)
@@ -280,7 +293,7 @@ export class NiketaClient {
       'vscode.message'
     )
     const shorterSpecFile = remove(dir, specFile)
-    
+
     this.emit({
       firstBarMessage,
       secondBarMessage,
@@ -290,7 +303,11 @@ export class NiketaClient {
     })
   }
 
-  async execJest(input: {fileName: string, dir: string, specFileName: string}) {
+  async execJest(input: {
+    fileName: string,
+    dir: string,
+    specFileName: string,
+  }) {
     const {fileName, dir, specFileName} = input
     const [coveragePath, actualFileName, extension] = getCoveragePath(
       dir,
@@ -336,15 +353,10 @@ export class NiketaClient {
   }
 
   parseCoverage(parseCoverageInput: ParseCoverage) {
-    const {
-      execResult,
-      actualFileName,
-      fileName,
-      extension,
-      hasError,
-    } = parseCoverageInput
+    const {execResult, actualFileName, fileName, extension, hasError} =
+      parseCoverageInput
     if (hasError) return {}
-    
+
     const input = cleanAngularLog(execResult)
     const pass = input.stderr.includes('PASS')
     const jestOutputLines = input.stdout.split('\n')
@@ -363,14 +375,9 @@ export class NiketaClient {
       }
     }
 
-    const [
-      ,
-      statements,
-      branch,
-      func,
-      lines,
-      uncovered,
-    ] = lineWithCoverage.split('|').map(extractNumber)
+    const [, statements, branch, func, lines, uncovered] = lineWithCoverage
+      .split('|')
+      .map(extractNumber)
 
     const message = this.getCoverageDiff(
       [statements, branch, func, lines],
@@ -470,7 +477,7 @@ export class NiketaClient {
     if (parsedMessage.requestCancelation) {
       return this.onCancelMessage()
     }
-    if(parsedMessage.fileName.endsWith('.py')){
+    if (parsedMessage.fileName.endsWith('.py')) {
       await this.onPytestMessage(parsedMessage)
       return
     }
@@ -478,7 +485,10 @@ export class NiketaClient {
   }
 
   start() {
-    log(this.initialized ? 'Already initialized' : 'start niketa TDD tool', 'box')
+    log(
+      this.initialized ? 'Already initialized' : 'start niketa TDD tool',
+      'box'
+    )
     this.server = createServer(socket => {
       this.initialized = true
 

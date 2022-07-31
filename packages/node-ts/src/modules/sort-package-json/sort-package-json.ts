@@ -1,5 +1,5 @@
-import { outputJson, readJson } from 'fs-extra'
-import { omit, replace } from 'rambdax'
+import {outputJson, readJson} from 'fs-extra'
+import {omit, replace} from 'rambdax'
 
 const ORDER = [
   'name',
@@ -18,30 +18,29 @@ const ORDER = [
   'depFn',
 ]
 
-export async function sortPackageJson(location: string, options = {testing: false}){
-  const { testing } = options
+export async function sortPackageJson(
+  location: string,
+  options = {testing: false}
+) {
+  const {testing} = options
   const unsorted = await readJson(location)
   const ignored = omit(ORDER, unsorted)
 
-  const sorted: Record<string,string> = {}
+  const sorted: Record<string, string> = {}
 
   ORDER.forEach(property => {
-    if (unsorted[ property ] === undefined) return
+    if (unsorted[property] === undefined) return
 
-    sorted[ property ] = unsorted[ property ]
+    sorted[property] = unsorted[property]
   })
 
   const toSave = {
     ...sorted,
     ...ignored,
   }
-  const output = testing ?
-    replace(
-      '.json', '-sorted.json', location
-    ) :
-    location
+  const output = testing
+    ? replace('.json', '-sorted.json', location)
+    : location
 
-  await outputJson(
-    output, toSave, { spaces : 2 }
-  )
+  await outputJson(output, toSave, {spaces: 2})
 }

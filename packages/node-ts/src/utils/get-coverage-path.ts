@@ -1,7 +1,7 @@
 import {last, remove} from 'rambdax'
-import { assertString } from './asserts'
+import {assertString} from './asserts'
 
-export function getCoveragePath(dir: string, filePath: string): string[]{
+export function getCoveragePath(dir: string, filePath: string): string[] {
   const extension = filePath.endsWith('.js') ? '.js' : '.ts'
 
   const file = remove([`${dir}/`, '.spec', extension], filePath)

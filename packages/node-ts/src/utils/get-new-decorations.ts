@@ -13,7 +13,7 @@ export function getNewDecorations(fnInput: GetNewDecorations) {
   }
 
   const newDecorations = evaluateDecorations({
-    newDecorationsData: (newDecorationsData as any),
+    newDecorationsData: newDecorationsData as any,
     fileName,
     hasTypescript,
   })

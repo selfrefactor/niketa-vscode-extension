@@ -3,8 +3,8 @@ import {
   testInputSecond,
   testInputThird,
 } from '../../test-data/extract-logs/data'
-import { newJest, bug } from '../../test-data/extract-logs/new-jest'
-import { extractConsoleLogs } from './extract-console-logs'
+import {newJest, bug} from '../../test-data/extract-logs/new-jest'
+import {extractConsoleLogs} from './extract-console-logs'
 
 test('bug', async () => {
   const result = extractConsoleLogs(bug)
