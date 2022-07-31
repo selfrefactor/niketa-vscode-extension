@@ -1,4 +1,4 @@
-export function bothHaveLogs(x){
+export function bothHaveLogs(x) {
   console.log(x)
   console.log(typeof x)
 

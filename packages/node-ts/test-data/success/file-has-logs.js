@@ -1,4 +1,4 @@
-export function fileHasLogs(x){
+export function fileHasLogs(x) {
   console.log(x)
   console.log(typeof x)
 

@@ -1,6 +1,6 @@
-import { asyncTest } from './async'
+import {asyncTest} from './async'
 
 test('happy', async () => {
-  console.log([ 1, 2, 3 ])
+  console.log([1, 2, 3])
   await asyncTest()
 })

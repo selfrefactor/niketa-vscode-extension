@@ -1,4 +1,4 @@
-import { fileHasLogs } from './file-has-logs'
+import {fileHasLogs} from './file-has-logs'
 
 test('happy', () => {
   fileHasLogs(9)
