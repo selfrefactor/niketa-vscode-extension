@@ -8,7 +8,7 @@ function checkShouldContinue(result: any, label: string, debug?: boolean) {
     return true
   }
 
-  log(`File is linted`, 'success')
+  log(`File is linted`, 'box')
   log('sep')
   return false
 }
@@ -23,6 +23,7 @@ export async function applyLint(input: {
 
   log('sep')
   log(`will lint ${input.fileName}`, 'info')
+  log('sep')
 
   const baseProps = {
     filePath: input.fileName,
@@ -44,6 +45,5 @@ export async function applyLint(input: {
     forceTypescript: true,
   })
   if (!checkShouldContinue(lintResultWithLocal, 'local', input.debug)) return
-  log(`File failed to be linted`, 'error')
-  log('sep')
+  log(`File failed to be linted`, 'box')
 }
