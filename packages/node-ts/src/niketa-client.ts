@@ -31,7 +31,7 @@ import {
 } from './interfaces'
 import {applyLint} from './apply-lint'
 
-const EXTENDED_LOG = false
+const EXTENDED_LOG = process.env.NIKETA_CLIENT_EXTENDED_LOG === `ON`
 
 const FUNCTIONS = '☈' // 🕸
 const STALE_SEPARATOR = '☄' // 🌰
@@ -139,7 +139,7 @@ export class NiketaClient {
       message
 
     if (!isMessageCorrect(message)) {
-      return this.emtpyAnswer(fileName, 'message is incorrect')
+      return this.emptyAnswer(fileName, 'message is incorrect')
     }
 
     const lintOnly = isLintOnlyMode(fileName)
@@ -178,7 +178,7 @@ export class NiketaClient {
       return this.lintAnswer(lintMessage)
     }
 
-    if (!hasValidSpec) return this.emtpyAnswer(fileName, 'spec is not valid')
+    if (!hasValidSpec) return this.emptyAnswer(fileName, 'spec is not valid')
 
     const [failure, execResult, actualFileName, extension] =
       await this.execJest({
@@ -188,7 +188,7 @@ export class NiketaClient {
       })
 
     if (failure) {
-      return this.emtpyAnswer(
+      return this.emptyAnswer(
         fileName,
         'Jest stopped for known or unknown reasons'
       )
@@ -217,7 +217,7 @@ export class NiketaClient {
     const {fileName, lintOnly, lintMessage, altLintMode} = input
 
     if (!lintOnly && !isLintable(fileName)) {
-      return this.emtpyAnswer(fileName, '!lintable')
+      return this.emptyAnswer(fileName, '!lintable')
     }
 
     if (lintOnly) {
@@ -232,7 +232,7 @@ export class NiketaClient {
     }
   }
 
-  emtpyAnswer(fileName: string, reason: string) {
+  emptyAnswer(fileName: string, reason: string) {
     debugLog(reason)
     this.emit({
       firstBarMessage: 'NO ACTION',
