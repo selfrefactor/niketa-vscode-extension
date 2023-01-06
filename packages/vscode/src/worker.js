@@ -398,7 +398,7 @@ class Worker{
   }
 
   getEditor(){
-    const [ editor ] = window.visibleTextEditors
+    const editor = window.activeTextEditor
     if (!editor) throw new Error('!editor')
 
     return editor
