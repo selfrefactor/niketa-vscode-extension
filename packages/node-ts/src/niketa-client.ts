@@ -135,7 +135,7 @@ export class NiketaClient {
     }
   }
   async onJestMessage(message: Message) {
-    const {fileName, dir, hasTypescript, requestLintFile, altLintMode} =
+    const {fileName, dir, hasTypescript, requestLintFile} =
       message
 
     if (!isMessageCorrect(message)) {
@@ -167,7 +167,6 @@ export class NiketaClient {
         lintOnly,
         dir,
         lintMessage,
-        altLintMode,
       })
     }
 
@@ -212,9 +211,8 @@ export class NiketaClient {
     lintOnly: boolean,
     lintMessage: string,
     dir: string,
-    altLintMode: boolean,
   }) {
-    const {fileName, lintOnly, lintMessage, altLintMode} = input
+    const {fileName, lintOnly, lintMessage} = input
 
     if (!lintOnly && !isLintable(fileName)) {
       return this.emptyAnswer(fileName, '!lintable')
@@ -225,7 +223,10 @@ export class NiketaClient {
       return this.lintAnswer(lintMessage)
     }
     try {
-      await applyLint({fileName, altLintMode})
+      const withoutForceTS = await applyLint(fileName, false)
+      if(!withoutForceTS){
+        await applyLint(fileName, true)
+      }
       return this.lintAnswer(lintMessage)
     } catch (_) {
       return this.lintAnswer(`${ERROR_ICON} ${lintMessage}`)

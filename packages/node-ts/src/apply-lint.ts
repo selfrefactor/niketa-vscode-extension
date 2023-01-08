@@ -8,42 +8,44 @@ function checkShouldContinue(result: any, label: string, debug?: boolean) {
     return true
   }
 
-  log(`File is linted`, 'box')
+  log(`File is linted "${label}"`, 'box')
   log('sep')
   return false
 }
 
-export async function applyLint(input: {
-  fileName: string,
-  debug?: boolean,
-  altLintMode: boolean,
-}) {
-  if (!existsSync(input.fileName))
-    return log(`${input.fileName} is deleted`, 'error')
+export async function applyLint(fileName: string, forceTypescript: boolean) {
+  const debug = false
+  if (!existsSync(fileName)){
+    log(`${fileName} is deleted`, 'error')
+
+    return true
+  }
 
   log('sep')
-  log(`will lint ${input.fileName}`, 'info')
+  log(`will lint ${fileName}`, 'info')
   log('sep')
 
   const baseProps = {
-    filePath: input.fileName,
-    debug: input.debug,
-    useAlternativeExecCommand: input.altLintMode,
+    filePath: fileName,
+    debug,
+    forceTypescript,
+    useAlternativeExecCommand: false,
   }
 
   const initialLintResult = await lintFn(baseProps)
-  if (!checkShouldContinue(initialLintResult, 'initial', input.debug)) return
+  if (!checkShouldContinue(initialLintResult, 'initial', debug)) return true
 
   const lintResultWithOuter = await lintFn({
     ...baseProps,
     prettierSpecialCase: 'outer',
   })
-  if (!checkShouldContinue(lintResultWithOuter, 'outer', input.debug)) return
+  if (!checkShouldContinue(lintResultWithOuter, 'outer', debug)) return true
   const lintResultWithLocal = await lintFn({
     ...baseProps,
     prettierSpecialCase: 'local',
-    forceTypescript: true,
   })
-  if (!checkShouldContinue(lintResultWithLocal, 'local', input.debug)) return
-  log(`File failed to be linted`, 'box')
+  if (!checkShouldContinue(lintResultWithLocal, 'local', debug)) return true
+  log(`File failed to be linted`, 'error')
+
+  return false
 }

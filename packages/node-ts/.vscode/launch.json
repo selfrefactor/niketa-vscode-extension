@@ -12,7 +12,6 @@
         "--no-cache",
         "src/modules/extract-console-logs.spec.js"
       ],
-      "disableOptimisticBPs": true,
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
@@ -23,7 +22,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}/dist/start.js"
+      "program": "${workspaceFolder}/dist/src/start.js"
     }
   ]
 }

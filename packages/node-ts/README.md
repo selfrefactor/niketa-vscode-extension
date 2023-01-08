@@ -1,5 +1,9 @@
 # Niketa tools
 
+## Debug
+
+place `debugger` in your code and run `yarn out` before debugging.
+
 ## TODO
 
 logging it doesn't work with `niketa-theme`
