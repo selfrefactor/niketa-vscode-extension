@@ -350,13 +350,12 @@ class Worker{
     }
   }
 
-  async requestLintFile(altLintMode = false){
+  async requestLintFile(){
     const { currentFilePath } = this.getCurrentFile()
     if (!currentFilePath) return console.log('currentFilePath is empty')
 
     const messageToSend = {
       requestLintFile : true,
-      altLintMode,
       fileName        : currentFilePath,
       ...this.getCalculated(),
     }
