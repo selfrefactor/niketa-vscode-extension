@@ -29,7 +29,7 @@ import {
   ParseCoverage,
   NiketaClientInput,
 } from './interfaces'
-import {applyLint} from './apply-lint'
+import {applyLint, applyRomeLint} from './apply-lint'
 
 const EXTENDED_LOG = process.env.NIKETA_CLIENT_EXTENDED_LOG === `ON`
 
@@ -212,8 +212,7 @@ export class NiketaClient {
     lintMessage: string,
     dir: string,
   }) {
-    const {fileName, lintOnly, lintMessage} = input
-
+    const {fileName, lintOnly, lintMessage, dir} = input
     if (!lintOnly && !isLintable(fileName)) {
       return this.emptyAnswer(fileName, '!lintable')
     }
@@ -223,6 +222,7 @@ export class NiketaClient {
       return this.lintAnswer(lintMessage)
     }
     try {
+      await applyRomeLint(fileName, dir)
       const withoutForceTS = await applyLint(fileName, false)
       if(!withoutForceTS){
         await applyLint(fileName, true)

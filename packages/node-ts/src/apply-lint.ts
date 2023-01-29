@@ -1,5 +1,5 @@
 import {existsSync} from 'fs'
-import {log} from 'helpers-fn'
+import {exec, execSafe, log} from 'helpers-fn'
 import {lintFn} from 'lint-fn'
 
 function checkShouldContinue(result: any, label: string, debug?: boolean) {
@@ -11,6 +11,19 @@ function checkShouldContinue(result: any, label: string, debug?: boolean) {
   log(`File is linted "${label}"`, 'box')
   log('sep')
   return false
+}
+
+export async function applyRomeLint(fileName: string, directory: string) {
+  if (!existsSync(fileName)){
+    log(`${fileName} is deleted`, 'error')
+
+    return true
+  }
+
+  const command = `npx rome check ${fileName} --apply-suggested`
+  console.log(directory, command, 'rome command')
+  let logs = await exec({cwd: directory, command})
+  console.log(logs, 'logs')
 }
 
 export async function applyLint(fileName: string, forceTypescript: boolean) {
