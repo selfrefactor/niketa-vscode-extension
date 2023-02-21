@@ -1,7 +1,7 @@
 const vscode = require('vscode')
 const { initExtension } = require('./worker')
 const { getter, setter, delay } = require('rambdax')
-const { REQUEST_CANCELATION, REQUEST_TEST_RUN, REQUEST_LINT_FILE, REQUEST_LINT_FILE_ALT} = require('./constants')
+const { REQUEST_CANCELATION, REQUEST_TEST_RUN, REQUEST_LINT_FILE} = require('./constants')
 
 const INIT_KEY = 'INIT'
 
@@ -26,13 +26,6 @@ function activate(context){
       initNiketa('default')()
       delay(1000).then(() => worker.requestLintFile())
     })
-  const lintFileAltCommand = vscode.commands.registerCommand(REQUEST_LINT_FILE_ALT,
-    () => {
-      if(worker.requestLintFile) return worker.requestLintFile(true)
-
-      initNiketa('default')()
-      delay(1000).then(() => worker.requestLintFile(true))
-    })
 
   const requestTestRunCommand = vscode.commands.registerCommand(REQUEST_TEST_RUN,
     () => {
@@ -44,7 +37,6 @@ function activate(context){
 
   context.subscriptions.push(requestCancelationCommand)
   context.subscriptions.push(lintFileCommand)
-  context.subscriptions.push(lintFileAltCommand)
   context.subscriptions.push(requestTestRunCommand)
 }
 
