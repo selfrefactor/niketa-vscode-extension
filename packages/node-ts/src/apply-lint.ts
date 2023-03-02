@@ -14,7 +14,7 @@ function checkShouldContinue(result: any, label: string, debug?: boolean) {
 }
 
 export async function applyRomeLint(fileName: string, directory: string) {
-  if (!existsSync(fileName)){
+  if (!existsSync(fileName)) {
     log(`${fileName} is deleted`, 'error')
 
     return true
@@ -28,7 +28,7 @@ export async function applyRomeLint(fileName: string, directory: string) {
 
 export async function applyLint(fileName: string, forceTypescript: boolean) {
   const debug = false
-  if (!existsSync(fileName)){
+  if (!existsSync(fileName)) {
     log(`${fileName} is deleted`, 'error')
 
     return true
@@ -58,7 +58,7 @@ export async function applyLint(fileName: string, forceTypescript: boolean) {
     prettierSpecialCase: 'local',
   })
   if (!checkShouldContinue(lintResultWithLocal, 'local', debug)) return true
-  log(`File failed to be linted`, 'error')
+  log('File failed to be linted', 'error')
 
   return false
 }
