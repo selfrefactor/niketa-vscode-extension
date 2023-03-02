@@ -20,7 +20,7 @@ export async function applyRomeLint(fileName: string, directory: string) {
     return true
   }
 
-  const command = `npx rome check ${fileName} --apply-suggested`
+  const command = `rome check ${fileName} --apply-suggested`
   console.log(directory, command, 'rome command')
   let logs = await exec({cwd: directory, command})
   console.log(logs, 'logs')

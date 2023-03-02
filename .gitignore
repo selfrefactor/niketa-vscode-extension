@@ -5,3 +5,4 @@ node_modules
 .vscode-test/
 config.json
 *.vsix
+packages/node-ts/yarn-error.log
