@@ -1,5 +1,5 @@
 import {existsSync} from 'fs'
-import {exec, execSafe, log} from 'helpers-fn'
+import {exec, log} from 'helpers-fn'
 import {lintFn} from 'lint-fn'
 
 function checkShouldContinue(result: any, label: string, debug?: boolean) {
@@ -21,7 +21,6 @@ export async function applyRomeLint(fileName: string, directory: string) {
   }
 
   const command = `rome check ${fileName} --apply-suggested`
-  console.log(directory, command, 'rome command')
   let logs = await exec({cwd: directory, command})
   console.log(logs, 'logs')
 }
