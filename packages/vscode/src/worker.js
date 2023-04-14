@@ -13,11 +13,6 @@ const { Socket } = require('net')
 const CLIENT_PORT = niketaConfig('PORT')
 const SMALL_DELAY = 15
 
-const defaultValues = {
-  TOP_MARGIN : 3,
-  color      : '#7cc36e',
-  ms         : 100,
-}
 const PRIORITY = 200
 
 function sendMessage(messageToSend){
@@ -44,11 +39,12 @@ function sendMessage(messageToSend){
 }
 
 class Worker{
-  constructor(userOptions = {}){
+  constructor(){
     this.lockFlag = false
     this.options = {
-      ...defaultValues,
-      ...userOptions,
+      TOP_MARGIN : 3,
+      color      : '#7cc36e',
+      ms         : 100,
     }
     this.decorationType = window.createTextEditorDecorationType({ after : { margin : '0 0 0 1rem' } })
     this.decorations = {}
@@ -373,11 +369,18 @@ class Worker{
 
   requestTestRun(){
     const { loc, currentFilePath } = this.getCurrentFile()
-    if (!currentFilePath) return console.log('currentFilePath is empty')
+    if (!currentFilePath){
+      this.simpleMessageToUser('currentFilePath is empty')
+
+      return console.log('currentFilePath is empty')
+    } 
 
     this.setLatestFile(currentFilePath)
 
-    if (this.isLocked()) return console.log('LOCKED')
+    if (this.isLocked()){
+      this.simpleMessageToUser('LOCKED')
+      return console.log('LOCKED')
+    } 
 
     this.lock(loc)
 
@@ -422,7 +425,7 @@ class Worker{
   }
 }
 
-exports.initExtension = mode => {
-  const worker = new Worker(mode)
+exports.initExtension = () => {
+  const worker = new Worker()
   return worker
 }

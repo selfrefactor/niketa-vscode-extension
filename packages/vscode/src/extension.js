@@ -8,8 +8,8 @@ const INIT_KEY = 'INIT'
 function activate(context){
   let worker = {}
   
-  const initNiketa = (mode) => () => {
-    worker = initExtension(mode)
+  const initNiketa = () => () => {
+    worker = initExtension()
     if(getter(INIT_KEY)) return
 
     setter(INIT_KEY, true)
@@ -23,7 +23,7 @@ function activate(context){
     () => {
       if(worker.requestLintFile) return worker.requestLintFile()
 
-      initNiketa('default')()
+      initNiketa()()
       delay(1000).then(() => worker.requestLintFile())
     })
 
@@ -31,7 +31,7 @@ function activate(context){
     () => {
       if(worker.requestTestRun) return worker.requestTestRun()
 
-      initNiketa('default')()
+      initNiketa()()
       delay(1000).then(() => worker.requestTestRun())
     })
 
