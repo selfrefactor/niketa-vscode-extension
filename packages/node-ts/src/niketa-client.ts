@@ -141,7 +141,7 @@ export class NiketaClient {
     if (!isMessageCorrect(message)) {
       return this.emptyAnswer(fileName, 'message is incorrect')
     }
-
+    // lintOnly is for files such as HTML, CSS, etc.
     const lintOnly = isLintOnlyMode(fileName)
     const lintMessage = ` ${fileInfo(fileName)}`
 
@@ -172,9 +172,9 @@ export class NiketaClient {
 
     if (lintOnly) {
       debugLog('lintOnly')
-      await lintOnlyMode(fileName)
+      const lintResult = await lintOnlyMode(fileName)
 
-      return this.lintAnswer(lintMessage)
+      return this.lintAnswer(lintMessage, lintResult)
     }
 
     if (!hasValidSpec) return this.emptyAnswer(fileName, 'spec is not valid')
@@ -218,18 +218,19 @@ export class NiketaClient {
     }
 
     if (lintOnly) {
-      await lintOnlyMode(fileName)
-      return this.lintAnswer(lintMessage)
+      const lintSuccess = await lintOnlyMode(fileName)
+      return this.lintAnswer(lintMessage, lintSuccess)
     }
     try {
       await applyRomeLint(fileName, dir)
       const withoutForceTS = await applyLint(fileName, false)
-      if(!withoutForceTS){
-        await applyLint(fileName, true)
+      if(withoutForceTS){
+        return this.lintAnswer(lintMessage, true)
       }
-      return this.lintAnswer(lintMessage)
+      const lintSuccess = await applyLint(fileName, true)
+      return this.lintAnswer(lintMessage, lintSuccess)
     } catch (_) {
-      return this.lintAnswer(`${ERROR_ICON} ${lintMessage}`)
+      return this.lintAnswer(lintMessage, false)
     }
   }
 
@@ -243,9 +244,9 @@ export class NiketaClient {
     })
   }
 
-  lintAnswer(lintMessage: string) {
+  lintAnswer(lintMessage: string, success?: boolean) {
     this.emit({
-      firstBarMessage: 'LINT COMPLETED',
+      firstBarMessage: success === false ? `${  ERROR_ICON  } LINT FAILED` : 'LINT COMPLETED',
       secondBarMessage: undefined,
       thirdBarMessage: lintMessage,
       hasDecorations: false,

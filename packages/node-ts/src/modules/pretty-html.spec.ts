@@ -1,6 +1,7 @@
 import {prettyHtml} from './pretty-html'
 
 test('happy', async () => {
-  const path = '/home/s/repos/rambda-docs/src/app/whole/whole.component.html'
+  const path =
+    '/home/sr/repos/secret-services/packages/bot-teacher/client/index.html'
   await prettyHtml(path)
 })
