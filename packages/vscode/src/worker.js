@@ -64,19 +64,11 @@ class Worker{
     return this.lockFlag === true
   }
 
-  lock(loc){
-    if (this.lockFlag) return
-
-    this.lockFlag = true
-
-    if (loc) this.loc = loc
-
-    this.startLoading()
-  }
-
-  unlock(){
-    if (!this.lockFlag) return
-    this.lockFlag = false
+  setLock(newState){
+    this.lockFlag = newState
+    if (newState){
+      this.startLoading()
+    }
   }
 
   init(){
@@ -117,7 +109,7 @@ class Worker{
   }
 
   async paintDecorations(pendingDecorations){
-    await delay(50)
+    await delay(100)
     const editor = this.getEditor()
 
     editor.setDecorations(this.decorationType, pendingDecorations)
@@ -184,7 +176,6 @@ class Worker{
     await this.paintDecorations(pendingDecorations)
 
     await delay(200)
-    this.unlock()
   }
 
   async onUnreliableDecorations({ correct, logData }){
@@ -200,7 +191,6 @@ class Worker{
     await this.paintDecorations(pendingDecorations)
 
     await delay(200)
-    this.unlock()
   }
 
   async updateStatusBars({
@@ -249,7 +239,7 @@ class Worker{
   messageReceived(messageFromServer){
     const parse = () => JSON.parse(messageFromServer.toString())
     const parsedMessage = tryCatch(parse, false)()
-    if (!parsedMessage) return this.unlock()
+    if (!parsedMessage) return
 
     const {
       hasDecorations,
@@ -275,13 +265,9 @@ class Worker{
     if (newDecorations.correct === false){
       return this.onUnreliableDecorations(newDecorations)
     }
-
-    this.unlock()
   }
 
   clearDecorations(){
-    this.unlock()
-
     window.visibleTextEditors.forEach(textEditor =>
       textEditor.setDecorations(this.decorationType, []))
   }
@@ -337,17 +323,13 @@ class Worker{
 
   getCurrentFile(){
     const editor = this.getEditor()
-    const { fileName: currentFilePath, lineCount: loc } = editor.document
-    if (!currentFilePath) return {}
+    const { fileName: currentFilePath } = editor.document
 
-    return {
-      currentFilePath,
-      loc,
-    }
+    return currentFilePath ?? ''
   }
 
   async requestLintFile(){
-    const { currentFilePath } = this.getCurrentFile()
+    const currentFilePath = this.getCurrentFile()
     if (!currentFilePath) return console.log('currentFilePath is empty')
 
     const messageToSend = {
@@ -368,7 +350,7 @@ class Worker{
   }
 
   requestTestRun(){
-    const { loc, currentFilePath } = this.getCurrentFile()
+    const currentFilePath = this.getCurrentFile()
     if (!currentFilePath){
       this.simpleMessageToUser('currentFilePath is empty')
 
@@ -378,11 +360,10 @@ class Worker{
     this.setLatestFile(currentFilePath)
 
     if (this.isLocked()){
-      this.simpleMessageToUser('LOCKED')
-      return console.log('LOCKED')
+      return this.simpleMessageToUser('LOCKED')
     } 
 
-    this.lock(loc)
+    this.setLock(true)
 
     const messageToSend = {
       fileName : currentFilePath,
@@ -396,6 +377,8 @@ class Worker{
       })
       .catch(() => {
         this.resetOnError()
+      }).finally(() => {
+        this.setLock(false)
       })
   }
 
