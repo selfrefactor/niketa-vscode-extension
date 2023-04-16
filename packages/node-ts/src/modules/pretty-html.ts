@@ -12,7 +12,6 @@ export async function prettyHtml(filePath: string) {
       prettierSpecialCase: 'html-local',
       injectOptions,
     })
-    return true
     const input = readFileSync(filePath, 'utf8')
     const {contents} = await prettyHtmlLib(input, {
       printWidth: 55,
