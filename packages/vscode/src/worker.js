@@ -383,11 +383,11 @@ class Worker{
       })
   }
 
-  async evaluateNikataScripts(filePath){
-    const relativeFilePath = filePath.replace(`${ this.dir }/`, '')
-    if (this.niketaScripts[ filePath ]) return false
-    const [ command, ...inputs ] =
-      this.niketaScripts[ relativeFilePath ].split(' ')
+  async evaluateNiketaScripts(filePath){
+  const relativeFilePath = filePath.replace(`${ this.dir }/`, '')
+  if (!this.niketaScripts[ filePath ]) return false
+  const [ command, ...inputs ] = this.niketaScripts[ relativeFilePath ].split(' ')
+  if (!command) return false
     await spawnCommand({
       cwd   : this.dir,
       inputs,
@@ -405,7 +405,7 @@ class Worker{
 
       return console.log('currentFilePath is empty')
     }
-    if (await this.evaluateNikataScripts(currentFilePath)) return
+    if (await this.evaluateNiketaScripts(currentFilePath)) return
 
     this.setLatestFile(currentFilePath)
 
