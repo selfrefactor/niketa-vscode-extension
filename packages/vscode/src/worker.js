@@ -6,14 +6,42 @@ const {
   StatusBarAlignment,
 } = require('vscode')
 const { delay, range, path, tryCatch, ok } = require('rambdax')
-const { existsSync } = require('fs')
+const { existsSync, readFileSync } = require('fs')
 const { niketaConfig } = require('./utils/niketa-config.js')
 const { Socket } = require('net')
+const { spawn } = require('child_process')
 
 const CLIENT_PORT = niketaConfig('PORT')
 const SMALL_DELAY = 15
-
 const PRIORITY = 200
+
+const spawnCommand = ({ command, inputs, cwd, onLog }) =>
+  new Promise((resolve, reject) => {
+    const proc = spawn(
+      command, inputs, {
+        cwd,
+        shell : true,
+        env   : process.env,
+      }
+    )
+
+    proc.stdout.on('data', chunk => {
+      if (onLog){
+        onLog(chunk.toString())
+      } else {
+        console.log(chunk.toString())
+      }
+    })
+    proc.stdout.on('end', () => resolve())
+    proc.stdout.on('error', err => reject(err))
+  })
+
+function readJson(filePath){
+  const raw = readFileSync(filePath)
+  const content = raw.toString()
+
+  return JSON.parse(content)
+}
 
 function sendMessage(messageToSend){
   return new Promise((resolve, reject) => {
@@ -41,6 +69,7 @@ function sendMessage(messageToSend){
 class Worker{
   constructor(){
     this.lockFlag = false
+    this.niketaScripts = {}
     this.options = {
       TOP_MARGIN : 3,
       color      : '#7cc36e',
@@ -73,6 +102,9 @@ class Worker{
 
   init(){
     this.hasTypescript = existsSync(`${ this.dir }/tsconfig.json`)
+    const packageJson = readJson(`${ this.dir }/package.json`)
+    if (!packageJson.niketa) return
+    this.niketaScripts = packageJson.niketa
   }
 
   setLatestFile(filePath){
@@ -229,10 +261,10 @@ class Worker{
 
   simpleMessageToUser(message, fileName){
     this.updateStatusBars({
-      firstBarMessage: message,
-      secondBarMessage: '',
-      thirdBarMessage: '',
-      tooltip: '',
+      firstBarMessage  : message,
+      secondBarMessage : '',
+      thirdBarMessage  : '',
+      tooltip          : '',
     })
   }
 
@@ -340,6 +372,8 @@ class Worker{
 
     this.simpleMessageToUser('LINT EXPECTED')
 
+    window.showInformationMessage('Info Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As Modal',
+      { modal : true })
     sendMessage(messageToSend)
       .then(messageFromServer => {
         this.messageReceived(messageFromServer)
@@ -349,19 +383,35 @@ class Worker{
       })
   }
 
-  requestTestRun(){
+  async evaluateNikataScripts(filePath){
+    const relativeFilePath = filePath.replace(`${ this.dir }/`, '')
+    if (this.niketaScripts[ filePath ]) return false
+    const [ command, ...inputs ] =
+      this.niketaScripts[ relativeFilePath ].split(' ')
+    await spawnCommand({
+      cwd   : this.dir,
+      inputs,
+      command,
+      onLog : () => {},
+    })
+
+    return true
+  }
+
+  async requestTestRun(){
     const currentFilePath = this.getCurrentFile()
     if (!currentFilePath){
       this.simpleMessageToUser('currentFilePath is empty')
 
       return console.log('currentFilePath is empty')
-    } 
+    }
+    if (await this.evaluateNikataScripts(currentFilePath)) return
 
     this.setLatestFile(currentFilePath)
 
     if (this.isLocked()){
       return this.simpleMessageToUser('LOCKED')
-    } 
+    }
 
     this.setLock(true)
 
@@ -371,15 +421,12 @@ class Worker{
     }
     this.simpleMessageToUser('TEST RUN EXPECTED')
 
-    sendMessage(messageToSend)
-      .then(messageFromServer => {
-        this.messageReceived(messageFromServer)
-      })
-      .catch(() => {
-        this.resetOnError()
-      }).finally(() => {
-        this.setLock(false)
-      })
+    try {
+      const messageFromServer = await sendMessage(messageToSend)
+      this.messageReceived(messageFromServer)
+    } catch (e){
+      this.resetOnError()
+    }
   }
 
   getEditor(){
@@ -410,5 +457,6 @@ class Worker{
 
 exports.initExtension = () => {
   const worker = new Worker()
+
   return worker
 }
