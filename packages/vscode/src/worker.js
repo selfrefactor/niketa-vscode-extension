@@ -405,7 +405,7 @@ class Worker{
 
       return console.log('currentFilePath is empty')
     }
-    if (await this.evaluateNiketaScripts(currentFilePath) === false) return
+    if (await this.evaluateNiketaScripts(currentFilePath)) return
 
     this.setLatestFile(currentFilePath)
 
