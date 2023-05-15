@@ -371,9 +371,6 @@ class Worker{
     }
 
     this.simpleMessageToUser('LINT EXPECTED')
-
-    window.showInformationMessage('Info Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As ModalInfo Notification As Modal',
-      { modal : true })
     sendMessage(messageToSend)
       .then(messageFromServer => {
         this.messageReceived(messageFromServer)
@@ -384,10 +381,13 @@ class Worker{
   }
 
   async evaluateNiketaScripts(filePath){
-  const relativeFilePath = filePath.replace(`${ this.dir }/`, '')
-  if (!this.niketaScripts[ filePath ]) return false
-  const [ command, ...inputs ] = this.niketaScripts[ relativeFilePath ].split(' ')
-  if (!command) return false
+    const relativeFilePath = filePath.replace(`${ this.dir }/`, '')
+    if (!this.niketaScripts[ relativeFilePath ]){
+      return false
+    }
+    const [ command, ...inputs ] =
+      this.niketaScripts[ relativeFilePath ].split(' ')
+    if (!command) return false
     await spawnCommand({
       cwd   : this.dir,
       inputs,
@@ -405,7 +405,7 @@ class Worker{
 
       return console.log('currentFilePath is empty')
     }
-    if (await this.evaluateNiketaScripts(currentFilePath)) return
+    if (await this.evaluateNiketaScripts(currentFilePath) === false) return
 
     this.setLatestFile(currentFilePath)
 
