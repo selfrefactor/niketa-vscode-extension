@@ -20,8 +20,7 @@
 	],
 	"activationEvents": [
 		"onCommand:niketa.request.test.run",
-		"onCommand:niketa.lint.file",
-		"onCommand:niketa.start.auto.mode"
+		"onCommand:niketa.lint.file"
 	],
 	"main": "./src/extension",
 	"files": [
@@ -30,16 +29,8 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "niketa.start.auto.mode",
-				"title": "Niketa start auto-jest mode"
-			},
-			{
 				"command": "niketa.request.test.run",
 				"title": "Niketa run with current file"
-			},
-			{
-				"command": "niketa.request.cancelation",
-				"title": "Niketa cancel current test run"
 			},
 			{
 				"command": "niketa.lint.file",
@@ -54,10 +45,6 @@
 			{
 				"command": "niketa.lint.file",
 				"key": "ctrl+1"
-			},
-			{
-				"command": "niketa.request.cancelation",
-				"key": "capslock 3"
 			}
 		],
 		"configuration": {

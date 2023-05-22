@@ -1,7 +1,7 @@
 const vscode = require('vscode')
 const { initExtension } = require('./worker')
 const { getter, setter, delay } = require('rambdax')
-const { REQUEST_CANCELATION, REQUEST_TEST_RUN, REQUEST_LINT_FILE,CHAT_GPT_TRANSLATE} = require('./constants')
+const { REQUEST_TEST_RUN, REQUEST_LINT_FILE} = require('./constants')
 
 const INIT_KEY = 'INIT'
 
@@ -16,11 +16,9 @@ function activate(context){
     worker.initStatusBars()
     worker.init()
   }
-  let translateWithChatGpt = () => {
-  }
+  // let translateWithChatGpt = () => {
+  // }
 
-  const requestCancelationCommand = vscode.commands.registerCommand(REQUEST_CANCELATION,
-    () => worker.requestCancelation())
   const lintFileCommand = vscode.commands.registerCommand(REQUEST_LINT_FILE,
     () => {
       if(worker.requestLintFile) return worker.requestLintFile()
@@ -37,12 +35,11 @@ function activate(context){
       delay(1000).then(() => worker.requestTestRun())
     })
 
-    let translateWithChatGptCommand = vscode.commands.registerCommand(CHAT_GPT_TRANSLATE, translateWithChatGpt)
+  //   let translateWithChatGptCommand = vscode.commands.registerCommand(CHAT_GPT_TRANSLATE, translateWithChatGpt)
 
-  context.subscriptions.push(requestCancelationCommand)
   context.subscriptions.push(lintFileCommand)
   context.subscriptions.push(requestTestRunCommand)
-  context.subscriptions.push(translateWithChatGptCommand)
+  // context.subscriptions.push(translateWithChatGptCommand)
 }
 
 exports.activate = activate

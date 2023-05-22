@@ -335,12 +335,6 @@ class Worker{
     }
   }
 
-  async requestCancelation(){
-    sendMessage({ requestCancelation : true })
-    await delay(SMALL_DELAY)
-    this.resetOnError()
-  }
-
   getCurrentFile(){
     const editor = this.getEditor()
     const { fileName: currentFilePath } = editor.document
