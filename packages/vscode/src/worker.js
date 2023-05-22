@@ -68,7 +68,6 @@ function sendMessage(messageToSend){
 
 class Worker{
   constructor(){
-    this.lockFlag = false
     this.niketaScripts = {}
     this.options = {
       TOP_MARGIN : 3,
@@ -87,17 +86,6 @@ class Worker{
     this.firstStatusBar = undefined
     this.secondStatusBar = undefined
     this.thirdStatusBar = undefined
-  }
-
-  isLocked(){
-    return this.lockFlag === true
-  }
-
-  setLock(newState){
-    this.lockFlag = newState
-    if (newState){
-      this.startLoading()
-    }
   }
 
   init(){
@@ -409,12 +397,6 @@ class Worker{
 
     this.setLatestFile(currentFilePath)
 
-    if (this.isLocked()){
-      return this.simpleMessageToUser('LOCKED')
-    }
-
-    this.setLock(true)
-
     const messageToSend = {
       fileName : currentFilePath,
       ...this.getCalculated(),
@@ -437,7 +419,6 @@ class Worker{
   }
 
   async resetOnError(){
-    this.unlock()
     this.setterStatusBar({
       newText        : '',
       statusBarIndex : 0,
