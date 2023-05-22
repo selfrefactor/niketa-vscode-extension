@@ -4,7 +4,6 @@ export interface Message {
   hasTypescript: boolean,
   requestLintFile: boolean,
   altLintMode: boolean,
-  requestCancelation: boolean,
 }
 
 export interface ExecResult {

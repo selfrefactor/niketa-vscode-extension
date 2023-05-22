@@ -338,7 +338,6 @@ export class NiketaClient {
 
       return [false, result, actualFileName, extension]
     } catch (e: any) {
-      if (e.isCanceled) return [true]
       if (!e.stdout) return [true]
       if (!e.stderr) return [true]
 
@@ -453,14 +452,6 @@ export class NiketaClient {
     return message.trim() === '' ? staleCoverageInfo : `change: ${message}`
   }
 
-  onCancelMessage() {
-    if (!this.jestChild) return log('', 'error')
-    if (!this.jestChild.cancel) return
-
-    this.jestChild.cancel()
-    this.jestChild = undefined
-  }
-
   async onSocketData(messageFromVSCode: any) {
     let parsedMessage: false | Message
 
@@ -476,9 +467,6 @@ export class NiketaClient {
 
     debugLog(parsedMessage, 'onSocketData')
 
-    if (parsedMessage.requestCancelation) {
-      return this.onCancelMessage()
-    }
     if (parsedMessage.fileName.endsWith('.py')) {
       await this.onPytestMessage(parsedMessage)
       return

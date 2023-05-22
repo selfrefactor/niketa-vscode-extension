@@ -4,20 +4,6 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Jest",
-      "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
-      "args": [
-        "--verbose", 
-        "-i", 
-        "--no-cache",
-        "src/modules/extract-console-logs.spec.js"
-      ],
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
-    },
-    {
-      "type": "node",
-      "request": "launch",
       "name": "Launch Program",
       "skipFiles": [
         "<node_internals>/**"
