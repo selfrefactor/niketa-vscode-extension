@@ -7,7 +7,7 @@
 		"in": "tsc --watch"
 	},
 	"main": "dist/src/index.js",
-	"version": "1.10.3",
+	"version": "1.10.4",
 	"dependencies": {
 		"@starptech/prettyhtml": "0.10.0",
 		"execa": "5.0.1",
