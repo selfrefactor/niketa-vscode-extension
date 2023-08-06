@@ -89,7 +89,8 @@ export class NiketaClient {
   initialized: boolean
   server: any
   jestChild: any
-  pytestChild: any
+  pythonTestChild: any
+  golangTestChild: any
 
   constructor(input: NiketaClientInput) {
     this.port = input.port
@@ -99,7 +100,7 @@ export class NiketaClient {
     this.initialized = false
   }
 
-  async onPytestMessage(message: Message) {
+  async onPythonTestMessage(message: Message) {
     const {fileName, dir} = message
 
     try {
@@ -112,15 +113,15 @@ export class NiketaClient {
         '-rf',
         '--capture=no',
       ].join(' ')
-      this.pytestChild = execa.command(command, {cwd: dir})
+      this.pythonTestChild = execa.command(command, {cwd: dir})
       log('sepx')
       log('Pytest start', 'info')
-      const {stdout, stderr} = await this.pytestChild
+      const {stdout, stderr} = await this.pythonTestChild
 
       console.log(`stderr`, stderr)
       console.log(`stdout`, stdout)
       log('Pytest end', 'info')
-      this.pytestChild = undefined
+      this.pythonTestChild = undefined
       this.emit({
         ...baseEmitProps,
         firstBarMessage: `SUCCESS - ${fileName}`,
@@ -134,9 +135,45 @@ export class NiketaClient {
       })
     }
   }
+
+  async onGolangTestMessage(message: Message) {
+    const {fileName, dir} = message
+
+    try {
+      const command = [
+        `pipenv`,
+        'run',
+        `pytest`,
+        fileName,
+        '-v',
+        '-rf',
+        '--capture=no',
+      ].join(' ')
+      this.pythonTestChild = execa.command(command, {cwd: dir})
+      log('sepx')
+      log('Pytest start', 'info')
+      const {stdout, stderr} = await this.pythonTestChild
+
+      console.log(`stderr`, stderr)
+      console.log(`stdout`, stdout)
+      log('Pytest end', 'info')
+      this.pythonTestChild = undefined
+      this.emit({
+        ...baseEmitProps,
+        firstBarMessage: `SUCCESS - ${fileName}`,
+        tooltip: stdout,
+      })
+    } catch (e) {
+      console.log(e, `pytest try.catch`)
+      this.emit({
+        ...baseEmitProps,
+        firstBarMessage: 'FAILED',
+      })
+    }
+  }
+
   async onJestMessage(message: Message) {
-    const {fileName, dir, hasTypescript, requestLintFile} =
-      message
+    const {fileName, dir, hasTypescript, requestLintFile} = message
 
     if (!isMessageCorrect(message)) {
       return this.emptyAnswer(fileName, 'message is incorrect')
@@ -207,10 +244,10 @@ export class NiketaClient {
   }
 
   async handleRequestLint(input: {
-    fileName: string,
-    lintOnly: boolean,
-    lintMessage: string,
-    dir: string,
+    fileName: string
+    lintOnly: boolean
+    lintMessage: string
+    dir: string
   }) {
     const {fileName, lintOnly, lintMessage, dir} = input
     if (!lintOnly && !isLintable(fileName)) {
@@ -224,7 +261,7 @@ export class NiketaClient {
     try {
       await applyRomeLint(fileName, dir)
       const withoutForceTS = await applyLint(fileName, false)
-      if(withoutForceTS){
+      if (withoutForceTS) {
         return this.lintAnswer(lintMessage, true)
       }
       const lintSuccess = await applyLint(fileName, true)
@@ -246,7 +283,8 @@ export class NiketaClient {
 
   lintAnswer(lintMessage: string, success?: boolean) {
     this.emit({
-      firstBarMessage: success === false ? `${  ERROR_ICON  } LINT FAILED` : 'LINT COMPLETED',
+      firstBarMessage:
+        success === false ? `${ERROR_ICON} LINT FAILED` : 'LINT COMPLETED',
       secondBarMessage: undefined,
       thirdBarMessage: lintMessage,
       hasDecorations: false,
@@ -306,9 +344,9 @@ export class NiketaClient {
   }
 
   async execJest(input: {
-    fileName: string,
-    dir: string,
-    specFileName: string,
+    fileName: string
+    dir: string
+    specFileName: string
   }) {
     const {fileName, dir, specFileName} = input
     const [coveragePath, actualFileName, extension] = getCoveragePath(
@@ -468,7 +506,7 @@ export class NiketaClient {
     debugLog(parsedMessage, 'onSocketData')
 
     if (parsedMessage.fileName.endsWith('.py')) {
-      await this.onPytestMessage(parsedMessage)
+      await this.onPythonTestMessage(parsedMessage)
       return
     }
     await this.onJestMessage(parsedMessage)
