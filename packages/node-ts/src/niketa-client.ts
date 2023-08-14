@@ -112,6 +112,7 @@ export class NiketaClient {
         '-v',
         '-rf',
         '--capture=no',
+        '--continue-on-collection-errors'
       ].join(' ')
       this.pythonTestChild = execa.command(command, {cwd: dir})
       log('sepx')
