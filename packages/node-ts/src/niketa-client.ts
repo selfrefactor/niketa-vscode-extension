@@ -119,11 +119,12 @@ export class NiketaClient {
         firstBarMessage: `SUCCESS MYPY - ${relativePath}`,
         tooltip: stdout,
       })
-    } catch (e) {
+    } catch (e: any) {
       console.log(e, `mypy try.catch`)
       this.emit({
         ...baseEmitProps,
-        firstBarMessage: 'FAILED',
+        firstBarMessage: 'FAILED MYPY - ${relativePath}',
+        tooltip: e.stdout ?? 'missing output',
       })
     }
   }
