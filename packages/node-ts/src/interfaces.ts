@@ -3,6 +3,7 @@ export interface Message {
   dir: string,
   hasTypescript: boolean,
   requestLintFile: boolean,
+  requestThirdCommand: boolean,
   altLintMode: boolean,
 }
 

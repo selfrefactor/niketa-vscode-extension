@@ -99,7 +99,7 @@ export class NiketaClient {
     this.emit = input.emit === undefined ? defaultEmit : input.emit
     this.initialized = false
   }
-  async onPythonMypyMessage(message: Message) {
+  async onPythonMypyMessage({message, strict}: {message: Message, strict: boolean}) {
     const {fileName, dir} = message
     let relativePath = remove(dir + '/', fileName)
     // todo: modularize
@@ -108,10 +108,11 @@ export class NiketaClient {
         `pipenv`,
         'run',
         `mypy`,
+        strict ? '--strict' : '',
         '--config-file',
         'mypy.ini',
         relativePath,
-      ].join(' ')
+      ].filter(Boolean).join(' ')
       this.pythonTestChild = execa.command(command, {cwd: dir})
       log('sepx')
       log('Mypy start', 'info')
@@ -173,46 +174,18 @@ export class NiketaClient {
     }
   }
   async onPythonMessage(message: Message) {
-    return message.requestLintFile
-      ? this.onPythonMypyMessage(message)
-      : this.onPythonTestMessage(message)
+    if(
+      message.requestLintFile
+    ) return this.onPythonMypyMessage({strict: false, message})
+    if(
+      message.requestThirdCommand
+    ) return this.onPythonMypyMessage({strict: true, message})
+    return this.onPythonTestMessage(message)
   }
 
   async onGolangMessage(message: Message) {
+    console.log(`message`, message)
     throw new Error('Not implemented')
-    const {fileName, dir} = message
-
-    try {
-      const command = [
-        `pipenv`,
-        'run',
-        `pytest`,
-        fileName,
-        '-v',
-        '-rf',
-        '--capture=no',
-      ].join(' ')
-      this.pythonTestChild = execa.command(command, {cwd: dir})
-      log('sepx')
-      log('Pytest start', 'info')
-      const {stdout, stderr} = await this.pythonTestChild
-
-      console.log(`stderr`, stderr)
-      console.log(`stdout`, stdout)
-      log('Pytest end', 'info')
-      this.pythonTestChild = undefined
-      this.emit({
-        ...baseEmitProps,
-        firstBarMessage: `SUCCESS - ${fileName}`,
-        tooltip: stdout,
-      })
-    } catch (e) {
-      console.log(e, `pytest try.catch`)
-      this.emit({
-        ...baseEmitProps,
-        firstBarMessage: 'FAILED',
-      })
-    }
   }
 
   async onFrontendMessage(message: Message) {
