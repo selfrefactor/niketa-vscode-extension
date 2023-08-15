@@ -101,7 +101,7 @@ export class NiketaClient {
   }
   async onPythonMypyMessage(message: Message) {
     const {fileName, dir} = message
-
+    let relativePath = remove(dir, fileName)
     // todo: modularize
     try {
       const command = [`pipenv`, 'run', `mypy`, fileName].join(' ')
@@ -116,7 +116,7 @@ export class NiketaClient {
       this.pythonTestChild = undefined
       this.emit({
         ...baseEmitProps,
-        firstBarMessage: `SUCCESS - ${fileName}`,
+        firstBarMessage: `SUCCESS MYPY - ${relativePath}`,
         tooltip: stdout,
       })
     } catch (e) {
