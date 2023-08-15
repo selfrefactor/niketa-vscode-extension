@@ -99,7 +99,13 @@ export class NiketaClient {
     this.emit = input.emit === undefined ? defaultEmit : input.emit
     this.initialized = false
   }
-  async onPythonMypyMessage({message, strict}: {message: Message, strict: boolean}) {
+  async onPythonMypyMessage({
+    message,
+    strict,
+  }: {
+    message: Message
+    strict: boolean
+  }) {
     const {fileName, dir} = message
     let relativePath = remove(dir + '/', fileName)
     // todo: modularize
@@ -112,7 +118,9 @@ export class NiketaClient {
         '--config-file',
         'mypy.ini',
         relativePath,
-      ].filter(Boolean).join(' ')
+      ]
+        .filter(Boolean)
+        .join(' ')
       this.pythonTestChild = execa.command(command, {cwd: dir})
       log('sepx')
       log('Mypy start', 'info')
@@ -132,6 +140,46 @@ export class NiketaClient {
       this.emit({
         ...baseEmitProps,
         firstBarMessage: `FAILED MYPY - ${relativePath}`,
+        tooltip: e.stdout ?? 'missing output',
+      })
+    }
+  }
+  async onPythonLintMessage(message: Message) {
+    function getLintCommands(relativePath: string) {
+      const configFile = `.pylintrc`
+
+      return {
+        autopep8: `pipenv run autopep8 --in-place --aggressive --verbose --max-line-length 120 ${relativePath}`,
+        pylint: `pipenv run pylint --rcfile=${configFile} ${relativePath}`,
+      }
+    }
+    const {fileName, dir} = message
+    let relativePath = remove(dir + '/', fileName)
+    // todo: modularize
+    try {
+      const commands = getLintCommands(relativePath)
+      this.pythonTestChild = execa.command(commands.autopep8, {cwd: dir})
+      log('sepx')
+      log('Pylint start', 'info')
+      const {stdout, stderr} = await this.pythonTestChild
+      this.pythonTestChild = execa.command(commands.pylint, {cwd: dir})
+      const {stdout: stdout2, stderr: stderr2} = await this.pythonTestChild
+      console.log(`stderr`, stderr)
+      console.log(`stdout`, stdout)
+      console.log(`stderr2`, stderr2)
+      console.log(`stdout2`, stdout2)
+      log('Pylint end', 'info')
+      this.pythonTestChild = undefined
+      this.emit({
+        ...baseEmitProps,
+        firstBarMessage: `SUCCESS LINT - ${relativePath}`,
+        tooltip: stdout + '\n' + stdout2,
+      })
+    } catch (e: any) {
+      console.log(e, `lint try.catch`)
+      this.emit({
+        ...baseEmitProps,
+        firstBarMessage: `FAILED LINT - ${relativePath}`,
         tooltip: e.stdout ?? 'missing output',
       })
     }
@@ -174,12 +222,9 @@ export class NiketaClient {
     }
   }
   async onPythonMessage(message: Message) {
-    if(
-      message.requestLintFile
-    ) return this.onPythonMypyMessage({strict: false, message})
-    if(
-      message.requestThirdCommand
-    ) return this.onPythonMypyMessage({strict: true, message})
+    if (message.requestLintFile) return this.onPythonLintMessage(message)
+    if (message.requestThirdCommand)
+      return this.onPythonMypyMessage({strict: true, message})
     return this.onPythonTestMessage(message)
   }
 
