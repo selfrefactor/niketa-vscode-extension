@@ -20,7 +20,8 @@
 	],
 	"activationEvents": [
 		"onCommand:niketa.request.test.run",
-		"onCommand:niketa.lint.file"
+		"onCommand:niketa.lint.file",
+		"onCommand:niketa.third.command"
 	],
 	"main": "./src/extension",
 	"files": [
@@ -30,11 +31,15 @@
 		"commands": [
 			{
 				"command": "niketa.request.test.run",
-				"title": "Niketa run with current file"
+				"title": "Niketa - run with current file"
 			},
 			{
 				"command": "niketa.lint.file",
-				"title": "Lint current file"
+				"title": "Niketa - lint current file"
+			},
+			{
+				"command": "niketa.third.command",
+				"title": "Niketa - third command"
 			}
 		],
 		"keybindings": [
@@ -45,6 +50,10 @@
 			{
 				"command": "niketa.lint.file",
 				"key": "ctrl+1"
+			},
+			{
+				"command": "niketa.third.command",
+				"key": "capslock w"
 			}
 		],
 		"configuration": {
