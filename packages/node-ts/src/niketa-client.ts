@@ -99,6 +99,34 @@ export class NiketaClient {
     this.emit = input.emit === undefined ? defaultEmit : input.emit
     this.initialized = false
   }
+  async onPythonMypyMessage(message: Message) {
+    const {fileName, dir} = message
+
+    // todo: modularize
+    try {
+      const command = [`pipenv`, 'run', `mypy`, fileName].join(' ')
+      this.pythonTestChild = execa.command(command, {cwd: dir})
+      log('sepx')
+      log('Mypy start', 'info')
+      const {stdout, stderr} = await this.pythonTestChild
+
+      console.log(`stderr`, stderr)
+      console.log(`stdout`, stdout)
+      log('Mypy end', 'info')
+      this.pythonTestChild = undefined
+      this.emit({
+        ...baseEmitProps,
+        firstBarMessage: `SUCCESS - ${fileName}`,
+        tooltip: stdout,
+      })
+    } catch (e) {
+      console.log(e, `mypy try.catch`)
+      this.emit({
+        ...baseEmitProps,
+        firstBarMessage: 'FAILED',
+      })
+    }
+  }
 
   async onPythonTestMessage(message: Message) {
     const {fileName, dir} = message
@@ -112,7 +140,7 @@ export class NiketaClient {
         '-v',
         '-rf',
         '--capture=no',
-        '--continue-on-collection-errors'
+        '--continue-on-collection-errors',
       ].join(' ')
       this.pythonTestChild = execa.command(command, {cwd: dir})
       log('sepx')
@@ -136,8 +164,14 @@ export class NiketaClient {
       })
     }
   }
+  async onPythonMessage(message: Message) {
+    return message.requestLintFile
+      ? this.onPythonMypyMessage(message)
+      : this.onPythonTestMessage(message)
+  }
 
-  async onGolangTestMessage(message: Message) {
+  async onGolangMessage(message: Message) {
+    throw new Error('Not implemented')
     const {fileName, dir} = message
 
     try {
@@ -173,7 +207,7 @@ export class NiketaClient {
     }
   }
 
-  async onJestMessage(message: Message) {
+  async onFrontendMessage(message: Message) {
     const {fileName, dir, hasTypescript, requestLintFile} = message
 
     if (!isMessageCorrect(message)) {
@@ -507,10 +541,14 @@ export class NiketaClient {
     debugLog(parsedMessage, 'onSocketData')
 
     if (parsedMessage.fileName.endsWith('.py')) {
-      await this.onPythonTestMessage(parsedMessage)
+      await this.onPythonMessage(parsedMessage)
       return
     }
-    await this.onJestMessage(parsedMessage)
+    if (parsedMessage.fileName.endsWith('.go')) {
+      await this.onGolangMessage(parsedMessage)
+      return
+    }
+    await this.onFrontendMessage(parsedMessage)
   }
 
   start() {
