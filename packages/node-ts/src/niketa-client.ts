@@ -101,10 +101,17 @@ export class NiketaClient {
   }
   async onPythonMypyMessage(message: Message) {
     const {fileName, dir} = message
-    let relativePath = remove(dir, fileName)
+    let relativePath = remove(dir + '/', fileName)
     // todo: modularize
     try {
-      const command = [`pipenv`, 'run', `mypy`, fileName].join(' ')
+      const command = [
+        `pipenv`,
+        'run',
+        `mypy`,
+        '--config-file',
+        'mypy.ini',
+        relativePath,
+      ].join(' ')
       this.pythonTestChild = execa.command(command, {cwd: dir})
       log('sepx')
       log('Mypy start', 'info')
