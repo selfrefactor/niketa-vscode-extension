@@ -155,7 +155,6 @@ export class NiketaClient {
     }
     const {fileName, dir} = message
     let relativePath = remove(dir + '/', fileName)
-    // todo: modularize
     try {
       const commands = getLintCommands(relativePath)
       this.pythonTestChild = execa.command(commands.autopep8, {cwd: dir})
