@@ -1,11 +1,11 @@
 {
-	"icon": "files/logo.png",
 	"name": "niketa-vscode-extension",
 	"displayName": "Niketa tools",
 	"description": "Request to run scripts defined in `package.json`",
 	"version": "0.1.0",
 	"license": "MIT",
 	"publisher": "selfrefactor",
+	"icon": "logo.png",
 	"engines": {
 		"vscode": "^1.56.0"
 	},
@@ -14,8 +14,7 @@
 	],
 	"main": "./src/extension",
 	"files": [
-		"src",
-		"files"
+		"src"
 	],
 	"activationEvents": [
 		"onCommand:niketa.request.run.first",
