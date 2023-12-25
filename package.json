@@ -1,10 +1,4 @@
 {
-	"jest": {
-		"moduleFileExtensions": [
-			"js"
-		],
-		"testRegex": ".+spec.js$"
-	},
 	"icon": "files/logo.png",
 	"name": "niketa-vscode-extension",
 	"displayName": "Niketa tools",
@@ -19,8 +13,8 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:niketa.request.test.run",
-		"onCommand:niketa.lint.file"
+		"onCommand:niketa.request.run.first",
+		"onCommand:niketa.request.run.second"
 	],
 	"main": "./src/extension",
 	"files": [
@@ -29,22 +23,22 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "niketa.request.test.run",
-				"title": "Niketa - run with current file"
+				"command": "niketa.request.run.first",
+				"title": "Niketa - run with current file | index 0"
 			},
 			{
-				"command": "niketa.lint.file",
-				"title": "Niketa - lint current file"
+				"command": "niketa.request.run.second",
+				"title": "Niketa - run with current file | index 1"
 			}
 		],
 		"keybindings": [
 			{
-				"command": "niketa.request.test.run",
-				"key": "alt+w"
+				"command": "niketa.request.run.first",
+				"key": "ctrl+1"
 			},
 			{
-				"command": "niketa.lint.file",
-				"key": "ctrl+1"
+				"command": "niketa.request.run.second",
+				"key": "alt+w"
 			}
 		]
 	},
@@ -53,8 +47,6 @@
 		"test": "jest src --watch"
 	},
 	"devDependencies": {
-		"jest": "29.3.1",
-		"typescript": "4.9.4",
 		"vscode": "1.1.37"
 	},
 	"repository": {
