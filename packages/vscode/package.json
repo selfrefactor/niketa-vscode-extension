@@ -38,8 +38,8 @@
 				"title": "Niketa - lint current file"
 			},
 			{
-				"command": "niketa.third.command",
-				"title": "Niketa - third command"
+				"command": "iketa.request.test.run.legacy",
+				"title": "Niketa - run with current file (legacy)"
 			}
 		],
 		"keybindings": [

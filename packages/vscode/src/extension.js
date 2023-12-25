@@ -2,7 +2,7 @@ const vscode = require('vscode')
 const {
   REQUEST_LINT_FILE,
   REQUEST_TEST_RUN,
-  THIRD_COMMAND,
+  REQUEST_TEST_RUN_LEGACY,
 } = require('./constants')
 const { delay, getter, setter } = require('rambdax')
 const { initExtension } = require('./worker')
@@ -36,9 +36,9 @@ function activate(context){
       initNiketa()()
       delay(1000).then(() => worker.requestTestRun())
     })
-  const thirdCommand = vscode.commands.registerCommand(THIRD_COMMAND,
+  const requestTestRunLegacyCommand = vscode.commands.registerCommand(REQUEST_TEST_RUN_LEGACY,
     () => {
-      if (worker.requestThirdCommand) return worker.requestThirdCommand()
+      if (worker.requestTestRunLegacy) return worker.requestTestRunLegacy()
 
       initNiketa()()
       delay(1000).then(() => worker.requestThirdCommand())
@@ -46,7 +46,7 @@ function activate(context){
 
   context.subscriptions.push(lintFileCommand)
   context.subscriptions.push(requestTestRunCommand)
-  context.subscriptions.push(thirdCommand)
+  context.subscriptions.push(requestTestRunLegacyCommand)
 }
 
 exports.activate = activate

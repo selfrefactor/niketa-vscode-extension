@@ -74,9 +74,6 @@ class Worker{
       ms         : 100,
       TOP_MARGIN : 3,
     }
-    this.decorationType = window.createTextEditorDecorationType({ after : { margin : '0 0 0 1rem' } })
-    this.decorations = {}
-    this.filesWithDecorations = []
     this.emit = x => {
       console.log(x, 'emit is not yet initialized')
     }
@@ -88,64 +85,7 @@ class Worker{
     this.thirdStatusBar = undefined
   }
 
-  buildCorrectDecorations(logData, loc){
-    const pendingDecorations = []
-    const iteratable = lineKey => {
-      const line = Number(lineKey)
-      if (line + 1 >= loc) return
-      const toShow = logData[ lineKey ]
-      const decoration = {
-        range : new Range(new Position(line - 1, 1024),
-          new Position(line - 1, 1024)),
-        renderOptions : {
-          after : {
-            color       : '#7cc36e',
-            contentText : toShow,
-          },
-        },
-      }
-      pendingDecorations.push(decoration)
-    }
-
-    Object.keys(logData).map(iteratable)
-
-    return pendingDecorations
-  }
-
-  buildUnreliableDecorations({ endLine, logData, startLine }){
-    const TOP_MARGIN = 3
-    const linesToUse = endLine - startLine - TOP_MARGIN
-    const len = logData.length
-
-    const endPoint =
-      len < linesToUse ? startLine + len + TOP_MARGIN : endLine
-
-    const iteratable = (lineNumber, i) => {
-      const toShow = logData[ i ]
-      const decoration = {
-        range : new Range(new Position(lineNumber - 1, 1024),
-          new Position(lineNumber - 1, 1024)),
-        renderOptions : {
-          after : {
-            color       : '#7cc36e',
-            contentText : toShow,
-          },
-        },
-      }
-
-      return decoration
-    }
-    const loop = range(startLine + TOP_MARGIN, endPoint)
-
-    return loop.map(iteratable)
-  }
-
-  clearDecorations(){
-    window.visibleTextEditors.forEach(textEditor =>
-      textEditor.setDecorations(this.decorationType, []))
-  }
-
-  async evaluateNiketaScripts(filePath){
+  async evaluateNiketaScriptsLegacy(filePath){
     const relativeFilePath = filePath.replace(`${ this.dir }/`, '')
     if (!this.niketaScripts[ relativeFilePath ])
       return false
@@ -225,8 +165,6 @@ class Worker{
 
     const {
       firstBarMessage,
-      hasDecorations,
-      newDecorations,
       secondBarMessage,
       thirdBarMessage,
       tooltip,
@@ -238,51 +176,11 @@ class Worker{
       thirdBarMessage,
       tooltip,
     })
-    if (hasDecorations === false) return this.clearDecorations()
-
-    if (newDecorations.correct === true)
-      return this.onCorrectDecorations(newDecorations, this.loc)
-
-    if (newDecorations.correct === false)
-      return this.onUnreliableDecorations(newDecorations)
-
   }
 
-  async onCorrectDecorations(newDecorations, loc){
-    const { correct, logData } = newDecorations
-    if (!correct) return
-    if (Object.keys(logData).length === 0) return
-
-    const pendingDecorations = this.buildCorrectDecorations(logData, loc)
-    await this.paintDecorations(pendingDecorations)
-
-    await delay(200)
-  }
-
-  async onUnreliableDecorations({ correct, logData }){
-    if (correct) return
-    ok(logData)([ String ])
-
-    const { endLine, startLine } = await this.findLinesInFocus()
-    const pendingDecorations = this.buildUnreliableDecorations({
-      endLine,
-      logData,
-      startLine,
-    })
-    await this.paintDecorations(pendingDecorations)
-
-    await delay(200)
-  }
 
   onWrongIncomingMessage(message){
     console.error(message, 'onWrongIncomingMessage')
-  }
-
-  async paintDecorations(pendingDecorations){
-    await delay(100)
-    const editor = this.getEditor()
-
-    editor.setDecorations(this.decorationType, pendingDecorations)
   }
 
   async requestCommandFactory(command){
@@ -293,7 +191,7 @@ class Worker{
       return console.log('currentFilePath is empty')
     }
     if (command.evaluateNiketaScripts)
-      if (await this.evaluateNiketaScripts(currentFilePath)) return
+      if (await this.evaluateNiketaScriptsLegacy(currentFilePath)) return
 
     const messageToSend = {
       fileName : currentFilePath,
@@ -318,16 +216,28 @@ class Worker{
   }
 
   async requestTestRun(){
+    console.log('requestTestRun')
+    // const relativeFilePath = filePath.replace(`${ this.dir }/`, '')
+    // if (!this.niketaScripts[ relativeFilePath ])
+    //   return false
+
+    // const [ command, ...inputs ] =
+    //   this.niketaScripts[ relativeFilePath ].split(' ')
+    // if (!command) return false
+    // await spawnCommand({
+    //   command,
+    //   cwd   : this.dir,
+    //   inputs,
+    //   onLog : () => {},
+    // })
+
+    // return true
+  }
+
+  async requestTestRunLegacy(){
     return this.requestCommandFactory({
       evaluateNiketaScripts : true,
       initialMessage        : 'TEST RUN EXPECTED',
-    })
-  }
-
-  async requestThirdCommand(){
-    return this.requestCommandFactory({
-      initialMessage : 'THIRD COMMAND EXPECTED',
-      messageOptions : { requestThirdCommand : true },
     })
   }
 
