@@ -1,22 +1,18 @@
-# Niketa tools - lightweight Wallaby.js alternative
+# Niketa tools
 
-> VSCode extension
+It expects this in `package.json`
 
-## Start Jest with current file
-
-**Alt+W**
-
----
-if there is such config in package.json
 ```
-  "niketa":{
-    "DRAFT.md": "yarn out"
+"niketaScripts": [
+  {
+    "**/*.js": "yarn lint:file"
+  },
+  {
+    "**/*.js": "yarn run:file"
   }
+],
 ```
 
-then **Alt+W** will run `yarn out` in the current file directory
+In this case, when pressing `ctrl+1`, it will run `yarn lint:file` with the current path as additional argument.
 
-## Lint current file
-
-**Ctrl+1**
-
+When pressing `alt+w`, it will run `yarn run:file` with the current path as additional argument.
