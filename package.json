@@ -7,18 +7,19 @@
 	"license": "MIT",
 	"publisher": "selfrefactor",
 	"engines": {
-		"vscode": "^1.26.0"
+		"vscode": "^1.56.0"
 	},
 	"categories": [
 		"Other"
 	],
+	"main": "./src/extension",
+	"files": [
+		"src",
+		"files"
+	],
 	"activationEvents": [
 		"onCommand:niketa.request.run.first",
 		"onCommand:niketa.request.run.second"
-	],
-	"main": "./src/extension",
-	"files": [
-		"src"
 	],
 	"contributes": {
 		"commands": [

@@ -16,7 +16,6 @@ function activate(context){
     if (getter(INIT_KEY)) return
 
     setter(INIT_KEY, true)
-    worker.initStatusBars()
     worker.init()
   }
 

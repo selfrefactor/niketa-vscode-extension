@@ -1,5 +1,4 @@
 const {  filter } = require('rambdax')
-const { existsSync } = require('fs')
 const { minimatch } = require('minimatch')
 const {  window, workspace } = require('vscode')
 const { spawnCommand, readJson, runInVsCodeTerminal } = require('./utils')
@@ -44,7 +43,6 @@ class Worker{
   }
 
   init(){
-    this.hasTypescript = existsSync(`${ this.dir }/tsconfig.json`)
     const packageJson = readJson(`${ this.dir }/package.json`)
     if (packageJson.niketaScripts) {
       this.niketaScripts = packageJson.niketaScripts
