@@ -10,13 +10,13 @@ const CLIENT_PORT = niketaConfig('PORT')
 const SMALL_DELAY = 15
 const PRIORITY = 200
 
-function runInVsCodeTerminal({ command, label }){
-  const terminal = window.createTerminal({ name : label })
-  // terminal.hide()
-  terminal.sendText(command)
-  setTimeout(() => {
-    terminal.dispose()
-  }, 4000)
+const terminalsRegistry = {}
+
+function runInVsCodeTerminal({ command, label }) {
+  if (!terminalsRegistry[ label ]) {
+    terminalsRegistry[ label ] = window.createTerminal({ name : label });
+  }
+  terminalsRegistry[ label ].sendText(command);
 }
 
 const spawnCommand = ({ command, cwd, inputs, onLog }) =>
@@ -71,11 +71,6 @@ class Worker{
   constructor(){
     this.niketaScripts = {}
     this.hasNiketaScripts = false
-    this.options = {
-      color      : '#7cc36e',
-      ms         : 100,
-      TOP_MARGIN : 3,
-    }
     this.emit = x => {
       console.log(x, 'emit is not yet initialized')
     }
@@ -222,7 +217,7 @@ class Worker{
     if (!foundScriptKey) return
     await runInVsCodeTerminal({
       command : `${ this.niketaScripts[ foundScriptKey ] } ${ currentFilePath }`,
-      label   : `Niketa - ${ foundScriptKey }`,
+      label   : `Niketa run - "${ foundScriptKey }"`,
     })
   }
 

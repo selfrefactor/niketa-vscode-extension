@@ -1,21 +1,68 @@
 {
-  "name": "root",
-  "private": true,
-  "devDependencies": {
-    "lerna": "^3.15.0"
-  },
-  "commitMessage": {
-    "fix": [
-      "node",
-      "vscode"
-    ],
-    "workInProgress": "",
-    "support": [
-      "vscode"
-    ],
-    "feature": [
-      "node",
-      "vscode"
-    ]
-  }
+	"jest": {
+		"moduleFileExtensions": [
+			"js"
+		],
+		"testRegex": ".+spec.js$"
+	},
+	"icon": "files/logo.png",
+	"name": "niketa-vscode-extension",
+	"displayName": "Niketa tools",
+	"description": "Request to run scripts defined in `package.json`",
+	"version": "0.1.0",
+	"license": "MIT",
+	"publisher": "selfrefactor",
+	"engines": {
+		"vscode": "^1.26.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:niketa.request.test.run",
+		"onCommand:niketa.lint.file"
+	],
+	"main": "./src/extension",
+	"files": [
+		"src"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"command": "niketa.request.test.run",
+				"title": "Niketa - run with current file"
+			},
+			{
+				"command": "niketa.lint.file",
+				"title": "Niketa - lint current file"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "niketa.request.test.run",
+				"key": "alt+w"
+			},
+			{
+				"command": "niketa.lint.file",
+				"key": "ctrl+1"
+			}
+		]
+	},
+	"scripts": {
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "jest src --watch"
+	},
+	"devDependencies": {
+		"jest": "29.3.1",
+		"typescript": "4.9.4",
+		"vscode": "1.1.37"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/selfrefactor/niketa-vscode-extension.git"
+	},
+	"dependencies": {
+		"minimatch": "9.0.3",
+		"rambdax": "9.0.0"
+	}
 }
