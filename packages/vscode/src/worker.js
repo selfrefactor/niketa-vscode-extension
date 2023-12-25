@@ -1,19 +1,23 @@
-const {
-  Position,
-  Range,
-  StatusBarAlignment,
-  window,
-  workspace,
-} = require('vscode')
-const { delay, ok, path, range, tryCatch } = require('rambdax')
+const { delay, filter, path, tryCatch } = require('rambdax')
 const { existsSync, readFileSync } = require('fs')
+const { minimatch } = require('minimatch')
 const { niketaConfig } = require('./utils/niketa-config.js')
 const { Socket } = require('net')
 const { spawn } = require('child_process')
+const { StatusBarAlignment, window, workspace } = require('vscode')
 
 const CLIENT_PORT = niketaConfig('PORT')
 const SMALL_DELAY = 15
 const PRIORITY = 200
+
+function runInVsCodeTerminal({ command, label }){
+  const terminal = window.createTerminal({ name : label })
+  // terminal.hide()
+  terminal.sendText(command)
+  setTimeout(() => {
+    terminal.dispose()
+  }, 4000)
+}
 
 const spawnCommand = ({ command, cwd, inputs, onLog }) =>
   new Promise((resolve, reject) => {
@@ -26,11 +30,8 @@ const spawnCommand = ({ command, cwd, inputs, onLog }) =>
     )
 
     proc.stdout.on('data', chunk => {
-      if (onLog)
-        onLog(chunk.toString())
-      else
-        console.log(chunk.toString())
-
+      if (onLog) onLog(chunk.toString())
+      else console.log(chunk.toString())
     })
     proc.stdout.on('end', () => resolve())
     proc.stdout.on('error', err => reject(err))
@@ -69,6 +70,7 @@ function sendMessage(messageToSend){
 class Worker{
   constructor(){
     this.niketaScripts = {}
+    this.hasNiketaScripts = false
     this.options = {
       color      : '#7cc36e',
       ms         : 100,
@@ -87,8 +89,7 @@ class Worker{
 
   async evaluateNiketaScriptsLegacy(filePath){
     const relativeFilePath = filePath.replace(`${ this.dir }/`, '')
-    if (!this.niketaScripts[ relativeFilePath ])
-      return false
+    if (!this.niketaScripts[ relativeFilePath ]) return false
 
     const [ command, ...inputs ] =
       this.niketaScripts[ relativeFilePath ].split(' ')
@@ -140,6 +141,7 @@ class Worker{
     const packageJson = readJson(`${ this.dir }/package.json`)
     if (!packageJson.niketa) return
     this.niketaScripts = packageJson.niketa
+    this.hasNiketaScripts = true
   }
 
   initStatusBars(){
@@ -163,12 +165,8 @@ class Worker{
     const parsedMessage = tryCatch(parse, false)()
     if (!parsedMessage) return
 
-    const {
-      firstBarMessage,
-      secondBarMessage,
-      thirdBarMessage,
-      tooltip,
-    } = parsedMessage
+    const { firstBarMessage, secondBarMessage, thirdBarMessage, tooltip } =
+      parsedMessage
 
     this.updateStatusBars({
       firstBarMessage,
@@ -177,7 +175,6 @@ class Worker{
       tooltip,
     })
   }
-
 
   onWrongIncomingMessage(message){
     console.error(message, 'onWrongIncomingMessage')
@@ -190,7 +187,7 @@ class Worker{
 
       return console.log('currentFilePath is empty')
     }
-    if (command.evaluateNiketaScripts)
+    if (command.evaluateNiketaScriptsLegacy)
       if (await this.evaluateNiketaScriptsLegacy(currentFilePath)) return
 
     const messageToSend = {
@@ -217,27 +214,22 @@ class Worker{
 
   async requestTestRun(){
     console.log('requestTestRun')
-    // const relativeFilePath = filePath.replace(`${ this.dir }/`, '')
-    // if (!this.niketaScripts[ relativeFilePath ])
-    //   return false
+    if (!this.hasNiketaScripts) return
+    const currentFilePath = this.getCurrentFile().replace(`${ this.dir }/`, '')
 
-    // const [ command, ...inputs ] =
-    //   this.niketaScripts[ relativeFilePath ].split(' ')
-    // if (!command) return false
-    // await spawnCommand({
-    //   command,
-    //   cwd   : this.dir,
-    //   inputs,
-    //   onLog : () => {},
-    // })
-
-    // return true
+    const [ foundScriptKey ] = filter(x => minimatch(currentFilePath, x),
+      Object.keys(this.niketaScripts))
+    if (!foundScriptKey) return
+    await runInVsCodeTerminal({
+      command : `${ this.niketaScripts[ foundScriptKey ] } ${ currentFilePath }`,
+      label   : `Niketa - ${ foundScriptKey }`,
+    })
   }
 
   async requestTestRunLegacy(){
     return this.requestCommandFactory({
-      evaluateNiketaScripts : true,
-      initialMessage        : 'TEST RUN EXPECTED',
+      evaluateNiketaScriptsLegacy : true,
+      initialMessage              : 'TEST RUN EXPECTED',
     })
   }
 
@@ -269,9 +261,7 @@ class Worker{
     if (!selectedStatusBar) return
 
     selectedStatusBar.text = newText
-    if (tooltip)
-      selectedStatusBar.tooltip = tooltip
-
+    if (tooltip) selectedStatusBar.tooltip = tooltip
   }
 
   simpleMessageToUser(message){
@@ -332,7 +322,6 @@ class Worker{
         newText        : messages[ 2 ],
         statusBarIndex : 2,
       })
-
   }
 }
 

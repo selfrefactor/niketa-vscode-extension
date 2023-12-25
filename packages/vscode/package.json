@@ -82,6 +82,7 @@
 		"url": "https://github.com/selfrefactor/niketa.git"
 	},
 	"dependencies": {
+		"minimatch": "^9.0.3",
 		"rambdax": "9.0.0"
 	}
 }
