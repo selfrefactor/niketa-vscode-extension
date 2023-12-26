@@ -9,6 +9,7 @@ function runInVsCodeTerminal({ command, label }) {
     terminalsRegistry[ label ] = window.createTerminal({ name : label });
   }
   terminalsRegistry[ label ].sendText(command);
+  terminalsRegistry[ label ].show(true)
 }
 
 const spawnCommand = ({ command, cwd, inputs, onLog }) =>
