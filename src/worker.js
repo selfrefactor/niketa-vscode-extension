@@ -2,6 +2,7 @@ const {  filter } = require('rambdax')
 const { minimatch } = require('minimatch')
 const {  window, workspace } = require('vscode')
 const { spawnCommand, readJson, runInVsCodeTerminal } = require('./utils')
+const { getSpecFilePath } = require('./get-spec-file-path')
 
 class Worker{
   constructor(){
@@ -59,7 +60,8 @@ class Worker{
     const [ foundScriptKey ] = filter(x => minimatch(currentFilePath, x),
       Object.keys(scripts))
     if (!foundScriptKey) return
-
+    const specFilePath = getSpecFilePath(currentFilePath, this.dir)
+    if(!specFilePath) return
     let command = `${ scripts[ foundScriptKey ] } ${ currentFilePath }`
     let label = `Niketa run ${ index === 0 ? 'first' : 'second' } - "${ foundScriptKey }"`
 
