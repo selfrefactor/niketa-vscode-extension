@@ -54,16 +54,18 @@ class Worker{
     }
   }
 
-  async requestTestRun(index){
+  async requestTestRun({isTestFile}){
     const currentFilePath = this.getCurrentFile().replace(`${ this.dir }/`, '')
-    const scripts = this.niketaScripts[ index ]
+    const scriptsToRun = isTestFile ? this.niketaScripts.testCommands : this.niketaScripts.fileCommands
+      if (!scriptsToRun) return
     const [ foundScriptKey ] = filter(x => minimatch(currentFilePath, x),
-      Object.keys(scripts))
+      Object.keys(scriptsToRun))
     if (!foundScriptKey) return
-    const specFilePath = getSpecFilePath(currentFilePath, this.dir)
-    if(!specFilePath) return
-    let command = `${ scripts[ foundScriptKey ] } ${ currentFilePath }`
-    let label = `Niketa run ${ index === 0 ? 'first' : 'second' } - "${ foundScriptKey }"`
+    const actualFilePath = isTestFile ? getSpecFilePath(currentFilePath, this.dir) : currentFilePath
+    if(!actualFilePath) return
+    let command = `${ scriptsToRun[ foundScriptKey ] } ${ actualFilePath }`
+    let label = `${ isTestFile ? 'Test' : 'File' } run`
+    // let label = `Niketa ${ isTestFile ? 'test' : 'file' } run - "${ foundScriptKey }"`
 
     await runInVsCodeTerminal({
       command,
@@ -71,15 +73,15 @@ class Worker{
     })
   }
 
-  async requestRun({ index }){
+  async requestRun({ isTestFile }){
     if(
       Object.keys(this.niketaScriptsLegacy).length > 0
     ){
       return this.evaluateNiketaScriptsLegacy()
     }
-    if(this.niketaScripts.length === 0) return
+    if(Object.keys(this.niketaScripts).length !== 2) return
 
-    await this.requestTestRun(index)
+    await this.requestTestRun({isTestFile})
   }
 }
 

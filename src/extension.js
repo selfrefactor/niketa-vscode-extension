@@ -1,7 +1,7 @@
 const vscode = require('vscode')
 const {
-  FIRST,
-  SECOND,
+  FILE_RUN,
+  TEST_RUN,
 } = require('./constants')
 const { delay, getter, setter } = require('rambdax')
 const { initExtension } = require('./worker')
@@ -19,25 +19,25 @@ function activate(context){
     worker.init()
   }
 
-  const firstCommand = vscode.commands.registerCommand(FIRST,
+  const fileRunCommand = vscode.commands.registerCommand(FILE_RUN,
     () => {
-      if (worker.requestRun) return worker.requestRun({index: 0})
+      if (worker.requestRun) return worker.requestRun({isTestFile: false})
 
       initNiketa()()
-      delay(1000).then(() => worker.requestRun({index: 0}))
+      delay(1000).then(() => worker.requestRun({isTestFile: false}))
     })
 
-  const secondCommand = vscode.commands.registerCommand(SECOND,
+  const testRunCommand = vscode.commands.registerCommand(TEST_RUN,
     () => {
-      if (worker.requestRun) return worker.requestRun({index: 1})
+      if (worker.requestRun) return worker.requestRun({isTestFile: true})
 
       initNiketa()()
-      delay(1000).then(() => worker.requestRun({index: 1}))
+      delay(1000).then(() => worker.requestRun({isTestFile: true}))
     })
 
 
-  context.subscriptions.push(firstCommand)
-  context.subscriptions.push(secondCommand)
+  context.subscriptions.push(fileRunCommand)
+  context.subscriptions.push(testRunCommand)
 }
 
 exports.activate = activate

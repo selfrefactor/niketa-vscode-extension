@@ -17,27 +17,27 @@
 		"src"
 	],
 	"activationEvents": [
-		"onCommand:niketa.request.run.first",
-		"onCommand:niketa.request.run.second"
+		"onCommand:niketa.request.run.file",
+		"onCommand:niketa.request.run.test"
 	],
 	"contributes": {
 		"commands": [
 			{
-				"command": "niketa.request.run.first",
-				"title": "Niketa - run with current file | index 0"
+				"command": "niketa.request.run.file",
+				"title": "Niketa - run with current file"
 			},
 			{
-				"command": "niketa.request.run.second",
-				"title": "Niketa - run with current file | index 1"
+				"command": "niketa.request.run.test",
+				"title": "Niketa - run with current test file"
 			}
 		],
 		"keybindings": [
 			{
-				"command": "niketa.request.run.first",
+				"command": "niketa.request.run.file",
 				"key": "ctrl+1"
 			},
 			{
-				"command": "niketa.request.run.second",
+				"command": "niketa.request.run.test",
 				"key": "alt+w"
 			}
 		]
