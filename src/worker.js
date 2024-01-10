@@ -64,8 +64,7 @@ class Worker{
     const actualFilePath = isTestFile ? getSpecFilePath(currentFilePath, this.dir) : currentFilePath
     if(!actualFilePath) return
     let command = `${ scriptsToRun[ foundScriptKey ] } ${ actualFilePath }`
-    let label = `${ isTestFile ? 'Test' : 'File' } run`
-    // let label = `Niketa ${ isTestFile ? 'test' : 'file' } run - "${ foundScriptKey }"`
+    let label = isTestFile ? 'Test' : 'Run'
 
     await runInVsCodeTerminal({
       command,

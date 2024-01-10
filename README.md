@@ -3,14 +3,14 @@
 It expects this in `package.json`
 
 ```
-"niketaScripts": [
-  {
+"niketaScripts": {
+  "fileCommands": {
     "**/*.js": "yarn lint:file"
   },
-  {
-    "**/*.js": "yarn run:file"
+  "testCommands": {
+    "**/*.js": "yarn jest:file"
   }
-],
+},
 ```
 
 In this case, when pressing `ctrl+1`, it will run `yarn lint:file` with the current path as additional argument.
