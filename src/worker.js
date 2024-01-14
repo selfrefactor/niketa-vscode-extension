@@ -72,13 +72,24 @@ class Worker{
     })
   }
 
+  async fallbackLint(isTestFile){
+    const currentFilePath = this.getCurrentFile()
+    const command = `run ${
+      isTestFile ? 'lint:file:unsafe' : 'lint:file'
+    } ${ currentFilePath }`
+    await runInVsCodeTerminal({
+      command,
+      label: 'Lint'  ,
+    })
+  }
+
   async requestRun({ isTestFile }){
     if(
       Object.keys(this.niketaScriptsLegacy).length > 0
     ){
       return this.evaluateNiketaScriptsLegacy()
     }
-    if(Object.keys(this.niketaScripts).length !== 2) return
+    if(Object.keys(this.niketaScripts).length !== 2) return this.fallbackLint(isTestFile)
 
     await this.requestTestRun({isTestFile})
   }
