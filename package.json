@@ -2,7 +2,7 @@
 	"name": "niketa-vscode-extension",
 	"displayName": "Run Niketa scripts",
 	"description": "Request to run scripts defined in `package.json`",
-	"version": "0.8.0",
+	"version": "0.9.0",
 	"license": "MIT",
 	"publisher": "selfrefactor",
 	"icon": "logo.png",
