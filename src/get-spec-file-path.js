@@ -17,7 +17,7 @@ function getSpecFilePath(
   const newFilePath = `${splitted.join('.')}.spec.${extension}`;
   if(
     !existsSync(`${directory}/${newFilePath}`)
-  ) return false;
+  ) return filePath;
   return newFilePath;
 }
 
