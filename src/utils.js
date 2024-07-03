@@ -4,12 +4,18 @@ const { window } = require('vscode')
 
 const terminalsRegistry = {}
 
-function runInVsCodeTerminal({ command, label }) {
+function runInVsCodeTerminal({ command, label, closeAfter}) {
   if (!terminalsRegistry[ label ]) {
     terminalsRegistry[ label ] = window.createTerminal({ name : label });
   }
   terminalsRegistry[ label ].sendText(command);
   terminalsRegistry[ label ].show(true)
+  if (closeAfter) {
+    setTimeout(() => {
+      terminalsRegistry[ label ].dispose()
+      delete terminalsRegistry[ label ]
+    }, 5000)
+  }
 }
 
 const spawnCommand = ({ command, cwd, inputs, onLog }) =>

@@ -74,6 +74,7 @@ class Worker {
     await runInVsCodeTerminal({
       command,
       label,
+      closeAfter: false,
     })
   }
 
@@ -85,6 +86,7 @@ class Worker {
     await runInVsCodeTerminal({
       command,
       label: 'Lint',
+      closeAfter: true,
     })
   }
 
