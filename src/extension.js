@@ -1,6 +1,6 @@
 const vscode = require('vscode')
 const {
-  FILE_RUN,
+  LINT_RUN,
   TEST_RUN,
 } = require('./constants')
 const { delay, getter, setter } = require('rambdax')
@@ -19,24 +19,24 @@ function activate(context){
     worker.init()
   }
 
-  const fileRunCommand = vscode.commands.registerCommand(FILE_RUN,
+  const lintCommand = vscode.commands.registerCommand(LINT_RUN,
     () => {
-      if (worker.requestRun) return worker.requestRun({isTestFile: false})
+      if (worker.initialized) return worker.biomeLint()
 
       initNiketa()()
-      delay(1000).then(() => worker.requestRun({isTestFile: false}))
+      delay(1000).then(() => worker.biomeLint())
     })
 
   const testRunCommand = vscode.commands.registerCommand(TEST_RUN,
     () => {
-      if (worker.requestRun) return worker.requestRun({isTestFile: true})
+      if (worker.initialized) return worker.requestRun()
 
       initNiketa()()
-      delay(1000).then(() => worker.requestRun({isTestFile: true}))
+      delay(1000).then(() => worker.requestRun())
     })
 
 
-  context.subscriptions.push(fileRunCommand)
+  context.subscriptions.push(lintCommand)
   context.subscriptions.push(testRunCommand)
 }
 

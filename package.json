@@ -17,23 +17,23 @@
 		"src"
 	],
 	"activationEvents": [
-		"onCommand:niketa.request.run.file",
+		"onCommand:niketa.request.lint.file",
 		"onCommand:niketa.request.run.test"
 	],
 	"contributes": {
 		"commands": [
 			{
-				"command": "niketa.request.run.file",
-				"title": "Niketa - run with current file"
+				"command": "niketa.request.lint.file",
+				"title": "Biome lint with current file"
 			},
 			{
 				"command": "niketa.request.run.test",
-				"title": "Niketa - run with current test file"
+				"title": "Test run with current test file"
 			}
 		],
 		"keybindings": [
 			{
-				"command": "niketa.request.run.file",
+				"command": "niketa.request.lint.file",
 				"key": "ctrl+1"
 			},
 			{
