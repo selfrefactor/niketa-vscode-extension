@@ -11,9 +11,12 @@ const INIT_KEY = 'INIT'
 function activate(context){
   let worker = {}
 
-  const initNiketa = () => () => {
+  const initNiketa = () => {
     worker = initExtension()
-    if (getter(INIT_KEY)) return
+    if (getter(INIT_KEY)){
+      
+      return
+    } 
 
     setter(INIT_KEY, true)
     worker.init()
@@ -21,17 +24,23 @@ function activate(context){
 
   const lintCommand = vscode.commands.registerCommand(LINT_RUN,
     () => {
-      if (worker.initialized) return worker.biomeLint()
+      if (worker.initialized){
 
-      initNiketa()()
+        return worker.biomeLint()
+      } 
+
+      initNiketa()
       delay(1000).then(() => worker.biomeLint())
     })
 
   const testRunCommand = vscode.commands.registerCommand(TEST_RUN,
     () => {
-      if (worker.initialized) return worker.requestRun()
+      if (worker.initialized){
 
-      initNiketa()()
+        return worker.requestRun()
+      } 
+
+      initNiketa()
       delay(1000).then(() => worker.requestRun())
     })
 

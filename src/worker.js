@@ -78,10 +78,9 @@ class Worker {
   async biomeLint() {
     const currentFilePath = this.getCurrentFile()
 
-    // lint with biome 
-    const command = `run lint:file:unsafe'
-    } ${currentFilePath}`
-    //   isTestFile ? 'lint:file:unsafe' : 'lint:file'
+    // lint with biome
+    const command = `run lint:file:unsafe ${currentFilePath}`
+    
     await runInVsCodeTerminal({
       command,
       label: 'Lint',
@@ -89,13 +88,14 @@ class Worker {
     })
   }
 
-  async requestRun() {
+ async requestRun() {
     if (Object.keys(this.niketaScriptsLegacy).length > 0) {
       return this.evaluateNiketaScriptsLegacy()
     }
     // fallback if user presses run button, it will lint if no test script is found
-    if (Object.keys(this.niketaScripts).length === 0)
+    if (Object.keys(this.niketaScripts).length === 0) {
       return this.biomeLint()
+    }
 
     await this.requestTestRun()
   }
@@ -103,6 +103,5 @@ class Worker {
 
 exports.initExtension = () => {
   const worker = new Worker()
-
   return worker
 }
