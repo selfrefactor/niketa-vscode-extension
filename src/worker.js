@@ -15,7 +15,9 @@ class Worker {
   async evaluateNiketaScriptsLegacy() {
     const currentFilePath = this.getCurrentFile()
     const relativeFilePath = currentFilePath.replace(`${this.dir}/`, '')
-    if (!this.niketaScriptsLegacy[relativeFilePath]) return false
+    if (!this.niketaScriptsLegacy[relativeFilePath]){
+      return false
+    } 
 
     const [command, ...inputs] =
       this.niketaScriptsLegacy[relativeFilePath].split(' ')
