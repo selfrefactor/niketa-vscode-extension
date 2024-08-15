@@ -26,11 +26,11 @@ function activate(context){
     () => {
       if (worker.initialized){
 
-        return worker.biomeLint()
+        return worker.standaloneLint()
       } 
 
       initNiketa()
-      delay(1000).then(() => worker.biomeLint())
+      delay(1000).then(() => worker.standaloneLint())
     })
 
   const testRunCommand = vscode.commands.registerCommand(TEST_RUN,

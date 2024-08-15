@@ -4,6 +4,8 @@ const { window, workspace } = require('vscode')
 const { spawnCommand, readJson, runInVsCodeTerminal } = require('./utils')
 const { getSpecFilePath } = require('./get-spec-file-path')
 
+const PERSIST_LINT_TERMINAL = vscode.workspace.getConfiguration('niketa').get('PERSIST_LINT_TERMINAL')
+
 class Worker {
   constructor() {
     this.niketaScripts = []
@@ -77,16 +79,16 @@ class Worker {
     })
   }
 
-  async biomeLint() {
+  async standaloneLint() {
     const currentFilePath = this.getCurrentFile()
 
-    // lint with biome
+    // lint with biome/oxlint
     const command = `run lint:file:unsafe ${currentFilePath}`
     
     await runInVsCodeTerminal({
       command,
       label: 'Lint',
-      closeAfter: true,
+      closeAfter: !PERSIST_LINT_TERMINAL,
     })
   }
 
@@ -96,7 +98,7 @@ class Worker {
     }
     // fallback if user presses run button, it will lint if no test script is found
     if (Object.keys(this.niketaScripts).length === 0) {
-      return this.biomeLint()
+      return this.standaloneLint()
     }
 
     await this.requestTestRun()
