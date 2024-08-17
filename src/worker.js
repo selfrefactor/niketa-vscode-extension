@@ -4,7 +4,7 @@ const { window, workspace } = require('vscode')
 const { spawnCommand, readJson, runInVsCodeTerminal } = require('./utils')
 const { getSpecFilePath } = require('./get-spec-file-path')
 
-const PERSIST_LINT_TERMINAL = vscode.workspace.getConfiguration('niketa').get('PERSIST_LINT_TERMINAL')
+const PERSIST_LINT_TERMINAL = workspace.getConfiguration('niketa').get('PERSIST_LINT_TERMINAL')
 
 class Worker {
   constructor() {
