@@ -1,5 +1,6 @@
 const { filter } = require('rambdax');
 const { minimatch } = require('minimatch');
+let { existsSync } = require('fs');
 const { window, workspace } = require('vscode');
 const { spawnCommand, readJson, runInVsCodeTerminal } = require('./utils');
 const { getSpecFilePath } = require('./get-spec-file-path');
