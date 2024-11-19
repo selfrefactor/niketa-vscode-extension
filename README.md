@@ -1,6 +1,6 @@
 # Niketa tools
 
-It expects this in `package.json`
+It expects this in `package.json` or `niketa.json`:
 
 ```
 "niketaScripts": {
