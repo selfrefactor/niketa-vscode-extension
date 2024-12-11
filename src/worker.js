@@ -5,6 +5,11 @@ const { window, workspace } = require('vscode');
 const { spawnCommand, readJson, runInVsCodeTerminal } = require('./utils');
 const { getSpecFilePath } = require('./get-spec-file-path');
 
+const escapeTerminalPath = (path) => {
+  return path
+    .replace(/([()[\]])/g, '\\$1'); // Escapes (, ), [, and ]
+};
+
 const PERSIST_LINT_TERMINAL = workspace
 	.getConfiguration('niketa')
 	.get('PERSIST_LINT_TERMINAL');
@@ -87,9 +92,9 @@ class Worker {
 
 	async standaloneLint() {
 		const currentFilePath = this.getCurrentFile();
-
+		let escapedPath = escapeTerminalPath(currentFilePath);
 		// lint with biome/oxlint
-		const command = `run lint:file:unsafe ${currentFilePath}`;
+		const command = `run lint:file ${escapedPath}`;
 
 		await runInVsCodeTerminal({
 			command,
