@@ -13,9 +13,6 @@
 		"Other"
 	],
 	"main": "./src/extension",
-	"files": [
-		"src"
-	],
 	"activationEvents": [
 		"onCommand:niketa.request.lint.file",
 		"onCommand:niketa.request.run.test"
