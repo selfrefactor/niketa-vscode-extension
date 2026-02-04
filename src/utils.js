@@ -13,12 +13,12 @@ function runInVsCodeTerminal({ command, label, closeAfter }) {
   }
   terminalsRegistry[label].sendText(command)
   terminalsRegistry[label].show(true)
-  // if (closeAfter) {
-  //   setTimeout(() => {
-  //     terminalsRegistry[label].dispose()
-  //     delete terminalsRegistry[label]
-  //   }, 2500)
-  // }
+  if (closeAfter) {
+    setTimeout(() => {
+      terminalsRegistry[label].dispose()
+      delete terminalsRegistry[label]
+    }, 8000)
+  }
 }
 
 const spawnCommand = ({ command, cwd, inputs, onLog }) =>

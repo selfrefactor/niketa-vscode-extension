@@ -1,66 +1,63 @@
 {
-	"name": "niketa-vscode-extension",
-	"displayName": "Run Niketa scripts",
-	"description": "Request to run scripts defined in `package.json`",
-	"version": "0.20.0",
-	"license": "MIT",
-	"publisher": "selfrefactor",
-	"icon": "logo.png",
-	"engines": {
-		"vscode": "^1.33.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"main": "./src/extension",
-	"contributes": {
-		"commands": [
-			{
-				"command": "niketa.request.lint.file",
-				"title": "Biome lint with current file"
-			},
-			{
-				"command": "niketa.request.run.test",
-				"title": "Test run with current test file"
-			}
-		],
-		"keybindings": [
-			{
-				"command": "niketa.request.lint.file",
-				"key": "ctrl+1"
-			},
-			{
-				"command": "niketa.request.run.test",
-				"key": "alt+w"
-			}
-		]
-	},
-	"scripts": {
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"dev": "jest src/get-spec-file-path.spec.js -u",
-		"test": "jest src --watch"
-	},
-	"devDependencies": {
-		"jest": "29.7.0",
-		"vscode": "1.1.37"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/selfrefactor/niketa-vscode-extension.git"
-	},
-	"dependencies": {
-		"minimatch": "10.0.1",
-		"rambdax": "11.2.0"
-	},
-	"configuration": {
-		"type": "object",
-		"title": "Niketa",
-		"properties": {
-			"niketa.PERSIST_LINT_TERMINAL": {
-				"type": "boolean",
-				"default": false,
-				"description": ""
-			}
-		}
-	}
+  "name": "niketa-vscode-extension",
+  "displayName": "Run Niketa scripts",
+  "description": "Request to run scripts defined in `package.json`",
+  "version": "0.20.0",
+  "license": "MIT",
+  "publisher": "selfrefactor",
+  "icon": "logo.png",
+  "engines": {
+    "vscode": "^1.33.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./src/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "niketa.request.lint.file",
+        "title": "Biome lint with current file"
+      },
+      {
+        "command": "niketa.request.run.test",
+        "title": "Test run with current test file"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "niketa.request.lint.file",
+        "key": "ctrl+1"
+      },
+      {
+        "command": "niketa.request.run.test",
+        "key": "alt+w"
+      }
+    ]
+  },
+  "scripts": {
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "vscode": "1.1.37"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/selfrefactor/niketa-vscode-extension.git"
+  },
+  "dependencies": {
+    "minimatch": "10.1.2",
+    "rambdax": "11.3.1"
+  },
+  "configuration": {
+    "type": "object",
+    "title": "Niketa",
+    "properties": {
+      "niketa.PERSIST_LINT_TERMINAL": {
+        "type": "boolean",
+        "default": false,
+        "description": ""
+      }
+    }
+  }
 }
