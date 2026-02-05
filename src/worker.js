@@ -5,6 +5,11 @@ const { window, workspace } = require('vscode');
 const { spawnCommand, readJson, runInVsCodeTerminal } = require('./utils');
 const { getSpecFilePath } = require('./get-spec-file-path');
 
+/**
+ * This force to both use alt+2 as well as don't modify filepath
+ */
+const LINT_COMMAND = 'yarn lint:files'
+
 const escapeTerminalPath = (path) => {
   return path
     .replace(/([()[\]])/g, '\\$1'); // Escapes (, ), [, and ]
@@ -79,7 +84,9 @@ class Worker {
 			Object.keys(scriptsToRun),
 		);
 		if (!foundScriptKey) return;
-		const actualFilePath = getSpecFilePath(currentFilePath, this.dir);
+
+		// It helps to run lint on each file using alt+w if niketaScripts are filled with lint command instead of test command
+		const actualFilePath = scriptsToRun[foundScriptKey] === LINT_COMMAND ? this.getCurrentFile() :getSpecFilePath(currentFilePath, this.dir);
 		const command = `${scriptsToRun[foundScriptKey]} ${actualFilePath}`;
 		const label = 'Test';
 

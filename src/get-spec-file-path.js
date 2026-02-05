@@ -10,19 +10,15 @@ function getSpecFilePath(
   filePath,
   directory
 ) {
-  if (filePath.includes('.spec.')) return `${ directory }/${filePath}` ;
-	// comments are when this fn did return relative path, but for lint purposes, full path is desired output
-  // if (filePath.includes('.spec.')) return filePath;
+  if (filePath.includes('.spec.')) return filePath;
 
   const splitted = filePath.split('.');
   const extension = splitted.pop();
   const newFilePath = `${splitted.join('.')}.spec.${extension}`;
   if(
     !existsSync(`${directory}/${newFilePath}`)
-  // ) return filePath;
-  ) return `${ directory }/${filePath}`;
-  // return newFilePath;
-  return `${directory}/${newFilePath}`;
+  ) return filePath;
+  return newFilePath;
 }
 
 exports.getSpecFilePath = getSpecFilePath;
