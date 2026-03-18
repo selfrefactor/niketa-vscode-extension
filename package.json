@@ -48,16 +48,5 @@
   "dependencies": {
     "minimatch": "10.1.2",
     "rambdax": "11.3.1"
-  },
-  "configuration": {
-    "type": "object",
-    "title": "Niketa",
-    "properties": {
-      "niketa.PERSIST_LINT_TERMINAL": {
-        "type": "boolean",
-        "default": false,
-        "description": ""
-      }
-    }
   }
 }

@@ -15,10 +15,6 @@ const escapeTerminalPath = (path) => {
     .replace(/([()[\]])/g, '\\$1'); // Escapes (, ), [, and ]
 };
 
-const PERSIST_LINT_TERMINAL = workspace
-	.getConfiguration('niketa')
-	.get('PERSIST_LINT_TERMINAL');
-
 class Worker {
 	constructor() {
 		this.niketaScripts = [];
@@ -106,7 +102,7 @@ class Worker {
 		await runInVsCodeTerminal({
 			command,
 			label: 'Lint',
-			closeAfter: !PERSIST_LINT_TERMINAL,
+			closeAfter: true,
 		});
 	}
 
