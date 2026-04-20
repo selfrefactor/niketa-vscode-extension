@@ -17,7 +17,7 @@
     "commands": [
       {
         "command": "niketa.request.lint.file",
-        "title": "Biome lint with current file"
+        "title": "Lint with current file"
       },
       {
         "command": "niketa.request.run.test",

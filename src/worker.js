@@ -97,7 +97,7 @@ class Worker {
 		const currentFilePath = this.getCurrentFile();
 		let escapedPath = escapeTerminalPath(currentFilePath);
 		// lint with biome/oxlint
-		const command = `run lint:file ${escapedPath}`;
+		const command = `run fmt ${escapedPath}`;
 
 		await runInVsCodeTerminal({
 			command,
