@@ -1,6 +1,5 @@
 const { filter } = require('rambdax');
 const { minimatch } = require('minimatch');
-let { existsSync } = require('fs');
 const { window, workspace } = require('vscode');
 const { spawnCommand, readJson, runInVsCodeTerminal } = require('./utils');
 const { getSpecFilePath } = require('./get-spec-file-path');
@@ -58,9 +57,7 @@ class Worker {
 	}
 
 	init() {
-		const location = existsSync(`${this.dir}/niketa.json`)
-			? `${this.dir}/niketa.json`
-			: `${this.dir}/package.json`;
+		const location = `${this.dir}/package.json`;
 		const configJson = readJson(location);
 		if (configJson.niketaScripts) {
 			this.niketaScripts = configJson.niketaScripts;

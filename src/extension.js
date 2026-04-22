@@ -1,50 +1,36 @@
-const vscode = require('vscode')
-const {
-  LINT_RUN,
-  TEST_RUN,
-} = require('./constants')
-const { delay, getter, setter } = require('rambdax')
-const { initExtension } = require('./worker')
+const vscode = require("vscode")
+const { LINT_RUN, TEST_RUN } = require("./constants")
+const { delay, getter, setter } = require("rambdax")
+const { initExtension } = require("./worker")
 
-const INIT_KEY = 'INIT'
+const INIT_KEY = "INIT"
 
-function activate(context){
+function activate(context) {
   let worker = {}
 
   const initNiketa = () => {
     worker = initExtension()
-    if (getter(INIT_KEY)){
-      
+    if (getter(INIT_KEY)) {
       return
-    } 
+    }
 
     setter(INIT_KEY, true)
     worker.init()
   }
 
-  const lintCommand = vscode.commands.registerCommand(LINT_RUN,
-    () => {
-      if (worker.initialized){
-
-        return worker.standaloneLint()
-      } 
-
+  const lintCommand = vscode.commands.registerCommand(LINT_RUN, () => {
+    if (!worker.initialized) {
       initNiketa()
-      delay(1000).then(() => worker.standaloneLint())
-    })
+    }
+    worker.standaloneLint()
+  })
 
-  const testRunCommand = vscode.commands.registerCommand(TEST_RUN,
-    () => {
-      if (worker.initialized){
-
-        return worker.requestRun()
-      } 
-
+  const testRunCommand = vscode.commands.registerCommand(TEST_RUN, () => {
+    if (worker.initialized) {
       initNiketa()
-      delay(1000).then(() => worker.requestRun())
-    })
-
-
+    }
+    worker.requestRun()
+  })
   context.subscriptions.push(lintCommand)
   context.subscriptions.push(testRunCommand)
 }
