@@ -17,7 +17,7 @@ function runInVsCodeTerminal({ command, label, closeAfter }) {
     setTimeout(() => {
       terminalsRegistry[label].dispose()
       delete terminalsRegistry[label]
-    }, 1000)
+    }, 2000)
   }
 }
 
