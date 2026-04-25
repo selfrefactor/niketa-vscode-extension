@@ -26,7 +26,7 @@ function activate(context) {
   })
 
   const testRunCommand = vscode.commands.registerCommand(TEST_RUN, () => {
-    if (worker.initialized) {
+    if (!worker.initialized) {
       initNiketa()
     }
     worker.requestRun()
