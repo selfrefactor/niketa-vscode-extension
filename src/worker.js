@@ -56,9 +56,9 @@ class Worker {
 		return editor;
 	}
 
-	init() {
+	async init() {
 		const location = `${this.dir}/package.json`;
-		const configJson = readJson(location);
+		const configJson = await readJson(location);
 		if (configJson.niketaScripts) {
 			this.niketaScripts = configJson.niketaScripts;
 			return;

@@ -1,6 +1,6 @@
-const { readFileSync } = require('node:fs')
 const { spawn } = require('node:child_process')
 const { window } = require('vscode')
+const fs = require('node:fs')
 
 const terminalsRegistry = {}
 
@@ -17,7 +17,7 @@ function runInVsCodeTerminal({ command, label, closeAfter }) {
     setTimeout(() => {
       terminalsRegistry[label].dispose()
       delete terminalsRegistry[label]
-    }, 2000)
+    }, 4000)
   }
 }
 
@@ -40,8 +40,8 @@ const spawnCommand = ({ command, cwd, inputs, onLog }) =>
     proc.stdout.on('error', err => reject(err))
   })
 
-function readJson(filePath) {
-  const raw = readFileSync(filePath)
+async function readJson(filePath) {
+  const raw = await fs.promises.readFile(filePath)
   const content = raw.toString()
 
   return JSON.parse(content)
