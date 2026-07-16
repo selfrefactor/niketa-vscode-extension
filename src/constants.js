@@ -1,2 +1,3 @@
 exports.LINT_RUN = 'niketa.request.lint.file'
-exports.TEST_RUN = 'niketa.request.run.test'
+exports.SCRIPT_RUN = 'niketa.request.run.script'
+exports.CYCLE_SCRIPT = 'niketa.cycle.script'

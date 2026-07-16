@@ -1,7 +1,7 @@
 const { filter } = require('rambdax');
 const { minimatch } = require('minimatch');
 const { window, workspace } = require('vscode');
-const { spawnCommand, readJson, runInVsCodeTerminal } = require('./utils');
+const { spawnCommand, readJson, writeJson, runInVsCodeTerminal } = require('./utils');
 const { getSpecFilePath } = require('./get-spec-file-path');
 
 /**
@@ -18,8 +18,13 @@ class Worker {
 	constructor() {
 		this.niketaScripts = [];
 		this.niketaScriptsLegacy = {};
+		// New format fields
+		this.niketaScriptsConfig = null;   // full new-format config { scripts, active }
+		this.niketaScriptsNames = [];       // list of named script sets
+		this.currentScriptName = '';        // currently active script name
+		this.hasMultipleScripts = false;    // true when new format with at least 1 script
 		this.dir = workspace.workspaceFolders[0].uri.path;
-		this.initialized = true;
+		this.initialized = false;
 	}
 
 	async evaluateNiketaScriptsLegacy() {
@@ -59,16 +64,63 @@ class Worker {
 	async init() {
 		const location = `${this.dir}/package.json`;
 		const configJson = await readJson(location);
+
 		if (configJson.niketaScripts) {
-			this.niketaScripts = configJson.niketaScripts;
+			// New format: { scripts: { Name: { glob: cmd } }, active: "Name" }
+			if (configJson.niketaScripts.scripts && configJson.niketaScripts.active !== undefined) {
+				this.niketaScriptsConfig = configJson.niketaScripts;
+				this.niketaScriptsNames = Object.keys(configJson.niketaScripts.scripts);
+				this.currentScriptName = configJson.niketaScripts.active;
+				this.hasMultipleScripts = this.niketaScriptsNames.length > 0;
+				// Resolve to the active script set (glob → command mapping)
+				this.niketaScripts = configJson.niketaScripts.scripts[configJson.niketaScripts.active] || {};
+			} else {
+				// Old format: direct { "**/*.ts": "yarn test:file" }
+				this.niketaScripts = configJson.niketaScripts;
+				this.niketaScriptsConfig = null;
+				this.niketaScriptsNames = [];
+				this.currentScriptName = '';
+				this.hasMultipleScripts = false;
+			}
+			this.initialized = true;
 			return;
 		}
 		if (configJson.niketaScriptsLegacy) {
 			this.niketaScriptsLegacy = configJson.niketaScriptsLegacy;
 		}
+		this.initialized = true;
 	}
 
-	async requestTestRun() {
+	/**
+	 * Cycle to the next named script in the list, write to package.json, and reload config.
+	 */
+	async cycleActiveScript() {
+		if (!this.niketaScriptsConfig || this.niketaScriptsNames.length === 0) return;
+
+		const currentIndex = this.niketaScriptsNames.indexOf(this.currentScriptName);
+		const nextIndex = (currentIndex + 1) % this.niketaScriptsNames.length;
+		const nextName = this.niketaScriptsNames[nextIndex];
+
+		const location = `${this.dir}/package.json`;
+		const configJson = await readJson(location);
+
+		if (!configJson.niketaScripts) return;
+
+		configJson.niketaScripts.active = nextName;
+		await writeJson(location, configJson);
+
+		// Reload config so worker picks up the change
+		await this.init();
+	}
+
+	/**
+	 * Re-read package.json and re-initialize config (used after external changes).
+	 */
+	async reloadConfig() {
+		await this.init();
+	}
+
+	async requestScriptRun() {
 		const currentFilePath = this.getCurrentFile().replace(`${this.dir}/`, '');
 		const scriptsToRun = this.niketaScripts;
 		if (!scriptsToRun) return;
@@ -78,10 +130,10 @@ class Worker {
 		);
 		if (!foundScriptKey) return;
 
-		// It helps to run lint on each file using alt+w if niketaScripts are filled with lint command instead of test command
+		// Run the matched command for the current file
 		const actualFilePath = scriptsToRun[foundScriptKey] === LINT_COMMAND ? this.getCurrentFile() :getSpecFilePath(currentFilePath, this.dir);
 		const command = `${scriptsToRun[foundScriptKey]} ${actualFilePath}`;
-		const label = 'Test';
+		const label = 'Script';
 
 		await runInVsCodeTerminal({
 			command,
@@ -112,7 +164,7 @@ class Worker {
 			return this.standaloneLint();
 		}
 
-		await this.requestTestRun();
+		await this.requestScriptRun();
 	}
 }
 

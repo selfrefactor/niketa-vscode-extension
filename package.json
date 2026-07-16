@@ -20,8 +20,16 @@
         "title": "Lint with current file"
       },
       {
+        "command": "niketa.request.run.script",
+        "title": "Run script with current file"
+      },
+      {
+        "command": "niketa.cycle.script",
+        "title": "Cycle Niketa script"
+      },
+      {
         "command": "niketa.request.run.test",
-        "title": "Test run with current test file"
+        "title": "Run script with current file (legacy)"
       }
     ],
     "keybindings": [
@@ -30,7 +38,7 @@
         "key": "ctrl+1"
       },
       {
-        "command": "niketa.request.run.test",
+        "command": "niketa.request.run.script",
         "key": "alt+w"
       }
     ]

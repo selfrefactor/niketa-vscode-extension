@@ -47,6 +47,12 @@ async function readJson(filePath) {
   return JSON.parse(content)
 }
 
+async function writeJson(filePath, data) {
+  const content = JSON.stringify(data, null, 2) + '\n'
+  await fs.promises.writeFile(filePath, content)
+}
+
 exports.readJson = readJson
+exports.writeJson = writeJson
 exports.spawnCommand = spawnCommand
 exports.runInVsCodeTerminal = runInVsCodeTerminal
