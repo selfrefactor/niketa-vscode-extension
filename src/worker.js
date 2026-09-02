@@ -12,7 +12,7 @@ const { getSpecFilePath } = require('./get-spec-file-path')
 /**
  * This force to both use alt+2 as well as don't modify filepath
  */
-const LINT_COMMAND = 'yarn lint:files'
+const LINT_COMMANDS = ['yarn lint:files','yarn lint:file']
 
 const escapeTerminalPath = (path) => {
   return path.replace(/([()[\]])/g, '\\$1') // Escapes (, ), [, and ]
@@ -135,7 +135,10 @@ class Worker {
     const scriptsToRun = this.niketaScripts
     if (!scriptsToRun) return
     const label = 'Script'
-    if (Object.keys(scriptsToRun.length === 1 && '*' in scriptsToRun)) {
+    if (
+      Object.keys(scriptsToRun).length === 1 &&
+      scriptsToRun['*'] !== undefined
+    ) {
       const command = `${scriptsToRun['*']} ${this.getCurrentFile()}`
 
       await runInVsCodeTerminal({
@@ -144,7 +147,7 @@ class Worker {
         closeAfter: false,
       })
 
-			return
+      return
     }
     const [foundScriptKey] = filter(
       (x) => minimatch(currentFilePath, x),
@@ -152,9 +155,8 @@ class Worker {
     )
     if (!foundScriptKey) return
 
-    // Run the matched command for the current file
     const actualFilePath =
-      scriptsToRun[foundScriptKey] === LINT_COMMAND
+      LINT_COMMANDS.includes(scriptsToRun[foundScriptKey])
         ? this.getCurrentFile()
         : getSpecFilePath(currentFilePath, this.dir)
     const command = `${scriptsToRun[foundScriptKey]} ${actualFilePath}`
