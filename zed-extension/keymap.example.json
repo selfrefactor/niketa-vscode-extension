@@ -1,0 +1,25 @@
+[
+  {
+    // `alt-w` must be bound in the `Editor` context (deeper than `Pane`),
+    // not `Workspace`: the default Linux keymap binds `alt-w` in `Pane`
+    // (search::ToggleWholeWord) and Zed's dispatch stops at the most
+    // specific context, so a `Workspace` binding would never fire.
+    // Same reasoning for `ctrl-1` on macOS (default `Pane` binds it to
+    // pane::ActivateItem); binding both here works on every platform.
+    "context": "Editor",
+    "bindings": {
+      "alt-w": [
+        "task::Spawn",
+        {
+          "task_name": "niketa: run"
+        }
+      ],
+      "ctrl-1": [
+        "task::Spawn",
+        {
+          "task_name": "niketa: lint"
+        }
+      ]
+    }
+  }
+]

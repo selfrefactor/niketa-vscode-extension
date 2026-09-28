@@ -6,3 +6,7 @@ node_modules
 config.json
 *.vsix
 packages/node-ts/yarn-error.log
+
+# Zed extension build artifacts
+zed-extension/target/
+zed-extension/extension.wasm

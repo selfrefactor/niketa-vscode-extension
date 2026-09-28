@@ -1,0 +1,33 @@
+[
+  {
+    "label": "niketa: run",
+    "command": "node",
+    "args": [
+      "/home/w/repos/niketa-vscode-extension/zed-extension/scripts/niketa-run.js",
+      "run",
+      "$ZED_RELATIVE_FILE"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "niketa: lint",
+    "command": "node",
+    "args": [
+      "/home/w/repos/niketa-vscode-extension/zed-extension/scripts/niketa-run.js",
+      "lint",
+      "$ZED_RELATIVE_FILE"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "niketa: status",
+    "command": "node",
+    "args": [
+      "/home/w/repos/niketa-vscode-extension/zed-extension/scripts/niketa-run.js",
+      "status"
+    ],
+    "cwd": "$ZED_WORKTREE_ROOT"
+  }
+]

@@ -1,0 +1,27 @@
+id = "niketa-scripts"
+name = "Run Niketa scripts"
+schema_version = 1
+version = "0.32.0"
+authors = ["selfrefactor"]
+description = "Run scripts defined in package.json (niketaScripts) from the Assistant"
+repository = "https://github.com/selfrefactor/niketa-vscode-extension"
+
+[lib]
+kind = "Rust"
+
+[slash_commands.run]
+description = "Run the niketaScripts command matching a file (relative to the project root)"
+requires_argument = true
+
+[slash_commands.lint]
+description = "Run `run fmt` on a file (relative to the project root)"
+requires_argument = true
+
+[slash_commands.status]
+description = "Show the niketaScripts configuration of the current project"
+requires_argument = false
+
+[[capabilities]]
+kind = "process:exec"
+command = "sh"
+args = ["-lc", "**"]
